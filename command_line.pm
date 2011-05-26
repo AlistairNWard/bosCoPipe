@@ -16,13 +16,19 @@ sub pipelineHelp {
   print("-bamdir:\t\tspecify a directory where previously aligned bam files reside.\n");
   print("-date:\t\t\tspecify the date to appear in the filenames of outputted files.\n");
   print("  -previousdate:\tprovide a date for the previous index file (incremental alignments).\n");
-  print("-divide:\t\tdivide SNP calling into specified value in kbp - default: 1000kbp.\n");
+  print("-divide:\t\tdivide variant calling into specified value in kbp - default: 1000kbp.\n");
+  print("-divide-genome:\tdivide the genome up by whole genome (w), chromosome (c) or by bed regions (b) - default: chromosome.\n");
   print("-exome:\t\t\tinforms the pipeline that the exome pipeline should be used.\n");
   print("-fastq:\t\t\tdefine a directory where fastq files are stored.\n");
   print("-jobid:\t\t\tspecify a job id that will identify jobs created here.\n");
   print("-index:\t\t\tspecify a sequence index file used for determining alignments.\n");
   print("  -previousindex:\tprevious index file used for incremental alignments.\n");
   print("-meta:\t\t\tprovide information for alignments in an alternative format to a sequence index file.\n");
+  print("-nobaq:\t\t\tdo not use samtools BAQ in the SNP calling pipeline - default is to use.\n");
+  print("-no-bin-priors:\t\tdo not use binomial priors in the freebayes SNP calling pipeline - default is to use.\n");
+  print("-noindels:\t\tdo not call indels - default is to call.\n");
+  print("-nomnps:\t\tdo not call MNPs - default is to call.\n");
+  print("-noogap:\t\tdo not use ogap in the SNP calling pipeline - default is to use.\n");
   print("-refseq:\t\tSNP call on this reference sequence only - default: all.\n");
   print("-snp:\t\t\tSNP calling program (freebayes, glfsingle, glfmultiples, none) - default: none.\n");
   print("-user:\t\t\tspecify the user (default: login name).\n");
@@ -37,6 +43,12 @@ sub checkAligner {
     'none'         => "1"
   );
 
+  # If no aligner is being used, and no SNP caller is defined, use
+  # freeBayes as the default variant caller..
+  if ($main::aligner eq "none" && !defined $main::snpCaller) {
+    $main::snpCaller = "freebayes";
+  }
+
   # If no aligner is specified (or specifically not requested), set
   # the default to Mosaik version 2.
   if (! defined $main::aligner) {
@@ -47,20 +59,22 @@ sub checkAligner {
   # If the low memory or mosaik version 2 options are set and the
   # specified aligner is not Mosaik, throw an exception.
   if ($main::aligner ne "mosaik" && (defined $main::mosaikVersion2 || defined $main::lowMemory)) {
-    print("\n***SCRIPT TERMINATED***\n\n");
-    print("-lowmem and -mosaikv2 options are only valid in conjuction with -aligner mosaik.\n");
-    die("Error in command_line::checkAligner.\n");
+    print STDERR ("\n***SCRIPT TERMINATED***\n\n");
+    print STDERR ("-lowmem and -mosaikv2 options are only valid in conjuction with -aligner mosaik.\n");
+    print STDERR ("Error in command_line::checkAligner.\n");
+    exit(1);
   }
 
   # If the requested aligner is not incorporated into the pipeline, 
   # throw an exception.
   if (! exists $main::aligners{$main::aligner} ) {
-    print("\n***SCRIPT TERMINATED***\n\n");
-    print("Unknown argument in the -aligner option.\n");
+    print STDERR ("\n***SCRIPT TERMINATED***\n\n");
+    print STDERR ("Unknown argument in the -aligner option.\n");
     foreach my $allowedAligner (sort keys %main::aligners) {
-      print("-aligner $allowedAligner\n");
+      print STDERR ("-aligner $allowedAligner\n");
     }
-    die("Error in command_line::checkAligner.\n");
+    print STDERR ("Error in command_line::checkAligner.\n");
+    exit(1);
   }
 }
 
@@ -77,26 +91,24 @@ sub checkSnpCaller {
   if (! defined $main::snpCaller) {$main::snpCaller = 'none';}
 
   if (! exists $main::snpCallers{$main::snpCaller} ) {
-    print("\n***SCRIPT TERMINATED***\n\n");
-    print("Unknown argument in the -snp option.\n");
+    print STDERR ("\n***SCRIPT TERMINATED***\n\n");
+    print STDERR ("Unknown argument in the -snp option.\n");
     foreach my $allowedSnpCaller (sort keys %main::snpCallers) {
-      print("\t-snp $allowedSnpCaller\n");
+      print STDERR ("\t-snp $allowedSnpCaller\n");
     }
-    die("Error in command_line::checkSnpCaller.\n");
+    print STDERR ("Error in command_line::checkSnpCaller.\n");
+    exit(1);
   }
 }
 
 # Check target region size for SNP calling.
 sub checkTargets {
   if ($main::snpCaller eq "none" && (defined $main::referenceSequence || defined $main::divide) ) {
-    print("\n***SCRIPT TERMINATED***\n\n");
-    print("The -refseq and -divide options can only be specified in\n");
-    print("conjunction with a SNP caller.\n");
-    die("Error in command_line::checkTargets.\n");
-  }
-
-  if ($main::snpCaller ne "none") {
-    if (!defined $main::divide) {$main::divide = 100;}
+    print STDERR ("\n***SCRIPT TERMINATED***\n\n");
+    print STDERR ("The -refseq and -divide options can only be specified in\n");
+    print STDERR ("conjunction with a SNP caller.\n");
+    print STDERR ("Error in command_line::checkTargets.\n");
+    exit(0);
   }
 }
 
@@ -107,9 +119,10 @@ sub checkBamList {
   # Check that no aligner is requested.  If a bam list is provided, variants
   # will be called on the supplied list and no alignments will be generated.
   if ($main::aligner ne "none") {
-    print("\n***SCRIPT TERMINATED***\n\n");
-    print("If a bam list is specified, no alignments can take place (specify -aligner none).\n");
-    die("Error in command_line::checkBamList.\n");
+    print STDERR ("\n***SCRIPT TERMINATED***\n\n");
+    print STDERR ("If a bam list is specified, no alignments can take place (specify -aligner none).\n");
+    print STDERR ("Error in command_line::checkBamList.\n");
+    exit(1);
   } else {
     $main::Aligner = "none";
   }

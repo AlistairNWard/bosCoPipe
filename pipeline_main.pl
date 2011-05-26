@@ -6,7 +6,7 @@ use Cwd 'abs_path';
 
 # Record the version number.
 
-$main::version="2.000";
+$main::version="2.001";
 $main::versionDate="May 2011";
 
 # Define required files and packages.
@@ -16,6 +16,7 @@ $main::codeDir="/share/home/wardag/Pipeline/pipeline.v2";
 require "$main::codeDir/bamtools.pm";
 require "$main::codeDir/command_line.pm";
 require "$main::codeDir/create_scripts.pm";
+require "$main::codeDir/freebayes.pm";
 require "$main::codeDir/general_tools.pm";
 require "$main::codeDir/merge_tools.pm";
 require "$main::codeDir/modules.pm";
@@ -25,6 +26,7 @@ require "$main::codeDir/script_tools.pm";
 require "$main::codeDir/search.pl";
 require "$main::codeDir/sequence_index.pm";
 require "$main::codeDir/software.pm";
+require "$main::codeDir/target_regions.pm";
 require "$main::codeDir/tools.pm";
 
 # Set buffer to flush after every print statement.
@@ -43,26 +45,32 @@ $main::cwd = abs_path(".");
 # Check command line arguments and throw an exception if
 # information is missing or incorrect.
 
-GetOptions('aligner=s'       =>\$main::aligner,
-           'bamdir=s'        =>\$main::bamDirectory,
-           'bamlist=s'       =>\$main::bamList,
-           'date=s'          =>\$main::date,
-           'dir=s'           =>\$main::outputDirectory,
-           'divide:i'        =>\$main::targetRegionSize,
-           'exome'           =>\$main::exome,
-           'fastq=s'         =>\$main::fastqDirectory,
-           'index=s'         =>\$main::indexFile,
-           'jobid=s'         =>\$main::jobID,
-           'lowmem'          =>\$main::lowMemory,
-           'meta=s'          =>\$main::metaData,
-           'previousdate=s'  =>\$main::previousDate,
-           'previousindex=s' =>\$main::previousIndex,
-           'snp=s'           =>\$main::snpCaller,
-           'mosaikv2'        =>\$main::mosaikVersion2,
-           'reference=s'     =>\$main::reference,
-           'refseq=s'        =>\$main::referenceSequence,
-           'user=s'          =>\$main::userID,
-           'h|help|?'        =>\$main::help)
+GetOptions('aligner=s'       => \$main::aligner,
+           'bamdir=s'        => \$main::bamDirectory,
+           'bamlist=s'       => \$main::bamList,
+           'date=s'          => \$main::date,
+           'dir=s'           => \$main::outputDirectory,
+           'divide:i'        => \$main::targetRegionSize,
+           'divide-genome:s' => \$main::divideGenome,
+           'exome'           => \$main::exome,
+           'fastq=s'         => \$main::fastqDirectory,
+           'index=s'         => \$main::indexFile,
+           'jobid=s'         => \$main::jobID,
+           'lowmem'          => \$main::lowMemory,
+           'meta=s'          => \$main::metaData,
+           'previousdate=s'  => \$main::previousDate,
+           'previousindex=s' => \$main::previousIndex,
+           'snp=s'           => \$main::snpCaller,
+           'mosaikv2'        => \$main::mosaikVersion2,
+           'nobaq'           => \$main::noBaq,
+           'no-bin-priors'   => \$main::noBinPriors,
+           'noindels'        => \$main::noIndels,
+           'noogap'          => \$main::noOgap,
+           'nomnps'          => \$main::noMnps,
+           'reference=s'     => \$main::reference,
+           'refseq=s'        => \$main::referenceSequence,
+           'user=s'          => \$main::userID,
+           'h|help|?'        => \$main::help)
            || command_line::pipelineHelp();
 
 # Print the version number to screen.
@@ -109,6 +117,8 @@ if (defined $main::bamList) {command_line::checkBamList();}
 modules::defineModules();
 software::aligners();
 software::mergePipeline();
+software::snpCallers();
+target_regions::defineRegions(); # target_regions.pl
 
 # Check if a date has been supplied.  If not, the current date will be
 # used in the generated filenames.
@@ -213,10 +223,14 @@ create_scripts::checkFailed();
 if ($main::aligner ne "none") {
   create_scripts::createScripts();
   create_scripts::printScriptStatistics();
-}
-else {
+} else {
   foreach my $bam (@main::currentIncrementBams) {push(@main::completedBamFiles, $bam);}
   foreach my $bam (@main::previousIncrementBams) {push(@main::completedBamFiles, $bam);}
   foreach my $bam (@main::previousBams) {push(@main::completedBamFiles, $bam);}
   foreach my $file (@main::existingFiles) {if ($file =~ /\.bam$/) {push(@main::completedBamFiles, $file);}}
+}
+
+# Now create SNP calling scripts if required.
+if ($main::snpCaller ne "none") {
+  create_scripts::snpScripts();
 }

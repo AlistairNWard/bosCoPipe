@@ -39,10 +39,10 @@ sub defineModules {
 
   $main::modules{"BQ_RECALIBRATION"} = {
     BIN              => "/share/software/GenomeAnalysisToolKit/GenomeAnalysisTK-1.0.5506",
-    PRE_COMMAND      => "java -Xmx4g -jar",
+    PRE_COMMAND      => "java -Xmx8g -jar",
     COMMAND          => "GenomeAnalysisTK.jar",
     RETAIN           => "no",
-    INPUT            => "node",
+    INPUT            => "local",
     OUTPUT           => "node",
     DIR              => "merged",
     COPYONFAIL       => "no"
@@ -181,15 +181,25 @@ sub defineModules {
       };
     }
 
-# BWA.
+  # BWA.
   } elsif ($main::Aligner =~ /bwa/i) {
 
-# No aligner.
-
+  # No aligner.
   } elsif ($main::Aligner =~ /none/i) {
   } else {
     command_line::checkAligner();
   }
+
+  # Now build SNP caller specific modules.
+  $main::modules{"FREEBAYES"} = {
+    BIN        => "/share/home/wardag/programs/freebayes/bin",
+    COMMAND    => "freebayes",
+    RETAIN     => "yes",
+    INPUT      => "local",
+    OUTPUT     => "local",
+    DIR        => "freebayes",
+    COPYONFAIL => "no"
+  };
 }
 
 1;

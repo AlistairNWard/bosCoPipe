@@ -156,7 +156,7 @@ sub finishScript {
   print $script ("  mv \$SCRIPT_BIN/\$SCRIPT \$COMPLETED_BIN\n");
   close($script);
 
-# Check if data was added to the script.  If not,delete the script file.
+# Check if data was added to the script.  If not, delete the script file.
 # If so, move the script into the Scripts directory.
   my $path = "$dir/scripts$scriptType";
   if (! -d $path) {make_path($path);}

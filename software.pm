@@ -59,18 +59,20 @@ sub aligners {
       INDEX            => \&bamtools::index
     );
 
-# Set up the Mosaik parameters.
+  # Set up the Mosaik parameters.
     mosaik::mosaikParameters();
 
-# BWA.
+  # BWA.
   } elsif ($main::aligner eq "bwa") {
     $main::aligners{"bwa"}="/share/software/bwa/bwa-0.5.8a";
 
-# No aligner.
+  # No aligner.
   } elsif ($main::Aligner =~ /none/i) {
-  }
 
-  else {command_line::checkAligner();}
+  # If the aligner isn't recognised terminate,
+  } else {
+    command_line::checkAligner();
+  }
 }
 
 # Define the pipeline for merging together the run level bam files into
@@ -103,6 +105,25 @@ sub mergePipeline {
     INDEX                 => \&bamtools::index,
     BAM_STATISTICS        => \&bamtools::statistics
   );
+}
+
+# Now define SNP callers.
+sub snpCallers {
+
+  # freebayes.
+  if ($main::snpCaller =~ /^freebayes$/i) {
+    @main::snpCallTasks = (
+      "FREEBAYES"
+    );
+
+    %main::snpCallRoutines = (
+      FREEBAYES => \&freebayes::freebayes
+    );
+
+  # If the SNP caller isn't recognised, terminate.
+  } else {
+    command_line::checkSnpCaller();
+  }
 }
 
 1;

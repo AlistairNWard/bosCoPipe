@@ -32,7 +32,21 @@ sub createScripts {
     if ($main::sampleInfo{$stdout}->{ALIGN} eq "yes") {
       foreach my $run (keys %{$main::sampleInfo{$stdout}->{RUN}}) {
         if (exists $main::runInfo{$run}->{FASTQ}) {
-          if ($main::runInfo{$run}->{STATUS} eq "align" || $main::runInfo{$run}->{STATUS} eq "realign") {
+
+          # Check if an alignment script is required.  If the
+          # status is align (not realign) and the bam file already
+          # exists, do not generate a script file.
+          my $requireSingle = 1;
+          if ($main::runInfo{$run}->{STATUS} eq "align") {
+            for (my $i = 0; $i < @main::existingFiles; $i++) {
+              if ($main::existingFiles[$i] =~ /$run/ && $main::existingFiles[$i] =~ /SINGLE/) {
+                $requireSingle = 0;
+                splice @main::existingFiles, $i, 1;
+                $i--;
+              }
+            }
+          }
+          if ( ($main::runInfo{$run}->{STATUS} eq "align" || $main::runInfo{$run}->{STATUS} eq "realign") && $requireSingle == 1) {
             $main::task = {};
             initialiseTask($stdout, $run, "SINGLE");
             if ($main::task->{TASK} ne "Complete") {
@@ -45,7 +59,21 @@ sub createScripts {
         }
 
         if (exists $main::runInfo{$run}->{FASTQ1}) {
-          if ($main::runInfo{$run}->{STATUS} eq "align" || $main::runInfo{$run}->{STATUS} eq "realign") {
+
+          # Check if an alignment script is required.  If the
+          # status is align (not realign) and the bam file already
+          # exists, do not generate a script file.
+          my $requirePaired = 1;
+          if ($main::runInfo{$run}->{STATUS} eq "align") {
+            for (my $i = 0; $i < @main::existingFiles; $i++) {
+              if ($main::existingFiles[$i] =~ /$run/ && $main::existingFiles[$i] =~ /PAIRED/) {
+                $requirePaired = 0;
+                splice @main::existingFiles, $i, 1;
+                $i--;
+              }
+            }
+          }
+          if ( ($main::runInfo{$run}->{STATUS} eq "align" || $main::runInfo{$run}->{STATUS} eq "realign") && $requirePaired == 1) {
             $main::task = {};
             initialiseTask($stdout, $run, "PAIRED");
             if ($main::task->{TASK} ne "Complete") {
@@ -230,6 +258,23 @@ sub createMergeScript {
   );
   push(@main::completedBamFiles, "$main::task->{PATH}/$main::task->{FILE}");
   $main::sampleInfo{$stdout}->{COMPLETED_BAM} = "$main::task->{PATH}/$main::task->{FILE}";
+}
+
+# Create scripts for SNP calling.
+sub snpScripts {
+  %main::RetainFiles=();
+  %main::DeleteFiles=();
+
+  $main::task = {
+    TASK   => $main::snpCallTasks[0],
+    REGION => "0"
+  };
+
+  print("Creating SNP calling scripts...");
+  while ($main::task->{TASK} ne "Complete") {
+    $main::snpCallRoutines{$main::task->{TASK}}();
+  }
+  print("done.\n");
 }
 
 # Print some statistics about the created scripts to screen.

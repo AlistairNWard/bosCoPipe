@@ -121,9 +121,17 @@ sub setOutputs {
 
   if ($main::modules{$main::task->{TASK}}->{OUTPUT} eq "local" || $location eq "local") {
     if ($stdout ne "") {
-      $outputDir = "$main::outputDirectory/$main::aligner/$main::sampleInfo{$stdout}->{SAMPLE}/$main::modules{$main::task->{TASK}}->{DIR}";
+      if ($main::aligner eq "none") {
+        $outputDir = "$main::outputDirectory/$main::modules{$main::task->{TASK}}->{DIR}";
+      } else {
+        $outputDir = "$main::outputDirectory/$main::aligner/$main::sampleInfo{$stdout}->{SAMPLE}/$main::modules{$main::task->{TASK}}->{DIR}";
+      }
     } else {
-      $outputDir = "$main::outputDirectory/$main::aligner/$main::modules{$main::task->{TASK}}->{DIR}";
+      if ($main::aligner eq "none") {
+        $outputDir = "$main::outputDirectory/$main::modules{$main::task->{TASK}}->{DIR}";
+      } else {
+        $outputDir = "$main::outputDirectory/$main::aligner/$main::modules{$main::task->{TASK}}->{DIR}";
+      }
     }
     print $script ("  OUTPUT_DIR=$outputDir\n");
     if ($output ne "") {print $script ("  OUTPUT=$output\n");}
@@ -132,7 +140,7 @@ sub setOutputs {
     if ($output ne "") {print $script ("  OUTPUT=$output\n");}
   } else {
     print("\n***SCRIPT TERMINATED***\n\n");
-    print("Unknown destination directory: $main::ModuleInfo{$main::Task->{TASK}}->{OUTPUT}\n");
+    print("Unknown destination directory: $main::modules{$main::task->{TASK}}->{OUTPUT}\n");
     die("Error in general_tools::setOutputs.\n");
   }
   print $script ("\n");

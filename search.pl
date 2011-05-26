@@ -8,7 +8,7 @@ sub fileSearch {
   my @extensions;
   chomp;
 
-# If this is part of an incrementsl run, check if this is a bam file from a previous release.
+# If this is part of an incremental run, check if this is a bam file from a previous release.
   if ($_ =~ /\.bam$/ && $_ =~ /$main::aligner/ && $_ !~ /single/i && $_ !~ /paired/i) {
     if (/$main::date/) {
       push(@main::currentIncrementBams, "$File::Find::dir/$_");
@@ -21,7 +21,7 @@ sub fileSearch {
     $main::fastq{$_} = $File::Find::dir;
   } elsif ($_ =~ /\.glf/) {
     $main::existingGlf{$_} = $File::Find::dir;
-  } elsif ($_ =~ /$main::date/ && $_ =~ /$main::aligner/) {
+  } elsif ($_ =~ /$main::date/ && $_ =~ /$main::aligner/ && $_ =~ /bam$/) {
     push(@main::existingFiles, "$File::Find::dir/$_");
   }
 }
