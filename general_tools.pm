@@ -158,10 +158,9 @@ sub removeInput {
   my $dir    = $main::modules{$main::task->{TASK}}->{DIR};
   if ($retain eq "yes" && $main::task->{LOCATION} eq "node") {
     $main::retainFiles{$file} = "$main::outputDirectory/$main::aligner/$sample/$dir";
-  }
 
 # Remove input files that are no longer required.
-  if ($main::task->{RETAIN_INPUT} eq "no") {
+  } elsif ($retain eq "no") {
     print $script ("# Remove the input file to save space.\n\n");
     print $script ("  rm -f \$INPUT_DIR/$file\n\n");
   }

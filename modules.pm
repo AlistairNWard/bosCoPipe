@@ -173,10 +173,10 @@ sub defineModules {
       };
 
       $main::modules{"SORT_MOSAIKV2"} = {
-        RETAIN     => "no",
+        RETAIN     => "yes",
         INPUT      => "node",
         OUTPUT     => "node",
-        DIR        => "aligner",
+        DIR        => "bam",
         COPYONFAIL => "no"
       };
     }

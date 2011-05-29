@@ -32,12 +32,15 @@ sub sortMosaikv2Bam {
   script_tools::fail(
     $script,
     "bamtools sort (regular bam)",
-    "\$OUTPUT.bam",
+    "\$INPUT.bam",
     "\$OUTPUT.bam.stdout",
     "\$OUTPUT.bam.stderr",
     "$main::aligner/$main::sampleInfo{$stdout}->{SAMPLE}/failed"
   );
-  general_tools::removeInput($script, $stdout, "\$INPUT.bam");
+  print $script ("  if [ -s \$INPUT_DIR/\$INPUT.bam ]; then\n");
+  print $script ("    mv \$OUTPUT_DIR/\$OUTPUT.bam \$OUTPUT_DIR/\$INPUT.bam\n");
+  print $script ("  fi\n\n");
+  general_tools::removeInput($script, $stdout, "$main::task->{FILE}.bam");
 
 # Sort the multiply mapped bam file.
   print $script ("# Multiply mapped bam file.\n\n");
@@ -51,12 +54,15 @@ sub sortMosaikv2Bam {
   script_tools::fail(
     $script,
     "bamtools sort (multiple bam)",
-    "\$OUTPUT.multiple.bam",
+    "\$INPUT.multiple.bam",
     "\$OUTPUT.multiple.bam.stdout",
     "\$OUTPUT.multiple.bam.stderr",
     "$main::aligner/$main::sampleInfo{$stdout}->{SAMPLE}/failed"
   );
-  general_tools::removeInput($script, $stdout, "\$INPUT.multiple.bam");
+  print $script ("  if [ -s \$INPUT_DIR/\$INPUT.bam ]; then\n");
+  print $script ("    mv \$OUTPUT_DIR/\$OUTPUT.multiple.bam \$OUTPUT_DIR/\$INPUT.multiple.bam\n");
+  print $script ("  fi\n\n");
+  general_tools::removeInput($script, $stdout, "$main::task->{FILE}.multiple.bam");
 
 # Sort the special bam file.
   print $script ("# Special reference sequences bam file.\n\n");
@@ -70,26 +76,29 @@ sub sortMosaikv2Bam {
   script_tools::fail(
     $script,
     "bamtools sort (special bam)",
-    "\$OUTPUT.special.bam",
+    "\$INPUT.special.bam",
     "\$OUTPUT.special.bam.stdout",
     "\$OUTPUT.special.bam.stderr",
     "$main::aligner/$main::sampleInfo{$stdout}->{SAMPLE}/failed"
   );
-  general_tools::removeInput($script, $stdout, "\$INPUT.special.bam");
+  print $script ("  if [ -s \$INPUT_DIR/\$INPUT.bam ]; then\n");
+  print $script ("    mv \$OUTPUT_DIR/\$OUTPUT.special.bam \$OUTPUT_DIR/\$INPUT.special.bam\n");
+  print $script ("  fi\n\n");
+  general_tools::removeInput($script, $stdout, "$main::task->{FILE}.special.bam");
 
   my $sample = $main::sampleInfo{$stdout}->{SAMPLE};
   if ($retain eq "yes" && $main::task->{LOCATION} eq "node") {
-    $main::retainFiles{"$sort.bam"}           = "$main::outputDirectory/$main::aligner/$sample/$dir";
-    $main::retainFiles{"$sort.multiple.bam"}  = "$main::outputDirectory/$main::aligner/$sample/$dir";
-    $main::retainFiles{"$sort.unaligned.bam"} = "$main::outputDirectory/$main::aligner/$sample/$dir";
-    $main::retainFiles{"$sort.special.bam"}   = "$main::outputDirectory/$main::aligner/$sample/$dir";
+    $main::retainFiles{"$main::task->{FILE}.bam"}           = "$main::outputDirectory/$main::aligner/$sample/$dir";
+    $main::retainFiles{"$main::task->{FILE}.multiple.bam"}  = "$main::outputDirectory/$main::aligner/$sample/$dir";
+    $main::retainFiles{"$main::task->{FILE}.unaligned.bam"} = "$main::outputDirectory/$main::aligner/$sample/$dir";
+    $main::retainFiles{"$main::task->{FILE}.special.bam"}   = "$main::outputDirectory/$main::aligner/$sample/$dir";
   } elsif ($retain eq "no" && $main::task->{LOCATION} eq "local") {
-    $main::deleteFiles{"$sort.bam"}           = "$main::outputDirectory/$main::aligner/$sample/$dir";
-    $main::deleteFiles{"$sort.multiple.bam"}  = "$main::outputDirectory/$main::aligner/$sample/$dir";
-    $main::deleteFiles{"$sort.unaligned.bam"} = "$main::outputDirectory/$main::aligner/$sample/$dir";
-    $main::deleteFiles{"$sort.special.bam"}   = "$main::outputDirectory/$main::aligner/$sample/$dir";
+    $main::deleteFiles{"$main::task->{FILE}.bam"}           = "$main::outputDirectory/$main::aligner/$sample/$dir";
+    $main::deleteFiles{"$main::task->{FILE}.multiple.bam"}  = "$main::outputDirectory/$main::aligner/$sample/$dir";
+    $main::deleteFiles{"$main::task->{FILE}.unaligned.bam"} = "$main::outputDirectory/$main::aligner/$sample/$dir";
+    $main::deleteFiles{"$main::task->{FILE}.special.bam"}   = "$main::outputDirectory/$main::aligner/$sample/$dir";
   }
-  general_tools::updateTask($stdout, "$sort.bam");
+  general_tools::updateTask($stdout, "$main::task->{FILE}.bam");
   general_tools::iterateTask($stdout, \@main::alignTasks);
 }
 

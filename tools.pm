@@ -100,6 +100,11 @@ sub baseQualityRecalibration {
   if ($main::sampleInfo{$stdout}->{TECHNOLOGY} eq "solid") {
     print $script ("  --solid_nocall_strategy PURGE_READ \\\n");
     print $script ("  --solid_recal_mode SET_Q_ZERO \\\n");
+    print $script ("  -dP solid \\\n");
+  } elsif ($main::sampleInfo{$stdout}->{TECHNOLOGY} eq "454") {
+    print $script ("  -dP 454 \\\n");
+  } elsif ($main::sampleInfo{$stdout}->{TECHNOLOGY} eq "illumina") {
+    print $script ("  -dP illumina \\\n");
   }
   print $script ("  -recalFile \$OUTPUT_DIR/\$CSV \\\n");
   print $script ("  -nt 8 \\\n");
@@ -155,35 +160,29 @@ sub renameBam {
   if (defined $main::mosaikVersion2) {
 
     # Multiply mapped bam.
-    (my $inputFile  = $main::task->{FILE}) =~ s/recal/sorted.multiple/g;
-    (my $outputFile = $main::task->{FILE}) =~ s/recal/multiple/g;
+    (my $inputFile = $main::task->{FILE}) =~ s/recal/multiple/g;
     print $script ("  # Multiply mapped bam\n");
     print $script ("  INPUT=$inputFile\n");
-    print $script ("  OUTPUT=$outputFile\n");
     print $script ("  if [ -s \$INPUT_DIR/\$INPUT ]; then");
-    print $script (" TransferFiles \$INPUT_DIR \$OUTPUT_DIR \$INPUT \$OUTPUT;");
+    print $script (" TransferFiles \$INPUT_DIR \$OUTPUT_DIR \$INPUT;");
     print $script (" rm -f \$INPUT_DIR/\$INPUT;");
     print $script (" fi\n\n");
 
     # Unaligned bam.
-    (my $inputFile  = $main::task->{FILE}) =~ s/recal/unaligned/g;
-    (my $outputFile = $main::task->{FILE}) =~ s/recal/unaligned/g;
+    (my $inputFile = $main::task->{FILE}) =~ s/recal/unaligned/g;
     print $script ("  # Unaligned bam\n");
     print $script ("  INPUT=$inputFile\n");
-    print $script ("  OUTPUT=$outputFile\n");
     print $script ("  if [ -s \$INPUT_DIR/\$INPUT ]; then");
-    print $script (" TransferFiles \$INPUT_DIR \$OUTPUT_DIR \$INPUT \$OUTPUT;");
+    print $script (" TransferFiles \$INPUT_DIR \$OUTPUT_DIR \$INPUT;");
     print $script (" rm -f \$INPUT_DIR/\$INPUT;");
     print $script (" fi\n\n");
 
     # Special bam.
-    (my $inputFile  = $main::task->{FILE}) =~ s/recal/sorted.special/g;
-    (my $outputFile = $main::task->{FILE}) =~ s/recal/special/g;
+    (my $inputFile = $main::task->{FILE}) =~ s/recal/special/g;
     print $script ("  # Special bam\n");
     print $script ("  INPUT=$inputFile\n");
-    print $script ("  OUTPUT=$outputFile\n");
     print $script ("  if [ -s \$INPUT_DIR/\$INPUT ]; then");
-    print $script (" TransferFiles \$INPUT_DIR \$OUTPUT_DIR \$INPUT \$OUTPUT;");
+    print $script (" TransferFiles \$INPUT_DIR \$OUTPUT_DIR \$INPUT;");
     print $script (" rm -f \$INPUT_DIR/\$INPUT;");
     print $script (" fi\n\n");
   }

@@ -6,7 +6,7 @@ use Cwd 'abs_path';
 
 # Record the version number.
 
-$main::version="2.001";
+$main::version="2.002";
 $main::versionDate="May 2011";
 
 # Define required files and packages.

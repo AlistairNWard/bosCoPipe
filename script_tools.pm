@@ -79,7 +79,7 @@ sub fail {
   my $fail_dir = $_[5];
 
   print $script ("  if [ \$? -ne 0 ]; then \n");
-  copyFiles($script,0);
+  copyFiles($script, 0);
   print $script ("    Terminate_Script \"$tool\" $file $stdout $stderr $fail_dir\n");
   print $script ("  fi\n\n");
 }
@@ -106,6 +106,7 @@ sub copyFiles {
   my $finish = $_[1];
   my $nokeys = scalar keys (%main::retainFiles);;
   my $text   = "";
+  my %writtenDirectories;
 
   $text = ($finish == 0) ? "    " : "  ";
   if ($nokeys != 0) {
@@ -116,7 +117,10 @@ sub copyFiles {
 
 # Ensure that the required directories exist.
     foreach my $key (keys %main::retainFiles) {
-      print $script ("  if [ ! -d $main::retainFiles{$key} ]; then mkdir -p $main::retainFiles{$key}; fi\n");
+      if (!exists $writtenDirectories{$main::retainFiles{$key}}) {
+        print $script ("    if [ ! -d $main::retainFiles{$key} ]; then mkdir -p $main::retainFiles{$key}; fi\n");
+        $writtenDirectories{$main::retainFiles{$key}} = 1;
+      }
     }
     print $script ("\n");
 
