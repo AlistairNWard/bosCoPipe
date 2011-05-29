@@ -7,7 +7,7 @@ use FindBin;
 
 # Record the version number.
 
-$main::version="2.006";
+$main::version="2.007";
 $main::versionDate="May 2011";
 
 # Define some global variables.
@@ -101,10 +101,6 @@ command_line::checkSnpCaller();
 # size chunks to call on.
 command_line::checkTargets();
 
-# If a reference is specified, check that it exists as well as the jump
-# database if Mosaik is being used.  If not, set the default.
-reference::reference();
-
 # If a bam list is defined, check that it exists, that all of the
 # contents are bam files.  If so, populate @main::bamList with the
 # list of bam files.
@@ -125,6 +121,10 @@ software::aligners();
 software::mergePipeline();
 software::snpCallers();
 target_regions::defineRegions(); # target_regions.pl
+
+# If a reference is specified, check that it exists as well as the jump
+# database if Mosaik is being used.  If not, set the default.
+reference::reference();
 
 # Check if a date has been supplied.  If not, the current date will be
 # used in the generated filenames.

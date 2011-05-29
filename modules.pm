@@ -257,8 +257,7 @@ sub readSoftware() {
           $main::dbsnp    = (split(/\//, $main::dbsnp))[-1];
           $main::dbsnpBin =~ s/\/$main::dbsnp//;
         } elsif ($tool =~ /^REF$/) {
-          $main::reference     = $path;
-          reference::reference();
+          $main::reference = $path;
         } else {
           $main::modules{$tool}->{BIN} = $path;
         }
