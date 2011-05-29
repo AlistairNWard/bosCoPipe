@@ -219,11 +219,13 @@ sub readSoftware() {
                    'SAMTOOLS', 1);
 
   # Now include the allowed files.
-  %allowedFiles = ('DBSNP', 1);
+  %allowedFiles = ('DBSNP', 1,
+                   'REF', 1);
 
   if (defined $main::softwareList) {
     open(SOFTWARE, "<$main::softwareList") || die("Failed to open file: $main::softwareList");
     while(<SOFTWARE>) {
+      chomp;
       if (/\S+:\S+/) {
         @array = split(/:/, $_);
         $tool = $array[0];
@@ -246,11 +248,23 @@ sub readSoftware() {
         }
 
         # Strip off trailing /, if exists.
-        if ($path =~ /\/$/) {$path = substr($path, 0, -2);}
+        if ($path =~ /\/$/) {$path = substr($path, 0, -1);}
 
         # Update the tool with the path given here.
-        $main::modules{$tool}->{BIN} = $path;
-
+        if ($tool =~ /^DBSNP$/) {
+          $main::dbsnp    = $path;
+          $main::dbsnpBin = $path;
+          $main::dbsnp    = (split(/\//, $main::dbsnp))[-1];
+          $main::dbsnpBin =~ s/\/$main::dbsnp//;
+        } elsif ($tool =~ /^REF$/) {
+          $main::reference     = $path;
+          $main::referenceBin  = $path;
+          $main::reference     = (split(/\//, $main::reference))[-1];
+          $main::referenceBin  =~ s/\/$main::reference//;
+          $main::referenceStub = $main::reference;
+        } else {
+          $main::modules{$tool}->{BIN} = $path;
+        }
       } else {
         print STDERR ("\n***SCRIPT TERMINATED***\n\n");
         print STDERR ("Incorrect format in string.  Entries must be of the form:\n");
