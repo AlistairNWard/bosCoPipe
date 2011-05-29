@@ -7,7 +7,7 @@ use FindBin;
 
 # Record the version number.
 
-$main::version="2.003";
+$main::version="2.004";
 $main::versionDate="May 2011";
 
 # Define some global variables.
@@ -70,6 +70,7 @@ GetOptions('aligner=s'       => \$main::aligner,
            'nomnps'          => \$main::noMnps,
            'reference=s'     => \$main::reference,
            'refseq=s'        => \$main::referenceSequence,
+           'software=s'      => \$main::softwareList,
            'user=s'          => \$main::userID,
            'h|help|?'        => \$main::help)
            || command_line::pipelineHelp();
@@ -116,6 +117,10 @@ if (defined $main::bamList) {command_line::checkBamList();}
 # well as an entry in this routine.  Everything else will be
 # automatically dealt with.
 modules::defineModules();
+
+# If a text file containing the paths for the software components
+# is provided, read in the files and store.
+modules::readSoftware();
 software::aligners();
 software::mergePipeline();
 software::snpCallers();

@@ -202,4 +202,71 @@ sub defineModules {
   };
 }
 
+# Read in the paths of the software components from the supplied file (if
+# necessary).
+sub readSoftware() {
+  my @array;
+  my ($tool, $path);
+  my (%allowedTools, %allowedFiles);
+
+  # Define a list of allowed tools and files.
+  %allowedTools = ('BAMTOOLS', 1,
+                   'FASTQVALIDATOR', 1,
+                   'FREEBAYES', 1,
+                   'GATK', 1,
+                   'MOSAIK', 1,
+                   'PICARD', 1,
+                   'SAMTOOLS', 1);
+
+  # Now include the allowed files.
+  %allowedFiles = ('DBSNP', 1);
+
+  if (defined $main::softwareList) {
+    open(SOFTWARE, "<$main::softwareList") || die("Failed to open file: $main::softwareList");
+    while(<SOFTWARE>) {
+      if (/\S+:\S+/) {
+        @array = split(/:/, $_);
+        $tool = $array[0];
+        $path = $array[1];
+
+        # Check that the tool is allowed.
+        if (!exists $allowedTools{$tool} && !exists $allowedFiles{$tool}) {
+          print STDERR ("\n***SCRIPT TERMINATED***\n\n");
+          print STDERR ("Incorrect format in string.  Entries must be of the form:\n");
+          print STDERR ("\t<TOOL>:<PATH>\n");
+          print STDERR ("\t<FILENAME>:<PATH>/<FILE>\n\n");
+          print STDERR ("Allowed tools include:\n");
+          foreach my $key (keys %allowedTools) {print STDERR ("\t$key\n");}
+          print STDERR ("\n");
+          print STDERR ("Allowed files include:\n");
+          foreach my $key (keys %allowedFiles) {print STDERR ("\t$key\n");}
+          print("\n");
+          print STDERR ("Error in modules::readSoftware.\n");
+          exit(1);
+        }
+
+        # Strip off trailing /, if exists.
+        if ($path =~ /\/$/) {$path = substr($path, 0, -2);}
+
+        # Update the tool with the path given here.
+        $main::modules{$tool}->{BIN} = $path;
+
+      } else {
+        print STDERR ("\n***SCRIPT TERMINATED***\n\n");
+        print STDERR ("Incorrect format in string.  Entries must be of the form:\n");
+        print STDERR ("\t<TOOL>:<PATH>\n");
+        print STDERR ("\t<FILENAME>:<PATH>/<FILE>\n\n");
+        print STDERR ("Allowed tools include:\n");
+        foreach my $key (keys %allowedTools) {print STDERR ("\t$key\n");}
+        print STDERR ("\n");
+        print STDERR ("Allowed files include:\n");
+        foreach my $key (keys %allowedFiles) {print STDERR ("\t$key\n");}
+        print STDERR ("Error in modules::readSoftware.\n");
+        print("\n");
+        exit(1);
+      }
+    }
+  }
+}
+
 1;

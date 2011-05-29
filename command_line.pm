@@ -30,6 +30,7 @@ sub pipelineHelp {
   print("-nomnps:\t\tdo not call MNPs - default is to call.\n");
   print("-noogap:\t\tdo not use ogap in the SNP calling pipeline - default is to use.\n");
   print("-refseq:\t\tSNP call on this reference sequence only - default: all.\n");
+  print("-software:\t\tprovide a list of the paths of the different tools/files - default use hard coded files.\n");
   print("-snp:\t\t\tSNP calling program (freebayes, glfsingle, glfmultiples, none) - default: none.\n");
   print("-user:\t\t\tspecify the user (default: login name).\n");
 
