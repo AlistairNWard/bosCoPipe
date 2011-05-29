@@ -3,15 +3,20 @@
 use strict;
 use Getopt::Long;
 use Cwd 'abs_path';
+use FindBin;
 
 # Record the version number.
 
-$main::version="2.002";
+$main::version="2.003";
 $main::versionDate="May 2011";
+
+# Define some global variables.
+
+$main::cwd = abs_path(".");
 
 # Define required files and packages.
 
-$main::codeDir="/share/home/wardag/Pipeline/pipeline.v2";
+$main::codeDir= $FindBin::Bin;
 
 require "$main::codeDir/bamtools.pm";
 require "$main::codeDir/command_line.pm";
@@ -32,10 +37,6 @@ require "$main::codeDir/tools.pm";
 # Set buffer to flush after every print statement.
 
 $| = 1;
-
-# Define some global variables.
-
-$main::cwd = abs_path(".");
 
 # Find the current time.  This will be used in generating
 # file names as well as for printout to output files.
