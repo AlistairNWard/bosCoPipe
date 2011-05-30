@@ -7,7 +7,7 @@ use FindBin;
 
 # Record the version number.
 
-$main::version="2.007";
+$main::version="2.008";
 $main::versionDate="May 2011";
 
 # Define some global variables.
@@ -117,14 +117,15 @@ modules::defineModules();
 # If a text file containing the paths for the software components
 # is provided, read in the files and store.
 modules::readSoftware();
-software::aligners();
-software::mergePipeline();
-software::snpCallers();
-target_regions::defineRegions(); # target_regions.pl
 
 # If a reference is specified, check that it exists as well as the jump
 # database if Mosaik is being used.  If not, set the default.
 reference::reference();
+
+software::aligners();
+software::mergePipeline();
+software::snpCallers();
+target_regions::defineRegions(); # target_regions.pl
 
 # Check if a date has been supplied.  If not, the current date will be
 # used in the generated filenames.

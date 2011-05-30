@@ -79,10 +79,6 @@ sub aligners {
 # sample x technology level bam files and perform additional post-
 # processing tasks.
 sub mergePipeline {
-  $main::dbsnpBin = "/d2/data/references/build_37/dbsnp";
-  $main::dbsnp    = "dbsnp_129_b37.rod";
-
-  general_tools::checkFileExists("$main::dbsnpBin/$main::dbsnp");
 
   # Define the merge pipeline.
   @main::mergeTasks = (

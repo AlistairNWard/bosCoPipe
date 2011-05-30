@@ -26,6 +26,16 @@ sub reference {
   # If the reference file does not exist, throw an exception.
   general_tools::checkFileExists("$main::referenceBin/$main::reference");
   general_tools::checkFileExists("$main::referenceBin/$main::referenceDictionary");
+
+  # If alignments are being produced, check that the necessary files
+  # exit.
+  if ($main::aligner ne "none") {
+    if (!defined $main::dbsnp) {
+      $main::dbsnpBin = "/d2/data/references/build_37/dbsnp";
+      $main::dbsnp    = "dbsnp_129_b37.rod";
+    }
+    general_tools::checkFileExists("$main::dbsnpBin/$main::dbsnp");
+  }
 }
 
 # If Mosaik is the aligner being used, check for the existence of
