@@ -73,6 +73,13 @@ sub aligners {
   } else {
     command_line::checkAligner();
   }
+
+  # Check that all of the required  software tools exist.
+  foreach (@main::alignTasks) {
+    if ($main::modules{$_}->{BIN}  ne "") {
+      general_tools::checkFileExists("$main::modules{$_}->{BIN}/$main::modules{$_}->{COMMAND}");
+    }
+  }
 }
 
 # Define the pipeline for merging together the run level bam files into
@@ -101,6 +108,13 @@ sub mergePipeline {
     INDEX                 => \&bamtools::index,
     BAM_STATISTICS        => \&bamtools::statistics
   );
+
+  # Check that all of the required  software tools exist.
+  foreach (@main::mergeTasks) {
+    if ($main::modules{$_}->{BIN}  ne "") {
+      general_tools::checkFileExists("$main::modules{$_}->{BIN}/$main::modules{$_}->{COMMAND}");
+    }
+  }
 }
 
 # Now define SNP callers.
@@ -119,6 +133,13 @@ sub snpCallers {
   # If the SNP caller isn't recognised, terminate.
   } else {
     command_line::checkSnpCaller();
+  }
+
+  # Check that all of the required  software tools exist.
+  foreach (@main::snpCallTasks) {
+    if ($main::modules{$_}->{BIN}  ne "") {
+      general_tools::checkFileExists("$main::modules{$_}->{BIN}/$main::modules{$_}->{COMMAND}");
+    }
   }
 }
 
