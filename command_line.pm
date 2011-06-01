@@ -34,6 +34,7 @@ sub pipelineHelp {
   print("-refseq:\t\tSNP call on this reference sequence only - default: all.\n");
   print("-software:\t\tprovide a list of the paths of the different tools/files - default use hard coded files.\n");
   print("-snp:\t\t\tSNP calling program (freebayes, glfsingle, glfmultiples, none) - default: none.\n");
+  print("-threads:\t\trequest this number of threads for alignemnt - default 8.\n");
   print("-user:\t\t\tspecify the user (default: login name).\n");
   print("-wall-time:\t\tDefine a wall time for the job.\n");
 

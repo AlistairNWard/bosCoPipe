@@ -7,7 +7,7 @@ use FindBin;
 
 # Record the version number.
 
-$main::version="2.014";
+$main::version="2.015";
 $main::versionDate="June 2011";
 
 # Define some global variables.
@@ -59,8 +59,8 @@ GetOptions('aligner=s'       => \$main::aligner,
            'jobid=s'         => \$main::jobID,
            'lowmem'          => \$main::lowMemory,
            'meta=s'          => \$main::metaData,
-           'previousdate=s'  => \$main::previousDate,
-           'previousindex=s' => \$main::previousIndex,
+           'previous-date=s'  => \$main::previousDate,
+           'previous-index=s' => \$main::previousIndex,
            'snp=s'           => \$main::snpCaller,
            'mosaikv2'        => \$main::mosaikVersion2,
            'nobaq'           => \$main::noBaq,
@@ -69,6 +69,7 @@ GetOptions('aligner=s'       => \$main::aligner,
            'noindels'        => \$main::noIndels,
            'noogap'          => \$main::noOgap,
            'nomnps'          => \$main::noMnps,
+           'threads:i'       => \$main::threads,
            'queue:s'         => \$main::queue,
            'reference=s'     => \$main::reference,
            'refseq=s'        => \$main::referenceSequence,
@@ -152,7 +153,7 @@ command_line::checkDate();
 if (! defined $main::bamList) {
   if (defined $main::previousIndex) {
     $main::previousIndex = abs_path($main::previousIndex);
-    sequenceIndex::parsePreviousIndexFile();
+    sequence_index::parsePreviousIndexFile();
   }
 
 # Read metadata to determine the parameters and fastq files to

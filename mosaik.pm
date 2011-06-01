@@ -266,7 +266,8 @@ sub mosaikAligner {
     print $script ("  -bw $bw \\\n");
   }
   print $script ("  -j \$JUMP_BIN/\$JUMP \\\n");
-  print $script ("  -p 8 \\\n");
+  if (!defined $main::threads) {$main::threads = 8;}
+  print $script ("  -p $main::threads \\\n");
   print $script ("  > \$OUTPUT_DIR/\$OUTPUT.stdout \\\n");
   print $script ("  2> \$OUTPUT_DIR/\$OUTPUT.stderr\n\n");
   script_tools::fail(

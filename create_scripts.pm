@@ -177,8 +177,9 @@ sub createAlignmentScript {
   $main::renameFile  = "$main::runFileName.bam";
   $main::modules{RENAME_BAM}->{DIR} = "bam";
 
-  if (! defined $main::queue) {$main::queue = "bigmem";}
-  $main::SCRIPT = script_tools::createScript($main::runFileName, "align", 8, $main::queue);
+  if (!defined $main::queue) {$main::queue = "bigmem";}
+  if (!defined $main::threads) {$main::threads = 8;}
+  $main::SCRIPT = script_tools::createScript($main::runFileName, "align", $main::threads, $main::queue);
   script_tools::scriptFail($main::SCRIPT, $main::runFileName);
   script_tools::transferFiles($main::SCRIPT);
   while($main::task->{TASK} ne "Complete") {
