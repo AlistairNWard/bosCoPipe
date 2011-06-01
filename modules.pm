@@ -63,7 +63,6 @@ sub defineModules {
     BIN              => "/share/software/picard/picard-tools-1.12",
     PRE_COMMAND      => "java -classpath",
     COMMAND          => "sam-1.12.jar",
-    COMMAND_MODIFIER => "BCMMarkDupes",
     RETAIN           => "no",
     INPUT            => "local",
     OUTPUT           => "node",
@@ -78,28 +77,6 @@ sub defineModules {
     INPUT            => "local",
     OUTPUT           => "node",
     DIR              => "glf",
-    COPYONFAIL       => "no"
-  };
-  
-  $main::modules{"DUPLICATE_MARK_PICARD"} = {
-    BIN         => "/share/software/picard/picard-tools-1.12",
-    PRE_COMMAND => "java -Xmx2g -jar",
-    COMMAND     => "MarkDuplicates.jar",
-    RETAIN      => "no",
-    INPUT       => "local",
-    OUTPUT      => "node",
-    DIR         => "merged",
-    COPYONFAIL  => "no"
-  };
-
-  $main::modules{"DUPLICATE_MARK_BCM"} = {
-    BIN              => "/share/software/picard/picard-tools-1.12",
-    PRE_COMMAND      => "java -classpath",
-    COMMAND          => "sam-1.12.jar",
-    RETAIN           => "no",
-    INPUT            => "local",
-    OUTPUT           => "node",
-    DIR              => "merged",
     COPYONFAIL       => "no"
   };
 
@@ -211,6 +188,8 @@ sub readSoftware() {
 
   # Define a list of allowed tools and files.
   %allowedTools = ('BAMTOOLS', 1,
+                   'DUPBCM', 1,
+                   'DUPPICARD', 1,
                    'FASTQVALIDATOR', 1,
                    'FREEBAYES', 1,
                    'GATK', 1,
@@ -259,14 +238,20 @@ sub readSoftware() {
           $main::dbsnpBin =~ s/\/$main::dbsnp//;
         } elsif ($tool =~ /^REF$/) {
           $main::reference = $path;
+        } elsif ($tool eq "DUPBCM") {
+          $main::modules{"DUPLICATE_MARK_BCM"}->{BIN} = $path;
+        } elsif ($tool eq "DUPPICARD") {
+          $main::modules{"DUPLICATE_MARK_PICARD"}->{BIN} = $path;
+        } elsif ($tool eq "GATK") {
+          $main::modules{"BQ_RECALIBRATION"}->{BIN}      = $path;
         } elsif ($tool eq "MOSAIK") {
-          $main::modules{"MOSAIKBUILDV1"}->{BIN}   = $path;
-          $main::modules{"MOSAIKALIGNERV1"}->{BIN} = $path;
-          $main::modules{"MOSAIKSORT"}->{BIN}      = $path;
-          $main::modules{"MOSAIKTEXT"}->{BIN}      = $path;
+          $main::modules{"MOSAIKBUILDV1"}->{BIN}         = $path;
+          $main::modules{"MOSAIKALIGNERV1"}->{BIN}       = $path;
+          $main::modules{"MOSAIKSORT"}->{BIN}            = $path;
+          $main::modules{"MOSAIKTEXT"}->{BIN}            = $path;
         } elsif ($tool eq "MOSAIK2") {
-          $main::modules{"MOSAIKBUILDV2"}->{BIN}   = $path;
-          $main::modules{"MOSAIKALIGNERV2"}->{BIN} = $path;
+          $main::modules{"MOSAIKBUILDV2"}->{BIN}         = $path;
+          $main::modules{"MOSAIKALIGNERV2"}->{BIN}       = $path;
         } else {
           $main::modules{$tool}->{BIN} = $path;
         }
