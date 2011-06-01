@@ -17,7 +17,7 @@ sub pipelineHelp {
   print("-date:\t\t\tspecify the date to appear in the filenames of outputted files.\n");
   print("  -previousdate:\tprovide a date for the previous index file (incremental alignments).\n");
   print("-divide:\t\tdivide variant calling into specified value in kbp - default: 1000kbp.\n");
-  print("-divide-genome:\tdivide the genome up by whole genome (w), chromosome (c) or by bed regions (b) - default: chromosome.\n");
+  print("-divide-genome:\t\tdivide the genome up by whole genome (w), chromosome (c) or by bed regions (b) - default: chromosome.\n");
   print("-exome:\t\t\tinforms the pipeline that the exome pipeline should be used.\n");
   print("-fastq:\t\t\tdefine a directory where fastq files are stored.\n");
   print("-jobid:\t\t\tspecify a job id that will identify jobs created here.\n");
@@ -31,7 +31,7 @@ sub pipelineHelp {
   print("-noindels:\t\tdo not call indels - default is to call.\n");
   print("-nomnps:\t\tdo not call MNPs - default is to call.\n");
   print("-noogap:\t\tdo not use ogap in the SNP calling pipeline - default is to use.\n");
-  print("-queue:\t\tdefine the queue that the jobs will be sent to - default bigmem for alignment, stage otherwise.\n");
+  print("-queue:\t\t\tdefine the queue that the jobs will be sent to - default bigmem for alignment, stage otherwise.\n");
   print("-refseq:\t\tSNP call on this reference sequence only - default: all.\n");
   print("-software:\t\tprovide a list of the paths of the different tools/files - default use hard coded files.\n");
   print("-snp:\t\t\tSNP calling program (freebayes, glfsingle, glfmultiples, none) - default: none.\n");

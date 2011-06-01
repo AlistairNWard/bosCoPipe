@@ -40,7 +40,6 @@ sub sortMosaikv2Bam {
   print $script ("  if [ -s \$INPUT_DIR/\$INPUT.bam ]; then\n");
   print $script ("    mv \$OUTPUT_DIR/\$OUTPUT.bam \$OUTPUT_DIR/\$INPUT.bam\n");
   print $script ("  fi\n\n");
-  general_tools::removeInput($script, $stdout, "$main::task->{FILE}.bam");
 
 # Sort the multiply mapped bam file.
   print $script ("# Multiply mapped bam file.\n\n");
@@ -62,7 +61,6 @@ sub sortMosaikv2Bam {
   print $script ("  if [ -s \$INPUT_DIR/\$INPUT.bam ]; then\n");
   print $script ("    mv \$OUTPUT_DIR/\$OUTPUT.multiple.bam \$OUTPUT_DIR/\$INPUT.multiple.bam\n");
   print $script ("  fi\n\n");
-  general_tools::removeInput($script, $stdout, "$main::task->{FILE}.multiple.bam");
 
 # Sort the special bam file.
   print $script ("# Special reference sequences bam file.\n\n");
@@ -84,7 +82,6 @@ sub sortMosaikv2Bam {
   print $script ("  if [ -s \$INPUT_DIR/\$INPUT.bam ]; then\n");
   print $script ("    mv \$OUTPUT_DIR/\$OUTPUT.special.bam \$OUTPUT_DIR/\$INPUT.special.bam\n");
   print $script ("  fi\n\n");
-  general_tools::removeInput($script, $stdout, "$main::task->{FILE}.special.bam");
 
   my $sample = $main::sampleInfo{$stdout}->{SAMPLE};
   if ($retain eq "yes" && $main::task->{LOCATION} eq "node") {
