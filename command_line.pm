@@ -35,6 +35,7 @@ sub pipelineHelp {
   print("-software:\t\tprovide a list of the paths of the different tools/files - default use hard coded files.\n");
   print("-snp:\t\t\tSNP calling program (freebayes, glfsingle, glfmultiples, none) - default: none.\n");
   print("-user:\t\t\tspecify the user (default: login name).\n");
+  print("-wall-time:\t\tDefine a wall time for the job.\n");
 
   exit(0);
 }
@@ -112,6 +113,19 @@ sub checkTargets {
     print STDERR ("conjunction with a SNP caller.\n");
     print STDERR ("Error in command_line::checkTargets.\n");
     exit(0);
+  }
+}
+
+# Chekc the format of the supplied wall time (if necessary).
+sub checkWallTime {
+  if (defined $main::wallTime) {
+    if ($main::wallTime !~ /\d*:\d*:\d*/) {
+      print STDERR ("\n***SCRIPT TERMINATED***\n\n");
+      print STDERR ("The walltime must have the following format:\n");
+      print STDERR ("\tHH:MM:SS\n\n");
+      print STDERR ("Error in command_line::checkWallTime\n");
+      exit(0);
+    }
   }
 }
 

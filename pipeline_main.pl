@@ -7,7 +7,7 @@ use FindBin;
 
 # Record the version number.
 
-$main::version="2.013";
+$main::version="2.014";
 $main::versionDate="June 2011";
 
 # Define some global variables.
@@ -65,15 +65,16 @@ GetOptions('aligner=s'       => \$main::aligner,
            'mosaikv2'        => \$main::mosaikVersion2,
            'nobaq'           => \$main::noBaq,
            'no-bin-priors'   => \$main::noBinPriors,
-           'node'            => \$main::nodeName,
+           'node:s'          => \$main::nodeName,
            'noindels'        => \$main::noIndels,
            'noogap'          => \$main::noOgap,
            'nomnps'          => \$main::noMnps,
-           'queue'           => \$main::queue,
+           'queue:s'         => \$main::queue,
            'reference=s'     => \$main::reference,
            'refseq=s'        => \$main::referenceSequence,
            'software=s'      => \$main::softwareList,
            'user=s'          => \$main::userID,
+           'wall-time:s'     => \$main::wallTime,
            'h|help|?'        => \$main::help)
            || command_line::pipelineHelp();
 
@@ -102,6 +103,10 @@ command_line::checkSnpCaller();
 # If SNP calling, determine reference sequences to call on and what
 # size chunks to call on.
 command_line::checkTargets();
+
+# If a wall time is provided for the process, check that it is in
+# the correct format.
+command_line::checkWallTime();
 
 # If a bam list is defined, check that it exists, that all of the
 # contents are bam files.  If so, populate @main::bamList with the
