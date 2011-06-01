@@ -7,7 +7,7 @@ use FindBin;
 
 # Record the version number.
 
-$main::version="2.019";
+$main::version="2.020";
 $main::versionDate="June 2011";
 
 # Define some global variables.
@@ -57,14 +57,15 @@ GetOptions('aligner=s'       => \$main::aligner,
            'fastq=s'         => \$main::fastqDirectory,
            'index=s'         => \$main::indexFile,
            'jobid=s'         => \$main::jobID,
+           'local'           => \$main::local,
            'lowmem'          => \$main::lowMemory,
            'meta=s'          => \$main::metaData,
            'previous-date=s' => \$main::previousDate,
            'previous-index=s'=> \$main::previousIndex,
            'snp=s'           => \$main::snpCaller,
            'mosaikv2'        => \$main::mosaikVersion2,
-           'nobaq'           => \$main::noBaq,
            'node:s'          => \$main::nodeName,
+           'no-baq'           => \$main::noBaq,
            'no-bin-priors'   => \$main::noBinPriors,
            'no-bq-recal'     => \$main::noBQRecal,
            'no-indels'       => \$main::noIndels,
@@ -139,6 +140,11 @@ target_regions::defineRegions(); # target_regions.pl
 # Check if a date has been supplied.  If not, the current date will be
 # used in the generated filenames.
 command_line::checkDate();
+
+# Write to screen the options used.  This is intended to make sure
+# that the user is aware of everything being used so that errors
+# can be identified and rectified.
+command_line::displayOptions();
 
 # If an older sequence.index file is provided, a search for release
 # bams from the older sequence.index file will be performed.  This

@@ -33,7 +33,7 @@ sub defineModules {
     RETAIN     => "yes",
     INPUT      => "local",
     OUTPUT     => "node",
-    DIR        => "",
+    DIR        => "build",
     COPYONFAIL => ""
   };
 

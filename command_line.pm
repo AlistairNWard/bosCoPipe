@@ -23,9 +23,10 @@ sub pipelineHelp {
   print("-jobid:\t\t\tspecify a job id that will identify jobs created here.\n");
   print("-index:\t\t\tspecify a sequence index file used for determining alignments.\n");
   print("  -previousindex:\tprevious index file used for incremental alignments.\n");
+  print("-local:\t\t\tstore all files on the local disk, nothing on the node.\n");
   print("-meta:\t\t\tprovide information for alignments in an alternative format to a sequence index file.\n");
-  print("-nobaq:\t\t\tdo not use samtools BAQ in the SNP calling pipeline - default is to use.\n");
   print("-node\t\t\tdefine the node for the jobs to be run on.\n");
+  print("-no-baq:\t\t\tdo not use samtools BAQ in the SNP calling pipeline - default is to use.\n");
   print("-no-bin-priors:\t\tdo not use binomial priors in the freebayes SNP calling pipeline - default is to use.\n");
   print("-no-bq-recal:\t\tdo not use base-quality recalibration - default is to use.\n");
   print("-noindels:\t\tdo not call indels - default is to call.\n");
@@ -224,7 +225,19 @@ sub checkDate {
       die("Error in command_line::checkDate.\n");;
     }
   }
+}
 
+# Write to screen all the options being used.
+sub displayOptions {
+  print("The following options/parameters are being used by the pipeline:\n");
+  if ($main::aligner eq "none") {print("\tNo alignments being performed.\n");}
+  if ($main::aligner eq "mosaik") {
+    if (defined $main::mosaikVersion2) {print("\tUsing Mosaik2 to perform alignments.\n");}
+    else {print("\tUsing Mosaik1 to perform alignments.\n");}
+  }
+  if (defined $main::noBaq) {print("\tNot using BAQ in SNP calling.\n");}
+  else {print("\tUsing BAQ in SNP calling.\n");}
+  print("\n");
 }
 
 1;
