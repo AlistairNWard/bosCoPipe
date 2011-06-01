@@ -151,8 +151,7 @@ sub interrogateMergedBamFile {
 
 # Check that the merged bam file contains all the read group ids that it should
 # (i.e. are listed in the hash %main::MergeInfo.
-
-sub VerifyAllRGsExist {
+sub verifyAllRGsExist {
   my $stdout = $_[0];
   my %RG     = %{$_[1]};
 
@@ -204,7 +203,6 @@ sub checkForWithdrawnRG {
 # modified (some of the RGs remain unchanged, but some may need removal,
 # realigning or adding) or included as is (i.e. nothing needs removing or
 # realigning and no new runs need adding).
-
 sub determineMergedBamStatus {
   my $stdout          = $_[0];
   my $numberRuns      = 0;

@@ -39,7 +39,7 @@ sub aligners {
 
     # More common tasks.
     push(@main::alignTasks, "INDEX");
-    push(@main::alignTasks, "BQ_RECALIBRATION");
+    if (!defined $main::noBQRecal) {push(@main::alignTasks, "BQ_RECALIBRATION");}
     push(@main::alignTasks, "RENAME_BAM");
     push(@main::alignTasks, "INDEX");
 

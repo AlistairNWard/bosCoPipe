@@ -129,6 +129,21 @@ sub index {
   general_tools::iterateTask($stdout, \@tasks);
 }
 
+# Get the read groups from a bam file.
+sub GetReadGroups {
+  my $bam=$_[0];
+  my %RG=();
+
+  my $command = "$main::modules{BAMTOOLS}->{BIN}/$main::modules{BAMTOOLS}->{COMMAND} header";
+  my @header = `$command -in $bam`;
+  foreach my $line (@header) {
+    chomp($line);
+    if ($line =~ /^\@RG/) {$RG{(split(/:/, (split(/\t/, $line))[1]))[-1]} = 1;}
+  }
+
+  return %RG;
+}
+
 # Remove read groups from a bam file by creating a json filter script and
 # using the bamtools filter functionality.  Also strip out the duplicate
 # marks.

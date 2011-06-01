@@ -7,7 +7,7 @@ use FindBin;
 
 # Record the version number.
 
-$main::version="2.015";
+$main::version="2.016";
 $main::versionDate="June 2011";
 
 # Define some global variables.
@@ -59,16 +59,17 @@ GetOptions('aligner=s'       => \$main::aligner,
            'jobid=s'         => \$main::jobID,
            'lowmem'          => \$main::lowMemory,
            'meta=s'          => \$main::metaData,
-           'previous-date=s'  => \$main::previousDate,
-           'previous-index=s' => \$main::previousIndex,
+           'previous-date=s' => \$main::previousDate,
+           'previous-index=s'=> \$main::previousIndex,
            'snp=s'           => \$main::snpCaller,
            'mosaikv2'        => \$main::mosaikVersion2,
            'nobaq'           => \$main::noBaq,
-           'no-bin-priors'   => \$main::noBinPriors,
            'node:s'          => \$main::nodeName,
-           'noindels'        => \$main::noIndels,
-           'noogap'          => \$main::noOgap,
-           'nomnps'          => \$main::noMnps,
+           'no-bin-priors'   => \$main::noBinPriors,
+           'no-bq-recal'     => \$main::noBQRecal,
+           'no-indels'       => \$main::noIndels,
+           'no-ogap'         => \$main::noOgap,
+           'no-mnps'         => \$main::noMnps,
            'threads:i'       => \$main::threads,
            'queue:s'         => \$main::queue,
            'reference=s'     => \$main::reference,
