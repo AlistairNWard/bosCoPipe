@@ -58,7 +58,7 @@ sub sortMosaikv2Bam {
     "\$OUTPUT.multiple.bam.stderr",
     "$main::aligner/$main::sampleInfo{$stdout}->{SAMPLE}/failed"
   );
-  print $script ("  if [ -s \$INPUT_DIR/\$INPUT.bam ]; then\n");
+  print $script ("  if [ -s \$INPUT_DIR/\$INPUT.multiple.bam ]; then\n");
   print $script ("    mv \$OUTPUT_DIR/\$OUTPUT.multiple.bam \$OUTPUT_DIR/\$INPUT.multiple.bam\n");
   print $script ("  fi\n\n");
 
@@ -79,7 +79,7 @@ sub sortMosaikv2Bam {
     "\$OUTPUT.special.bam.stderr",
     "$main::aligner/$main::sampleInfo{$stdout}->{SAMPLE}/failed"
   );
-  print $script ("  if [ -s \$INPUT_DIR/\$INPUT.bam ]; then\n");
+  print $script ("  if [ -s \$INPUT_DIR/\$INPUT.special.bam ]; then\n");
   print $script ("    mv \$OUTPUT_DIR/\$OUTPUT.special.bam \$OUTPUT_DIR/\$INPUT.special.bam\n");
   print $script ("  fi\n\n");
 

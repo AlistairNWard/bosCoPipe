@@ -152,7 +152,7 @@ sub renameBam {
   my @tasks  = @{$_[2]};
 
   print $script ("###\n### Rename the final bam file.\n###\n\n");
-  general_tools::setInputs($script, $stdout, $main::task->{FILE},"");
+  general_tools::setInputs($script, $stdout, $main::task->{FILE}, "");
   general_tools::setOutputs($script, $stdout,  $main::renameFile);
   print $script ("  TransferFiles \$INPUT_DIR \$OUTPUT_DIR \$INPUT \$OUTPUT\n\n");
 
@@ -160,7 +160,8 @@ sub renameBam {
   if (defined $main::mosaikVersion2) {
 
     # Multiply mapped bam.
-    (my $inputFile = $main::task->{FILE}) =~ s/recal/multiple/g;
+    (my $inputFile = $main::task->{FILE}) =~ s/$main::date/$main::date\.multiple/;
+    if ($inputFile =~ /recal/) {$inputFile =~ s/.recal//g;}
     print $script ("  # Multiply mapped bam\n");
     print $script ("  INPUT=$inputFile\n");
     print $script ("  if [ -s \$INPUT_DIR/\$INPUT ]; then");
@@ -169,7 +170,8 @@ sub renameBam {
     print $script (" fi\n\n");
 
     # Unaligned bam.
-    (my $inputFile = $main::task->{FILE}) =~ s/recal/unaligned/g;
+    (my $inputFile = $main::task->{FILE}) =~ s/$main::date/$main::date\.unaligned/;
+    if ($inputFile =~ /recal/) {$inputFile =~ s/.recal//g;}
     print $script ("  # Unaligned bam\n");
     print $script ("  INPUT=$inputFile\n");
     print $script ("  if [ -s \$INPUT_DIR/\$INPUT ]; then");
@@ -178,7 +180,8 @@ sub renameBam {
     print $script (" fi\n\n");
 
     # Special bam.
-    (my $inputFile = $main::task->{FILE}) =~ s/recal/special/g;
+    (my $inputFile = $main::task->{FILE}) =~ s/$main::date/$main::date\.special/;
+    if ($inputFile =~ /recal/) {$inputFile =~ s/.recal//g;}
     print $script ("  # Special bam\n");
     print $script ("  INPUT=$inputFile\n");
     print $script ("  if [ -s \$INPUT_DIR/\$INPUT ]; then");
