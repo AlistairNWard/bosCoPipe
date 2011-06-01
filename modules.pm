@@ -215,6 +215,7 @@ sub readSoftware() {
                    'FREEBAYES', 1,
                    'GATK', 1,
                    'MOSAIK', 1,
+                   'MOSAIK2', 1,
                    'PICARD', 1,
                    'SAMTOOLS', 1);
 
@@ -258,6 +259,14 @@ sub readSoftware() {
           $main::dbsnpBin =~ s/\/$main::dbsnp//;
         } elsif ($tool =~ /^REF$/) {
           $main::reference = $path;
+        } elsif ($tool eq "MOSAIK") {
+          $main::modules{"MOSAIKBUILDV1"}->{BIN}   = $path;
+          $main::modules{"MOSAIKALIGNERV1"}->{BIN} = $path;
+          $main::modules{"MOSAIKSORT"}->{BIN}      = $path;
+          $main::modules{"MOSAIKTEXT"}->{BIN}      = $path;
+        } elsif ($tool eq "MOSAIK2") {
+          $main::modules{"MOSAIKBUILDV2"}->{BIN}   = $path;
+          $main::modules{"MOSAIKALIGNERV2"}->{BIN} = $path;
         } else {
           $main::modules{$tool}->{BIN} = $path;
         }
