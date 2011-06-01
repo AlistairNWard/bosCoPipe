@@ -26,9 +26,11 @@ sub pipelineHelp {
   print("-meta:\t\t\tprovide information for alignments in an alternative format to a sequence index file.\n");
   print("-nobaq:\t\t\tdo not use samtools BAQ in the SNP calling pipeline - default is to use.\n");
   print("-no-bin-priors:\t\tdo not use binomial priors in the freebayes SNP calling pipeline - default is to use.\n");
+  print("-node\t\t\tdefine the node for the jobs to be run on.\n");
   print("-noindels:\t\tdo not call indels - default is to call.\n");
   print("-nomnps:\t\tdo not call MNPs - default is to call.\n");
   print("-noogap:\t\tdo not use ogap in the SNP calling pipeline - default is to use.\n");
+  print("-queue:\t\tdefine the queue that the jobs will be sent to - default bigmem for alignment, stage otherwise.\n");
   print("-refseq:\t\tSNP call on this reference sequence only - default: all.\n");
   print("-software:\t\tprovide a list of the paths of the different tools/files - default use hard coded files.\n");
   print("-snp:\t\t\tSNP calling program (freebayes, glfsingle, glfmultiples, none) - default: none.\n");

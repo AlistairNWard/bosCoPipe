@@ -29,7 +29,8 @@ sub freebayes {
   $freebayes::region =~ s/-/../;
   $freebayes::refSequence = (split(/:/, $freebayes::region))[0];
 
-  $freebayes::SCRIPT = script_tools::createScript($main::snpFileName, "SNP calling", 1, "stage");
+  if (!defined $main::queue) {$main::queue = "stage";}
+  $freebayes::SCRIPT = script_tools::createScript($main::snpFileName, "SNP calling", 1, $main::queue);
   script_tools::scriptFail($freebayes::SCRIPT, $main::snpFileName);
   script_tools::transferFiles($freebayes::SCRIPT);
 

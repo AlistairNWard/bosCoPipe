@@ -21,8 +21,15 @@ sub createScript {
   open($script,">$stdout.sh");
   print $script ("# $text script created at $main::time\n\n");
   print $script ("#!/bin/bash\n");
-  print $script ("#PBS -l nodes=1:ppn=$proc\n");
-  print $script ("#PBS -q $queue\n\n");
+  if (defined $main::nodeName) {
+    print $script ("#PBS -l nodes=$main::nodeName+1:ppn=$proc");
+  } else {
+    print $script ("#PBS -l nodes=1:ppn=$proc");
+  }
+  if (defined $main::wallTime) {print $script (",walltime=$main::wallTime");}
+  print $script ("\n");
+  if ($queue ne "") {print $script ("#PBS -q $queue\n");}
+  print $script ("\n");
   print $script ("echo `hostname`\n");
   print $script ("echo \$PBS_NODEFILE\n\n");
   print $script ("NODE_DIR=$main::nodeDir\n");

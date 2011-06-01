@@ -177,7 +177,8 @@ sub createAlignmentScript {
   $main::renameFile  = "$main::runFileName.bam";
   $main::modules{RENAME_BAM}->{DIR} = "bam";
 
-  $main::SCRIPT = script_tools::createScript($main::runFileName, "align", 8, "bigmem");
+  if (! defined $main::queue) {$main::queue = "bigmem";}
+  $main::SCRIPT = script_tools::createScript($main::runFileName, "align", 8, $main::queue);
   script_tools::scriptFail($main::SCRIPT, $main::runFileName);
   script_tools::transferFiles($main::SCRIPT);
   while($main::task->{TASK} ne "Complete") {
@@ -202,7 +203,8 @@ sub createAlignmentScript {
 sub transferMergedBam {
   my $stdout = $_[0];
 
-  $main::SCRIPT = script_tools::createScript($main::mergeFileName, "Merge", 1, "bigmem");
+  if (! defined $main::queue) {$main::queue = "bigmem";}
+  $main::SCRIPT = script_tools::createScript($main::mergeFileName, "Merge", 1, $main::queue);
   script_tools::scriptFail($main::SCRIPT, $main::mergeFileName);
   script_tools::transferFiles($main::SCRIPT);
 
@@ -243,7 +245,8 @@ sub createMergeScript {
     RETAIN_INPUT => "no"
   };
 
-  $main::SCRIPT = script_tools::createScript($main::mergeFileName, "Merge", 1, "bigmem");
+  if (! defined $main::queue) {$main::queue = "bigmem";}
+  $main::SCRIPT = script_tools::createScript($main::mergeFileName, "Merge", 1, $main::queue);
   script_tools::scriptFail($main::SCRIPT, $main::mergeFileName);
   script_tools::transferFiles($main::SCRIPT);
   while ($main::task->{TASK} ne "Complete") {

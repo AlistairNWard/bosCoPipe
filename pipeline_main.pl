@@ -7,7 +7,7 @@ use FindBin;
 
 # Record the version number.
 
-$main::version="2.012";
+$main::version="2.013";
 $main::versionDate="June 2011";
 
 # Define some global variables.
@@ -65,9 +65,11 @@ GetOptions('aligner=s'       => \$main::aligner,
            'mosaikv2'        => \$main::mosaikVersion2,
            'nobaq'           => \$main::noBaq,
            'no-bin-priors'   => \$main::noBinPriors,
+           'node'            => \$main::nodeName,
            'noindels'        => \$main::noIndels,
            'noogap'          => \$main::noOgap,
            'nomnps'          => \$main::noMnps,
+           'queue'           => \$main::queue,
            'reference=s'     => \$main::reference,
            'refseq=s'        => \$main::referenceSequence,
            'software=s'      => \$main::softwareList,
