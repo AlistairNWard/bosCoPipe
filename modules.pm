@@ -239,19 +239,26 @@ sub readSoftware() {
         } elsif ($tool =~ /^REF$/) {
           $main::reference = $path;
         } elsif ($tool eq "DUPBCM") {
-          $main::modules{"DUPLICATE_MARK_BCM"}->{BIN} = $path;
+
+          # The path name for picard should include the version number.  Extract
+          # this and set the command to sam.version.jar.
+          (my $picardVersion = (split(/\//, $path))[-1]) =~ /\s*-(\d+)\.(\d+)/;
+          my $major = $1;
+          my $minor = $2;
+          $main::modules{"DUPLICATE_MARK_BCM"}->{BIN}     = $path;
+          $main::modules{"DUPLICATE_MARK_BCM"}->{COMMAND} = "sam-$major.$minor.jar";
         } elsif ($tool eq "DUPPICARD") {
-          $main::modules{"DUPLICATE_MARK_PICARD"}->{BIN} = $path;
+          $main::modules{"DUPLICATE_MARK_PICARD"}->{BIN}  = $path;
         } elsif ($tool eq "GATK") {
-          $main::modules{"BQ_RECALIBRATION"}->{BIN}      = $path;
+          $main::modules{"BQ_RECALIBRATION"}->{BIN}       = $path;
         } elsif ($tool eq "MOSAIK") {
-          $main::modules{"MOSAIKBUILDV1"}->{BIN}         = $path;
-          $main::modules{"MOSAIKALIGNERV1"}->{BIN}       = $path;
-          $main::modules{"MOSAIKSORT"}->{BIN}            = $path;
-          $main::modules{"MOSAIKTEXT"}->{BIN}            = $path;
+          $main::modules{"MOSAIKBUILDV1"}->{BIN}          = $path;
+          $main::modules{"MOSAIKALIGNERV1"}->{BIN}        = $path;
+          $main::modules{"MOSAIKSORT"}->{BIN}             = $path;
+          $main::modules{"MOSAIKTEXT"}->{BIN}             = $path;
         } elsif ($tool eq "MOSAIK2") {
-          $main::modules{"MOSAIKBUILDV2"}->{BIN}         = $path;
-          $main::modules{"MOSAIKALIGNERV2"}->{BIN}       = $path;
+          $main::modules{"MOSAIKBUILDV2"}->{BIN}          = $path;
+          $main::modules{"MOSAIKALIGNERV2"}->{BIN}        = $path;
         } else {
           $main::modules{$tool}->{BIN} = $path;
         }
