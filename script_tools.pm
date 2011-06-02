@@ -23,7 +23,7 @@ sub createScript {
   print $script ("# $text script created at $main::time\n\n");
   print $script ("#!/bin/bash\n");
   print $script ("#PBS -l ");
-  if (defined $main::nodeMemory) {print $script ("mem=$main::nodeMemory,");
+  if (defined $main::nodeMemory) {print $script ("mem=$main::nodeMemory,");}
   if (defined $main::nodeName) {
     print $script ("nodes=$main::nodeName:ppn=$proc");
   } else {
