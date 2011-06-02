@@ -188,6 +188,15 @@ sub renameBam {
     print $script (" TransferFiles \$INPUT_DIR \$OUTPUT_DIR \$INPUT;");
     print $script (" rm -f \$INPUT_DIR/\$INPUT;");
     print $script (" fi\n\n");
+
+    # Stats file.
+    (my $inputFile = $main::task->{FILE}) =~ s/$main::date/$main::date\.stats/;
+    print $script ("  # Stats file\n");
+    print $script ("  INPUT=$inputFile\n");
+    print $script ("  if [ -s \$INPUT_DIR/\$INPUT ]; then");
+    print $script (" TransferFiles \$INPUT_DIR \$OUTPUT_DIR \$INPUT;");
+    print $script (" rm -f \$INPUT_DIR/\$INPUT;");
+    print $script (" fi\n\n");
   }
   general_tools::updateTask($stdout, $main::renameFile);
   general_tools::iterateTask($stdout, \@tasks);
