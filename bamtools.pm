@@ -24,6 +24,7 @@ sub sortMosaikv2Bam {
   print $script ("# Main bam file.\n\n");
   print $script ("  if [ -s \$INPUT_DIR/\$INPUT.bam ]; then\n");
   print $script ("    $main::modules{BAMTOOLS}->{BIN}/$main::modules{BAMTOOLS}->{COMMAND} sort \\\n");
+  print $script ("    -n 5000000 \\\n");
   print $script ("    -in \$INPUT_DIR/\$INPUT.bam \\\n");
   print $script ("    -out \$OUTPUT_DIR/\$OUTPUT.bam \\\n");
   print $script ("    > \$OUTPUT_DIR/\$OUTPUT.bam.stdout \\\n");
@@ -45,6 +46,7 @@ sub sortMosaikv2Bam {
   print $script ("# Multiply mapped bam file.\n\n");
   print $script ("  if [ -s \$INPUT_DIR/\$INPUT.multiple.bam ]; then\n");
   print $script ("    $main::modules{BAMTOOLS}->{BIN}/$main::modules{BAMTOOLS}->{COMMAND} sort \\\n");
+  print $script ("    -n 5000000 \\\n");
   print $script ("    -in \$INPUT_DIR/\$INPUT.multiple.bam \\\n");
   print $script ("    -out \$OUTPUT_DIR/\$OUTPUT.multiple.bam \\\n");
   print $script ("    > \$OUTPUT_DIR/\$OUTPUT.multiple.bam.stdout \\\n");
@@ -66,6 +68,7 @@ sub sortMosaikv2Bam {
   print $script ("# Special reference sequences bam file.\n\n");
   print $script ("  if [ -s \$INPUT_DIR/\$INPUT.special.bam ]; then\n");
   print $script ("    $main::modules{BAMTOOLS}->{BIN}/$main::modules{BAMTOOLS}->{COMMAND} sort \\\n");
+  print $script ("    -n 5000000 \\\n");
   print $script ("    -in \$INPUT_DIR/\$INPUT.special.bam \\\n");
   print $script ("    -out \$OUTPUT_DIR/\$OUTPUT.special.bam \\\n");
   print $script ("    > \$OUTPUT_DIR/\$OUTPUT.special.bam.stdout \\\n");
