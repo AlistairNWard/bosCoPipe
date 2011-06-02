@@ -139,8 +139,10 @@ sub mosaikBuild {
     print $script ("  $main::modules{MOSAIKBUILDV2}->{BIN}/$main::modules{MOSAIKBUILDV2}->{COMMAND} \\\n");
   }
   print $script ("  -q \$INPUT_DIR/\$INPUT \\\n");
-  if (defined $main::task->{FILE2}) {print $script ("  -q2 \$INPUT_DIR/\$INPUT2 \\\n");}
-  print $script ("  -mfl $main::runInfo{$run}->{FRAGMENT} \\\n");
+  if (defined $main::task->{FILE2}) {
+    print $script ("  -q2 \$INPUT_DIR/\$INPUT2 \\\n");
+    print $script ("  -mfl $main::runInfo{$run}->{FRAGMENT} \\\n");
+  }
   print $script ("  -out \$OUTPUT_DIR/\$OUTPUT \\\n");
   print $script ("  -sam \"$main::sampleInfo{$stdout}->{SAMPLE}\" \\\n");
   print $script ("  -st \"$main::sampleInfo{$stdout}->{TECHNOLOGY}\" \\\n");
