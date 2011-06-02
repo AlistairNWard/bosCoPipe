@@ -24,6 +24,7 @@ sub pipelineHelp {
   print("-index:\t\t\tspecify a sequence index file used for determining alignments.\n");
   print("  -previousindex:\tprevious index file used for incremental alignments.\n");
   print("-local:\t\t\tstore all files on the local disk, nothing on the node.\n");
+  print("-memory:\t\t\trequest this much memory from the node.  Format MMmb or MM gb.\n");
   print("-meta:\t\t\tprovide information for alignments in an alternative format to a sequence index file.\n");
   print("-node\t\t\tdefine the node for the jobs to be run on.\n");
   print("-no-baq:\t\t\tdo not use samtools BAQ in the SNP calling pipeline - default is to use.\n");
@@ -128,6 +129,20 @@ sub checkWallTime {
       print STDERR ("\tHH:MM:SS\n\n");
       print STDERR ("Error in command_line::checkWallTime\n");
       exit(0);
+    }
+  }
+}
+
+# If a memory requirement is included, check it is of the right
+# form.
+sub checkMemory {
+  if (defined $main::nodeMemory) {
+    if ($main::nodeMemory !~ /\d+mb/ && $main::nodeMemory !~ /\d+gb/) {
+      print STDERR ("\n***SCRIPT TERMINATED***\n\n");
+      print STDERR ("If requesting a memory requirement for the node (-memory), the included");
+      print STDERR ("value must be of the form MMmb or MMgb (e.g. 22gb for Mosaik high memory.\n");
+      print STDERR ("Error in command_line::checkMemory.\n");
+      exit(1);
     }
   }
 }

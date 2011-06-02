@@ -22,10 +22,12 @@ sub createScript {
   open($script,">$stdout.sh");
   print $script ("# $text script created at $main::time\n\n");
   print $script ("#!/bin/bash\n");
+  print $script ("#PBS -l ");
+  if (defined $main::nodeMemory) {print $script ("mem=$main::nodeMemory,");
   if (defined $main::nodeName) {
-    print $script ("#PBS -l nodes=$main::nodeName+1:ppn=$proc");
+    print $script ("nodes=$main::nodeName:ppn=$proc");
   } else {
-    print $script ("#PBS -l nodes=1:ppn=$proc");
+    print $script ("nodes=1:ppn=$proc");
   }
   if (defined $main::wallTime) {print $script (",walltime=$main::wallTime");}
   print $script ("\n");

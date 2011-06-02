@@ -7,7 +7,7 @@ use FindBin;
 
 # Record the version number.
 
-$main::version="2.021";
+$main::version="2.022";
 $main::versionDate="June 2011";
 
 # Define some global variables.
@@ -63,6 +63,7 @@ GetOptions('aligner=s'       => \$main::aligner,
            'previous-date=s' => \$main::previousDate,
            'previous-index=s'=> \$main::previousIndex,
            'snp=s'           => \$main::snpCaller,
+           'memory:s'        => \$main::nodeMemory,
            'mosaikv2'        => \$main::mosaikVersion2,
            'node:s'          => \$main::nodeName,
            'no-baq'           => \$main::noBaq,
@@ -110,6 +111,10 @@ command_line::checkTargets();
 # If a wall time is provided for the process, check that it is in
 # the correct format.
 command_line::checkWallTime();
+
+# If a memory requirement for the node is requested, check it has
+# the correct form.
+command_line::checkMemory();
 
 # If a bam list is defined, check that it exists, that all of the
 # contents are bam files.  If so, populate @main::bamList with the
