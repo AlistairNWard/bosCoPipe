@@ -266,7 +266,7 @@ sub mosaikAligner {
 
     # Only include the local alignment search window for paired end
     # reads.
-    if ($main::task->{READTYPE} == "PAIRED") {print $script ("  -ls $main::runInfo{$run}->{FRAGMENT} \\\n");}
+    if ($main::task->{READTYPE} eq "PAIRED") {print $script ("  -ls $main::runInfo{$run}->{FRAGMENT} \\\n");}
     print $script ("  -act $act \\\n");
     print $script ("  -bw $bw \\\n");
   }
