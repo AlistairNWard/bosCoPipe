@@ -191,6 +191,7 @@ sub renameBam {
 
     # Stats file.
     (my $inputFile = $main::task->{FILE}) =~ s/$main::date/$main::date\.stats/;
+    if ($inputFile =~ /\.bam/) {$inputFile =~ s/.bam//g;}
     print $script ("  # Stats file\n");
     print $script ("  INPUT=$inputFile\n");
     print $script ("  if [ -s \$INPUT_DIR/\$INPUT ]; then");
