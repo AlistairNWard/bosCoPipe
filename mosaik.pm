@@ -263,7 +263,10 @@ sub mosaikAligner {
     $bw = ( ($bw & 1) == 0) ? $bw + 1 : $bw;
     print $script ("  -sref moblist \\\n");
     print $script ("  -srefn 50 \\\n");
-    print $script ("  -ls $main::runInfo{$run}->{FRAGMENT} \\\n");
+
+    # Only include the local alignment search window for paired end
+    # reads.
+    if ($main::task->{READTYPE} == "PAIRED") {print $script ("  -ls $main::runInfo{$run}->{FRAGMENT} \\\n");}
     print $script ("  -act $act \\\n");
     print $script ("  -bw $bw \\\n");
   }
