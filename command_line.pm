@@ -26,7 +26,6 @@ sub pipelineHelp {
   print("-local:\t\t\tstore all files on the local disk, nothing on the node.\n");
   print("-memory:\t\t\trequest this much memory from the node.  Format MMmb or MM gb.\n");
   print("-meta:\t\t\tprovide information for alignments in an alternative format to a sequence index file.\n");
-  print("-modules\t\t\tspecifically for Scorpio, add modules to the script.\n");
   print("-node\t\t\tdefine the node for the jobs to be run on.\n");
   print("-no-baq:\t\t\tdo not use samtools BAQ in the SNP calling pipeline - default is to use.\n");
   print("-no-bin-priors:\t\tdo not use binomial priors in the freebayes SNP calling pipeline - default is to use.\n");

@@ -33,14 +33,6 @@ sub createScript {
   print $script ("\n");
   if ($queue ne "") {print $script ("#PBS -q $queue\n");}
   print $script ("\n");
-
-  # If scripts are being created on Scorpio, a number of modules are required.
-  # Add these to the scripts.
-  if (defined $main::modules) {
-    print $script ("module add pathscale\n");
-    print $script ("module add git\n");
-    print $script ("\n");
-  }
   print $script ("echo `hostname`\n");
   print $script ("echo \$PBS_NODEFILE\n\n");
   print $script ("NODE_DIR=$main::nodeDir\n");
