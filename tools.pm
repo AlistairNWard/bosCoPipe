@@ -155,51 +155,58 @@ sub renameBam {
   general_tools::setInputs($script, $stdout, $main::task->{FILE}, "");
   general_tools::setOutputs($script, $stdout,  $main::renameFile);
   print $script ("  TransferFiles \$INPUT_DIR \$OUTPUT_DIR \$INPUT \$OUTPUT\n\n");
-
-  # If using Mosaik v2, also transfer the other bam files.
-  if (defined $main::mosaikVersion2) {
-
-    # Multiply mapped bam.
-    (my $inputFile = $main::task->{FILE}) =~ s/$main::date/$main::date\.multiple/;
-    if ($inputFile =~ /recal/) {$inputFile =~ s/.recal//g;}
-    print $script ("  # Multiply mapped bam\n");
-    print $script ("  INPUT=$inputFile\n");
-    print $script ("  if [ -s \$INPUT_DIR/\$INPUT ]; then");
-    print $script (" TransferFiles \$INPUT_DIR \$OUTPUT_DIR \$INPUT;");
-    print $script (" rm -f \$INPUT_DIR/\$INPUT;");
-    print $script (" fi\n\n");
-
-    # Unaligned bam.
-    (my $inputFile = $main::task->{FILE}) =~ s/$main::date/$main::date\.unaligned/;
-    if ($inputFile =~ /recal/) {$inputFile =~ s/.recal//g;}
-    print $script ("  # Unaligned bam\n");
-    print $script ("  INPUT=$inputFile\n");
-    print $script ("  if [ -s \$INPUT_DIR/\$INPUT ]; then");
-    print $script (" TransferFiles \$INPUT_DIR \$OUTPUT_DIR \$INPUT;");
-    print $script (" rm -f \$INPUT_DIR/\$INPUT;");
-    print $script (" fi\n\n");
-
-    # Special bam.
-    (my $inputFile = $main::task->{FILE}) =~ s/$main::date/$main::date\.special/;
-    if ($inputFile =~ /recal/) {$inputFile =~ s/.recal//g;}
-    print $script ("  # Special bam\n");
-    print $script ("  INPUT=$inputFile\n");
-    print $script ("  if [ -s \$INPUT_DIR/\$INPUT ]; then");
-    print $script (" TransferFiles \$INPUT_DIR \$OUTPUT_DIR \$INPUT;");
-    print $script (" rm -f \$INPUT_DIR/\$INPUT;");
-    print $script (" fi\n\n");
-
-    # Stats file.
-    (my $inputFile = $main::task->{FILE}) =~ s/$main::date/$main::date\.stat/;
-    if ($inputFile =~ /\.bam/) {$inputFile =~ s/.bam//g;}
-    print $script ("  # Stats file\n");
-    print $script ("  INPUT=$inputFile\n");
-    print $script ("  if [ -s \$INPUT_DIR/\$INPUT ]; then");
-    print $script (" TransferFiles \$INPUT_DIR \$OUTPUT_DIR \$INPUT;");
-    print $script (" rm -f \$INPUT_DIR/\$INPUT;");
-    print $script (" fi\n\n");
-  }
   general_tools::updateTask($stdout, $main::renameFile);
+  general_tools::iterateTask($stdout, \@tasks);
+}
+
+# Having been sorted, the extra bam files from Mosaik2 need to be moved to the
+# correct directory on the local disk.
+sub moveMosaik2Bam {
+  my $script = $_[0];
+  my $stdout = $_[1];
+  my @tasks  = @{$_[2]};
+
+  print $script ("###\n### Move the extra Mosaik2 bam files to the merged directory\n###\n\n");
+
+  # Multiply mapped bam.
+  (my $inputFile = $main::task->{FILE}) =~ s/$main::date/$main::date\.multiple/;
+  if ($inputFile =~ /recal/) {$inputFile =~ s/.recal//g;}
+  print $script ("  # Multiply mapped bam\n");
+  print $script ("  INPUT=$inputFile\n");
+  print $script ("  if [ -s \$INPUT_DIR/\$INPUT ]; then");
+  print $script (" TransferFiles \$INPUT_DIR \$OUTPUT_DIR \$INPUT;");
+  print $script (" rm -f \$INPUT_DIR/\$INPUT;");
+  print $script (" fi\n\n");
+
+  # Unaligned bam.
+  (my $inputFile = $main::task->{FILE}) =~ s/$main::date/$main::date\.unaligned/;
+  if ($inputFile =~ /recal/) {$inputFile =~ s/.recal//g;}
+  print $script ("  # Unaligned bam\n");
+  print $script ("  INPUT=$inputFile\n");
+  print $script ("  if [ -s \$INPUT_DIR/\$INPUT ]; then");
+  print $script (" TransferFiles \$INPUT_DIR \$OUTPUT_DIR \$INPUT;");
+  print $script (" rm -f \$INPUT_DIR/\$INPUT;");
+  print $script (" fi\n\n");
+
+  # Special bam.
+  (my $inputFile = $main::task->{FILE}) =~ s/$main::date/$main::date\.special/;
+  if ($inputFile =~ /recal/) {$inputFile =~ s/.recal//g;}
+  print $script ("  # Special bam\n");
+  print $script ("  INPUT=$inputFile\n");
+  print $script ("  if [ -s \$INPUT_DIR/\$INPUT ]; then");
+  print $script (" TransferFiles \$INPUT_DIR \$OUTPUT_DIR \$INPUT;");
+  print $script (" rm -f \$INPUT_DIR/\$INPUT;");
+  print $script (" fi\n\n");
+
+  # Stats file.
+  (my $inputFile = $main::task->{FILE}) =~ s/$main::date/$main::date\.stat/;
+  if ($inputFile =~ /\.bam/) {$inputFile =~ s/.bam//g;}
+  print $script ("  # Stats file\n");
+  print $script ("  INPUT=$inputFile\n");
+  print $script ("  if [ -s \$INPUT_DIR/\$INPUT ]; then");
+  print $script (" TransferFiles \$INPUT_DIR \$OUTPUT_DIR \$INPUT;");
+  print $script (" rm -f \$INPUT_DIR/\$INPUT;");
+  print $script (" fi\n\n");
   general_tools::iterateTask($stdout, \@tasks);
 }
 
@@ -210,7 +217,7 @@ sub duplicateMarkPicard {
   my @tasks  = @{$_[2]};
   my $dupBam = "$main::mergeFileName.dupmarked.bam";
 
-  if ($main::sampleInfo{$stdout}->{TECHNOLOGY} eq "illumina") {
+  if ($main::sampleInfo{$stdout}->{TECHNOLOGY} eq "illumina" || $main::sampleInfo{$stdout}->{TECHNOLOGY} eq "solid") {
     print $script ("###\n### Mark duplicate reads using Picard\n###\n\n");
     general_tools::setInputs($script, $stdout, $main::task->{FILE},"");
     general_tools::setOutputs($script, $stdout,  $dupBam);
@@ -250,10 +257,6 @@ sub duplicateMarkBCM {
     print $script ("###\n### Mark duplicate reads using BCMMarkDupes\n###\n\n");
     general_tools::setInputs($script, $stdout, $main::task->{FILE},"");
     general_tools::setOutputs($script, $stdout,  $dupBam);
-    #print $script ("  BCM_PATH=$main::modules{$main::Task->{TASK}}->{BIN}\n\n");
-    #print $script ("  INPUT=$main::Task->{FILE}\n");
-    #print $script ("  OUTPUT=$main::mergeFileName.dupmarked.bam\n\n");
-    #print $script ("  $main::modules{$main::task->{TASK}}->{PRE_COMMAND} \$BCM_PATH: ");
     print $script ("  $main::modules{$main::task->{TASK}}->{PRE_COMMAND} $main::modules{$main::Task->{TASK}}->{BIN}: ");
     print $script ("  $main::modules{$main::task->{TASK}}->{COMMAND} BCMMarkDupes \\\n");
     print $script ("  \$INPUT_DIR/\$INPUT \\\n");

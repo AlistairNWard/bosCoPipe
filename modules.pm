@@ -14,10 +14,11 @@ sub defineModules {
     COMMAND          => "bamtools",
     RETAIN           => "no"
   };
-  $main::modules{"INDEX"}          = $main::modules{"BAMTOOLS"};
-  $main::modules{"MODIFY_BAM"}     = $main::modules{"BAMTOOLS"};
-  $main::modules{"MERGE_BAM"}      = $main::modules{"BAMTOOLS"};
-  $main::modules{"BAM_STATISTICS"} = $main::modules{"BAMTOOLS"};
+  $main::modules{"INDEX"}            = $main::modules{"BAMTOOLS"};
+  $main::modules{"MODIFY_BAM"}       = $main::modules{"BAMTOOLS"};
+  $main::modules{"MERGE_BAM"}        = $main::modules{"BAMTOOLS"};
+  $main::modules{"MERGE_BAM"}->{DIR} = "merged";
+  $main::modules{"BAM_STATISTICS"}   = $main::modules{"BAMTOOLS"};
 
   $main::modules{"RENAME_BAM"} = {
     RETAIN     => "yes",

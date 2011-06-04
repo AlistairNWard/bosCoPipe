@@ -41,6 +41,7 @@ sub aligners {
     push(@main::alignTasks, "INDEX");
     if (!defined $main::noBQRecal) {push(@main::alignTasks, "BQ_RECALIBRATION");}
     push(@main::alignTasks, "RENAME_BAM");
+    if (defined $main::mosaikVersion2) {push(@main::alignTasks, "MOVE_MOSAIK2_BAM");}
     push(@main::alignTasks, "INDEX");
 
     # Now build a hash table that defines the subroutines to execute
@@ -56,6 +57,7 @@ sub aligners {
       SORT_MOSAIKV2    => \&bamtools::sortMosaikv2Bam,
       BQ_RECALIBRATION => \&tools::baseQualityRecalibration,
       RENAME_BAM       => \&tools::renameBam,
+      MOVE_MOSAIK2_BAM => \&tools::moveMosaik2Bam,
       INDEX            => \&bamtools::index
     );
 
