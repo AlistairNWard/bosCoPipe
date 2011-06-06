@@ -203,7 +203,7 @@ sub readSoftware() {
   %allowedFiles = ('DBSNP', 1,
                    'REF', 1);
 
-  if ($main::softwareList ne "" && $main::softwareList ne "help") {
+  if (defined $main::softwareList && $main::softwareList ne "help") {
     open(SOFTWARE, "<$main::softwareList") || die("Failed to open file: $main::softwareList");
     while(<SOFTWARE>) {
       chomp;
@@ -254,7 +254,7 @@ sub readSoftware() {
         softwareHelp(\%allowedTools, \%allowedFiles);
       }
     }
-  } else {
+  } elsif (defined $main::softwareList && $main::softwareList eq "help") {
     softwareHelp(\%allowedTools, \%allowedFiles);
   }
 }
