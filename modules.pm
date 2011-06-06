@@ -203,7 +203,7 @@ sub readSoftware() {
   %allowedFiles = ('DBSNP', 1,
                    'REF', 1);
 
-  if (defined $main::softwareList) {
+  if ($main::softwareList ne "" && $main::softwareList ne "help") {
     open(SOFTWARE, "<$main::softwareList") || die("Failed to open file: $main::softwareList");
     while(<SOFTWARE>) {
       chomp;
@@ -213,20 +213,7 @@ sub readSoftware() {
         $path = $array[1];
 
         # Check that the tool is allowed.
-        if (!exists $allowedTools{$tool} && !exists $allowedFiles{$tool}) {
-          print STDERR ("\n***SCRIPT TERMINATED***\n\n");
-          print STDERR ("Incorrect format in string.  Entries must be of the form:\n");
-          print STDERR ("\t<TOOL>:<PATH>\n");
-          print STDERR ("\t<FILENAME>:<PATH>/<FILE>\n\n");
-          print STDERR ("Allowed tools include:\n");
-          foreach my $key (keys %allowedTools) {print STDERR ("\t$key\n");}
-          print STDERR ("\n");
-          print STDERR ("Allowed files include:\n");
-          foreach my $key (keys %allowedFiles) {print STDERR ("\t$key\n");}
-          print("\n");
-          print STDERR ("Error in modules::readSoftware.\n");
-          exit(1);
-        }
+        if (!exists $allowedTools{$tool} && !exists $allowedFiles{$tool}) {softwareHelp(\%allowedTools, \%allowedFiles);}
 
         # Strip off trailing /, if exists.
         if ($path =~ /\/$/) {$path = substr($path, 0, -1);}
@@ -264,21 +251,31 @@ sub readSoftware() {
           $main::modules{$tool}->{BIN} = $path;
         }
       } else {
-        print STDERR ("\n***SCRIPT TERMINATED***\n\n");
-        print STDERR ("Incorrect format in string.  Entries must be of the form:\n");
-        print STDERR ("\t<TOOL>:<PATH>\n");
-        print STDERR ("\t<FILENAME>:<PATH>/<FILE>\n\n");
-        print STDERR ("Allowed tools include:\n");
-        foreach my $key (keys %allowedTools) {print STDERR ("\t$key\n");}
-        print STDERR ("\n");
-        print STDERR ("Allowed files include:\n");
-        foreach my $key (keys %allowedFiles) {print STDERR ("\t$key\n");}
-        print STDERR ("Error in modules::readSoftware.\n");
-        print("\n");
-        exit(1);
+        softwareHelp(\%allowedTools, \%allowedFiles);
       }
     }
+  } else {
+    softwareHelp(\%allowedTools, \%allowedFiles);
   }
+}
+
+#
+sub softwareHelp {
+  my %allowedTools = %{$_[0]};
+  my %allowedFiles = %{$_[1]};
+
+  print STDERR ("\n***SCRIPT TERMINATED***\n\n");
+  print STDERR ("Incorrect format in string.  Entries must be of the form:\n");
+  print STDERR ("\t<TOOL>:<PATH>\n");
+  print STDERR ("\t<FILENAME>:<PATH>/<FILE>\n\n");
+  print STDERR ("Allowed tools include:\n");
+  foreach my $key (keys %allowedTools) {print STDERR ("\t$key\n");}
+  print STDERR ("\n");
+  print STDERR ("Allowed files include:\n");
+  foreach my $key (keys %allowedFiles) {print STDERR ("\t$key\n");}
+  print("\n");
+  print STDERR ("Error in modules::readSoftware.\n");
+  exit(1);
 }
 
 1;

@@ -139,7 +139,7 @@ sub checkMemory {
   if (defined $main::nodeMemory) {
     if ($main::nodeMemory !~ /\d+mb/ && $main::nodeMemory !~ /\d+gb/) {
       print STDERR ("\n***SCRIPT TERMINATED***\n\n");
-      print STDERR ("If requesting a memory requirement for the node (-memory), the included");
+      print STDERR ("If requesting a memory requirement for the node (-memory), the included ");
       print STDERR ("value must be of the form MMmb or MMgb (e.g. 22gb for Mosaik high memory.\n");
       print STDERR ("Error in command_line::checkMemory.\n");
       exit(1);
