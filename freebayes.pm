@@ -66,7 +66,11 @@ sub freebayes {
     print $freebayes::SCRIPT ("  2> /dev/null \\\n");
   }
   print $freebayes::SCRIPT ("  | /share/home/wardag/programs/freebayes/bin/freebayes \\\n");
-  print $freebayes::SCRIPT ("  --min-alternate-count 2 \\\n");
+  if (defined $main::exome) {
+    print $freebayes::SCRIPT ("  --min-alternate-count 6 \\\n");
+  } else {
+    print $freebayes::SCRIPT ("  --min-alternate-count 2 \\\n");
+  }
   print $freebayes::SCRIPT ("  --min-alternate-qsum 40 \\\n");
   if (! defined $main::noIndels) {print $freebayes::SCRIPT ("  --indels \\\n");}
   if (! defined $main::noMnps) {print $freebayes::SCRIPT ("  --mnps \\\n");}
@@ -76,6 +80,7 @@ sub freebayes {
   print $freebayes::SCRIPT ("  --expectation-maximization \\\n");
   print $freebayes::SCRIPT ("  --expectation-maximization-max-iterations 5 \\\n");
   print $freebayes::SCRIPT ("  --genotyping-max-iterations 250 \\\n");
+  print $freebayes::SCRIPT ("  --use-best-n-alleles 0 \\\n");
   if (! defined $main::noBinPriors) {print $freebayes::SCRIPT ("  --binomial-obs-priors \\\n");}
   print $freebayes::SCRIPT ("  --allele-balance-priors \\\n");
   print $freebayes::SCRIPT ("  --stdin \\\n");
@@ -95,7 +100,7 @@ sub freebayes {
     "$main::outputDirectory/$main::snpCaller/failed"
   );
   script_tools::copyFiles($freebayes::SCRIPT, 1);
-  script_tools::finishScript($freebayes::SCRIPT, "$main::outputDirectory/$main::snpCaller", $main::snpFileName, "");
+  script_tools::finishScript($freebayes::SCRIPT, $main::snpCaller, $main::snpFileName, "");
 
   # Update the region.
   $main::task->{REGION}++;
