@@ -97,10 +97,14 @@ sub freebayes {
     "\$OUTPUT",
     "\$OUTPUT.stdout",
     "\$OUTPUT.stderr",
-    "$main::outputDirectory/$main::snpCaller/failed"
+    "$main::snpCaller/failed"
   );
   script_tools::copyFiles($freebayes::SCRIPT, 1);
-  script_tools::finishScript($freebayes::SCRIPT, $main::snpCaller, $main::snpFileName, "");
+  script_tools::finishScript(
+    $freebayes::SCRIPT,
+    "$main::outputDirectory/$main::snpCaller",
+    $main::snpFileName,
+    "");
 
   # Update the region.
   $main::task->{REGION}++;

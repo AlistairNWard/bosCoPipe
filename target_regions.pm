@@ -10,20 +10,20 @@ sub defineRegions {
   # If the user has specified that the genome should be broken
   # up by chromosome, but further division has not been specified,
   # assume that each chromosome is to be run in its entirety.
-  if ($main::divideGenome eq "c" && !defined $main::divide) {$main::divide = 0;}
+  if ($main::divideGenome eq "c" && !defined $main::targetRegionSize) {$main::targetRegionSize = 0;}
 
   # If no information on how to break up the genome is provided,
   # use the default of calling on 1Mbp chunks on each chromosome.
   if (!defined $main::divideGenome) {
     $main::divideGenome = "c";
-    $main::divide = 1000;
+    if (!defined $main::targetRegionSize) {$main::targetRegionSize = 1000;}
   }
 
   # Split the genome up into chromosomes for variant calling.
   if ($main::divideGenome eq "c") {
 
     # If the whole genomes are to be called on in a single run.
-    if ($main::divide == 0) {
+    if ($main::targetRegionSize == 0) {
       if (defined $main::referenceSequence) {
         $target_regions::targetRegions[0] = $main::referenceSequence;
       } else { 
@@ -58,12 +58,12 @@ sub defineRegions {
 
       for (my $chr = $chrMin; $chr < $chrMax; $chr++) {
         my $start  = 0;
-        my $end    = $kiloBase*$main::divide;
+        my $end    = $kiloBase*$main::targetRegionSize;
         my $extent = getChromosomeExtents($tempArray[$chr]);
         while() {
           push(@target_regions::targetRegions, "$tempArray[$chr]:$start-$end");
-          $start += $kiloBase*$main::divide;
-          $end   += $kiloBase*$main::divide;
+          $start += $kiloBase*$main::targetRegionSize;
+          $end   += $kiloBase*$main::targetRegionSize;
           if ($end > $extent) {
             $end = $extent;
             push(@target_regions::targetRegions, "$tempArray[$chr]:$start-$end");
