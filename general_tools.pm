@@ -135,6 +135,9 @@ sub setOutputs {
     }
     print $script ("  OUTPUT_DIR=$outputDir\n");
     if ($output ne "") {print $script ("  OUTPUT=$output\n");}
+
+    # Ensure that the output directory exists.
+    print $script ("  if [ ! -d \$OUTPUT_DIR ]; then mkdir -p \$OUTPUT_DIR; fi\n");
   } elsif ($main::modules{$main::task->{TASK}}->{OUTPUT} eq "node" || $location eq "node") {
     print $script ("  OUTPUT_DIR=\$NODE_DIR\n");
     if ($output ne "") {print $script ("  OUTPUT=$output\n");}
