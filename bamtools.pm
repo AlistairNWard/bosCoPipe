@@ -364,4 +364,42 @@ sub statistics {
   general_tools::iterateTask($stdout, \@tasks);
 }
 
+# Use bamtools resolve to generate the fragment length statistics.
+sub resolve {
+  my $script = $_[0];
+  my $stdout = $_[1];
+  my @tasks  = @{$_[2]};
+
+  (my $stat = $main::task->{FILE}) =~ s/bam$/bstat/;
+  if ($stat =~ /\.recal/) {$stat =~ s/\.recal//;}
+  (my $bam  = $main::task->{FILE}) =~ s/bam$/paired\.bam/;
+
+  if ($main::task->{READTYPE} eq "PAIRED") {
+    print $script ("###\n### Generate bstats file using bamtools resolve.\n###\n\n");
+    general_tools::setInputs($script, $stdout, $main::task->{FILE});
+    general_tools::setOutputs($script, $stdout, $bam);
+    print $script ("  $main::modules{$main::task->{TASK}}->{BIN}/$main::modules{$main::task->{TASK}}->{COMMAND} resolve \\\n");
+    print $script ("  -in \$INPUT_DIR/\$INPUT \\\n");
+    print $script ("  -twoPass \\\n");
+    print $script ("  -stats \$OUTPUT_DIR/$stat \\\n");
+    print $script ("  -out \$OUTPUT_DIR/\$OUTPUT \\\n");
+    print $script ("  > \$OUTPUT_DIR/\$OUTPUT.stdout \\\n");
+    print $script ("  2> \$OUTPUT_DIR/\$OUTPUT.stderr\n\n");
+    script_tools::fail(
+      $script,
+      "bamtools resolve",
+      "",
+      "\$OUTPUT",
+      "\$OUTPUT.stderr",
+      "$main::aligner/$main::sampleInfo{$stdout}->{SAMPLE}/failed"
+    );
+    general_tools::removeInput($script, $stdout, "\$INPUT");
+    general_tools::updateTask($stdout, $bam);
+
+# Add the stats file to an array so that all of these can be merged.
+    push(@main::bamtoolsStats, "$main::sampleInfo{$stdout}->{SAMPLE}/merged/$stat");
+  }
+  general_tools::iterateTask($stdout, \@tasks);
+}
+
 1;

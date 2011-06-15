@@ -15,6 +15,7 @@ sub defineModules {
     RETAIN           => "no"
   };
   $main::modules{"INDEX"}            = $main::modules{"BAMTOOLS"};
+  $main::modules{"RESOLVE"}          = $main::modules{"BAMTOOLS"};
   $main::modules{"MODIFY_BAM"}       = $main::modules{"BAMTOOLS"};
   $main::modules{"MERGE_BAM"}        = $main::modules{"BAMTOOLS"};
   $main::modules{"MERGE_BAM"}->{DIR} = "merged";

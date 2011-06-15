@@ -40,6 +40,7 @@ sub aligners {
     # More common tasks.
     push(@main::alignTasks, "INDEX");
     if (!defined $main::noBQRecal) {push(@main::alignTasks, "BQ_RECALIBRATION");}
+    push(@main::alignTasks, "RESOLVE");
     push(@main::alignTasks, "RENAME_BAM");
     if (defined $main::mosaikVersion2) {push(@main::alignTasks, "MOVE_MOSAIK2_BAM");}
     push(@main::alignTasks, "INDEX");
@@ -47,18 +48,19 @@ sub aligners {
     # Now build a hash table that defines the subroutines to execute
     # these tasks.
     %main::alignTaskRoutines = (
+      BQ_RECALIBRATION => \&tools::baseQualityRecalibration,
       FASTQVALIDATOR   => \&tools::fastQValidator,
+      INDEX            => \&bamtools::index,
       MOSAIKBUILDV1    => \&mosaik::mosaikBuild,
       MOSAIKBUILDV2    => \&mosaik::mosaikBuild,
       MOSAIKALIGNERV1  => \&mosaik::mosaikAligner,
       MOSAIKALIGNERV2  => \&mosaik::mosaikAligner,
       MOSAIKSORT       => \&mosaik::mosaikSort,
       MOSAIKTEXT       => \&mosaik::mosaikText,
-      SORT_MOSAIKV2    => \&bamtools::sortMosaikv2Bam,
-      BQ_RECALIBRATION => \&tools::baseQualityRecalibration,
-      RENAME_BAM       => \&tools::renameBam,
       MOVE_MOSAIK2_BAM => \&tools::moveMosaik2Bam,
-      INDEX            => \&bamtools::index
+      RENAME_BAM       => \&tools::renameBam,
+      RESOLVE          => \&bamtools::resolve,
+      SORT_MOSAIKV2    => \&bamtools::sortMosaikv2Bam
     );
 
   # Set up the Mosaik parameters.

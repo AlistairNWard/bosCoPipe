@@ -14,6 +14,7 @@ sub pipelineHelp {
   print("  -mosaikv2:\t\tuse Mosaik version 2 (Mosaik only - default).\n");
   print("-bamlist:\t\tspecify a list of bam files to use for variant calling.\n");
   print("-bamdir:\t\tspecify a directory where previously aligned bam files reside.\n");
+  print("-bq-recal:\t\tAlways use GATK base-quality recalibration - default: do not use for SOLiD reads.\n");
   print("-date:\t\t\tspecify the date to appear in the filenames of outputted files.\n");
   print("  -previousdate:\tprovide a date for the previous index file (incremental alignments).\n");
   print("-divide:\t\tdivide variant calling into specified value in kbp - default: 1000kbp.\n");
@@ -30,9 +31,9 @@ sub pipelineHelp {
   print("-no-baq:\t\t\tdo not use samtools BAQ in the SNP calling pipeline - default is to use.\n");
   print("-no-bin-priors:\t\tdo not use binomial priors in the freebayes SNP calling pipeline - default is to use.\n");
   print("-no-bq-recal:\t\tdo not use base-quality recalibration - default is to use.\n");
-  print("-noindels:\t\tdo not call indels - default is to call.\n");
-  print("-nomnps:\t\tdo not call MNPs - default is to call.\n");
-  print("-noogap:\t\tdo not use ogap in the SNP calling pipeline - default is to use.\n");
+  print("-no-indels:\t\tdo not call indels - default is to call.\n");
+  print("-no-mnps:\t\tdo not call MNPs - default is to call.\n");
+  print("-no-ogap:\t\tdo not use ogap in the SNP calling pipeline - default is to use.\n");
   print("-queue:\t\t\tdefine the queue that the jobs will be sent to - default bigmem for alignment, stage otherwise.\n");
   print("-refseq:\t\tSNP call on this reference sequence only - default: all.\n");
   print("-software:\t\tprovide a list of the paths of the different tools/files - default use hard coded files.\n");

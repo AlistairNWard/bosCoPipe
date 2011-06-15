@@ -67,7 +67,7 @@ sub freebayes {
   }
   print $freebayes::SCRIPT ("  | /share/home/wardag/programs/freebayes/bin/freebayes \\\n");
   if (defined $main::exome) {
-    print $freebayes::SCRIPT ("  --min-alternate-count 6 \\\n");
+    print $freebayes::SCRIPT ("  --min-alternate-count 5 \\\n");
   } else {
     print $freebayes::SCRIPT ("  --min-alternate-count 2 \\\n");
   }

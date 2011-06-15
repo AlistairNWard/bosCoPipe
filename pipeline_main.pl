@@ -7,7 +7,7 @@ use FindBin;
 
 # Record the version number.
 
-$main::version="2.036";
+$main::version="2.037";
 $main::versionDate="June 2011";
 
 # Define some global variables.
@@ -26,6 +26,7 @@ require "$main::codeDir/general_tools.pm";
 require "$main::codeDir/merge_tools.pm";
 require "$main::codeDir/modules.pm";
 require "$main::codeDir/mosaik.pm";
+require "$main::codeDir/pair_statistics.pm";
 require "$main::codeDir/reference.pm";
 require "$main::codeDir/script_tools.pm";
 require "$main::codeDir/search.pl";
@@ -49,6 +50,7 @@ $| = 1;
 GetOptions('aligner=s'       => \$main::aligner,
            'bamdir=s'        => \$main::bamDirectory,
            'bamlist=s'       => \$main::bamList,
+           'bq-recal'        => \$main::BQRecal,
            'date=s'          => \$main::date,
            'dir=s'           => \$main::outputDirectory,
            'divide:i'        => \$main::targetRegionSize,
