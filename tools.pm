@@ -92,6 +92,7 @@ sub baseQualityRecalibration {
     print $script ("  -R \$REF_BIN/\$REF \\\n");
     print $script ("  --DBSNP \$DBSNP_BIN/\$DBSNP \\\n");
     print $script ("  -l INFO \\\n");
+    print $script ("  --doNotWriteOriginalQuals \\\n");
     print $script ("  -T CountCovariates \\\n");
     print $script ("  -I \$INPUT_DIR/\$INPUT \\\n");
     print $script ("  -cov ReadGroupCovariate \\\n");

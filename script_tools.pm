@@ -15,8 +15,9 @@ sub createScript {
   my $queue  = $_[3];
   my $script;
 
+  $main::nodeDir = "";
   if (defined $main::local) {$main::nodeDir = "$main::outputDirectory/working/$stdout";}
-  if (!defined $main::nodeDir) {$main::nodeDir = "/scratch/$main::userID/$stdout";}
+  if ($main::nodeDir eq "") {$main::nodeDir = "/scratch/$main::userID/$stdout";}
   if (defined $main::jobID) {$main::nodeDir = "$main::nodeDir\.$main::jobID";}
 
   open($script,">$stdout.sh");

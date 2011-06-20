@@ -40,8 +40,8 @@ sub defineModules {
   };
 
   $main::modules{"BQ_RECALIBRATION"} = {
-    BIN              => "/share/software/GenomeAnalysisToolKit/GenomeAnalysisTK-1.0.5506",
-    PRE_COMMAND      => "java -Xmx8g -jar",
+    BIN              => "/share/software/GenomeAnalysisToolKit/GenomeAnalysisTK-1.0.5974",
+    PRE_COMMAND      => "java -Xmx32g -jar",
     COMMAND          => "GenomeAnalysisTK.jar",
     RETAIN           => "no",
     INPUT            => "local",
@@ -156,7 +156,7 @@ sub defineModules {
         INPUT      => "node",
         OUTPUT     => "node",
         DIR        => "bam",
-        COPYONFAIL => "no"
+        COPYONFAIL => "yes"
       };
     }
 
