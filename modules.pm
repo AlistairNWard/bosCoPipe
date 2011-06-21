@@ -9,7 +9,7 @@ use strict;
 # to execute programs as well as information on where the module should look
 # for and write data to etc.
 sub defineModules {
-  my @list = ("BAMTOOLS",
+  @main::bamtoolsList = ("BAMTOOLS",
               "INDEX",
               "RESOLVE",
               "MODIFY_BAM",
@@ -17,7 +17,7 @@ sub defineModules {
               "BAM_STATISTICS"
              );
 
-  foreach (@list) {
+  foreach (@main::bamtoolsList) {
     $main::modules{"$_"} = {
       BIN              => "/share/software/bamtools/bin",
       COMMAND          => "bamtools",
@@ -226,7 +226,9 @@ sub readSoftware() {
         if ($path =~ /\/$/) {$path = substr($path, 0, -1);}
 
         # Update the tool with the path given here.
-        if ($tool =~ /^DBSNP$/) {
+        if ($tool eq "BAMTOOLS") {
+          foreach (@main::bamtoolsList) {$main::modules{$_}->{BIN} = $path;}
+        } elsif ($tool =~ /^DBSNP$/) {
           $main::dbsnp    = $path;
           $main::dbsnpBin = $path;
           $main::dbsnp    = (split(/\//, $main::dbsnp))[-1];
