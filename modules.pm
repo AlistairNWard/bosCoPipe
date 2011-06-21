@@ -9,17 +9,22 @@ use strict;
 # to execute programs as well as information on where the module should look
 # for and write data to etc.
 sub defineModules {
-  $main::modules{"BAMTOOLS"} = {
-    BIN              => "/share/software/bamtools/bin",
-    COMMAND          => "bamtools",
-    RETAIN           => "no"
-  };
-  $main::modules{"INDEX"}            = $main::modules{"BAMTOOLS"};
-  $main::modules{"RESOLVE"}          = $main::modules{"BAMTOOLS"};
-  $main::modules{"MODIFY_BAM"}       = $main::modules{"BAMTOOLS"};
-  $main::modules{"MERGE_BAM"}        = $main::modules{"BAMTOOLS"};
+  my @list = ("BAMTOOLS",
+              "INDEX",
+              "RESOLVE",
+              "MODIFY_BAM",
+              "MERGE_BAM",
+              "BAM_STATISTICS"
+             );
+
+  foreach (@list) {
+    $main::modules{"$_"} = {
+      BIN              => "/share/software/bamtools/bin",
+      COMMAND          => "bamtools",
+      RETAIN           => "no"
+    };
+  }
   $main::modules{"MERGE_BAM"}->{DIR} = "merged";
-  $main::modules{"BAM_STATISTICS"}   = $main::modules{"BAMTOOLS"};
 
   $main::modules{"RENAME_BAM"} = {
     RETAIN     => "yes",
@@ -46,7 +51,7 @@ sub defineModules {
     RETAIN           => "no",
     INPUT            => "local",
     OUTPUT           => "node",
-    DIR              => "merged",
+    DIR              => "bam",
     COPYONFAIL       => "no"
   };
 
@@ -179,6 +184,7 @@ sub defineModules {
     DIR        => "freebayes",
     COPYONFAIL => "no"
   };
+
 }
 
 # Read in the paths of the software components from the supplied file (if
