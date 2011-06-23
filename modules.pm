@@ -46,7 +46,6 @@ sub defineModules {
 
   $main::modules{"BQ_RECALIBRATION"} = {
     BIN              => "/share/software/GenomeAnalysisToolKit/GenomeAnalysisTK-1.0.5974",
-    PRE_COMMAND      => "java -Xmx32g -jar",
     COMMAND          => "GenomeAnalysisTK.jar",
     RETAIN           => "no",
     INPUT            => "local",
@@ -85,6 +84,16 @@ sub defineModules {
     OUTPUT           => "node",
     DIR              => "glf",
     COPYONFAIL       => "no"
+  };
+
+  $main::modules{"MD5SUM"} = {
+    BIN        => "",
+    COMMAND    => "md5sum",
+    RETAIN     => "yes",
+    INPUT      => "local",
+    OUTPUT     => "local",
+    DIR        => "merged",
+    COPYONFAIL => ""
   };
 
 # Now build aligner specific modules.

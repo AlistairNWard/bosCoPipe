@@ -100,7 +100,8 @@ sub mergePipeline {
     "DUPLICATE_MARK_BCM",
     "RENAME_BAM",
     "INDEX",
-    "BAM_STATISTICS"
+    "BAM_STATISTICS",
+    "MD5SUM"
   );
 
   %main::mergeTaskRoutines = (
@@ -110,7 +111,8 @@ sub mergePipeline {
     DUPLICATE_MARK_BCM    => \&tools::duplicateMarkBCM,
     RENAME_BAM            => \&tools::renameBam,
     INDEX                 => \&bamtools::index,
-    BAM_STATISTICS        => \&bamtools::statistics
+    BAM_STATISTICS        => \&bamtools::statistics,
+    MD5SUM                => \&tools::calculateMd5
   );
 
   # Check that all of the required  software tools exist.
