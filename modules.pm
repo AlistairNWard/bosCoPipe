@@ -87,6 +87,16 @@ sub defineModules {
     COPYONFAIL       => "no"
   };
 
+  $main::modules{"MD5SUM"} = {
+    BIN        => "",
+    COMMAND    => "md5sum",
+    RETAIN     => "yes",
+    INPUT      => "local",
+    OUTPUT     => "local",
+    DIR        => "merged",
+    COPYONFAIL => ""
+  };
+
 # Now build aligner specific modules.
 #
 # Mosaik.

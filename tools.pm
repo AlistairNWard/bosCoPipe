@@ -266,7 +266,7 @@ sub duplicateMarkBCM {
 
   if ($main::sampleInfo{$stdout}->{TECHNOLOGY} eq "454") {
     print $script ("###\n### Mark duplicate reads using BCMMarkDupes\n###\n\n");
-    general_tools::setInputs($script, $stdout, $main::task->{FILE},"");
+    general_tools::setInputs($script, $stdout, $main::task->{FILE}, "");
     general_tools::setOutputs($script, $stdout,  $dupBam);
     print $script ("  $main::modules{$main::task->{TASK}}->{PRE_COMMAND} $main::modules{$main::Task->{TASK}}->{BIN}: ");
     print $script ("  $main::modules{$main::task->{TASK}}->{COMMAND} BCMMarkDupes \\\n");
@@ -289,6 +289,30 @@ sub duplicateMarkBCM {
   } else {
     general_tools::iterateTask($stdout, \@tasks);
   }
+}
+
+# Calculate the md5sum of a file.
+sub calculateMd5 {
+  my $script = $_[0];
+  my $stdout = $_[1];
+  my @tasks  = @{$_[2]};
+
+  print $script ("###\n### Calculate the md5 checksum for the merged bam file.\n###\n\n");
+  general_tools::setInputs($script, $stdout, $main::task->{FILE}, "");
+  general_tools::setOutputs($script, $stdout,  "$main::task->{FILE}.md5sum");
+  print $script ("  $main::modules{$main::task->{TASK}}->{COMMAND} \$INPUT_DIR/\$INPUT \\\n");
+  print $script ("  > \$OUTPUT_DIR/\$OUTPUT \\\n");
+  print $script ("  2> \$OUTPUT_DIR/\$OUTPUT.stderr \n\n");
+  script_tools::fail(
+    $script,
+    "md5 checksum",
+    "\$OUTPUT",
+    "",
+    "\$OUTPUT.stderr",
+    "$main::aligner/$main::sampleInfo{$stdout}->{SAMPLE}/failed"
+  );
+  general_tools::updateTask($stdout, "$main::task->{FILE}.md5sum");
+  general_tools::iterateTask($stdout, \@tasks);
 }
 
 1;
