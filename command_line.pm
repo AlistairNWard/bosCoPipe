@@ -34,6 +34,7 @@ sub pipelineHelp {
   print("-no-indels:\t\tdo not call indels - default is to call.\n");
   print("-no-mnps:\t\tdo not call MNPs - default is to call.\n");
   print("-no-ogap:\t\tdo not use ogap in the SNP calling pipeline - default is to use.\n");
+  print("-no-proper-pair:\tdo not use bamtools to mark proper pairs - default is to use.\n");
   print("-queue:\t\t\tdefine the queue that the jobs will be sent to - default bigmem for alignment, stage otherwise.\n");
   print("-reference\t\tdefine the reference to use - default build 37 without moblist.\n");
   print("-refseq:\t\tSNP call on this reference sequence only - default: all.\n");

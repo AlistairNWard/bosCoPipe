@@ -40,7 +40,7 @@ sub aligners {
     # More common tasks.
     push(@main::alignTasks, "INDEX");
     if (!defined $main::noBQRecal) {push(@main::alignTasks, "BQ_RECALIBRATION");}
-    push(@main::alignTasks, "RESOLVE");
+    if (!defined $main::noProperPair) {push(@main::alignTasks, "RESOLVE");}
     push(@main::alignTasks, "RENAME_BAM");
     if (defined $main::mosaikVersion2) {push(@main::alignTasks, "MOVE_MOSAIK2_BAM");}
     push(@main::alignTasks, "INDEX");
