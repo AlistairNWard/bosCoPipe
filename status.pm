@@ -197,15 +197,14 @@ sub printScriptStatus {
       printScripts("Unsubmitted align scripts", $sample, \%main::alignScripts);
       printScripts("Unsubmitted merge scripts", $sample, \%main::mergeScripts);
       printScripts("Unsubmitted SNP scripts", $sample, \%main::snpScripts);
+      printScripts("Failed align scripts", $sample, \%main::failedAlignScripts);
+      printScripts("Failed merge scripts", $sample, \%main::failedMergeScripts);
+      printScripts("Failed SNP scripts", $sample, \%main::failedSnpScripts);
     }
     if (exists $main::failedAlignScripts{$sample} ||
         exists $main::failedMergeScripts{$sample} ||
         exists $main::failedSnpScripts{$sample}) {
       if ($main::scriptStatus eq "simple") {print("Failed scripts for sample:\t$sample\n");}
-      $main::noFailedScripts=0;
-      printScripts("Failed align scripts", $sample, \%main::failedAlignScripts);
-      printScripts("Failed merge scripts", $sample, \%main::failedMergeScripts);
-      printScripts("Failed SNP scripts", $sample, \%main::failedSnpScripts);
       print("\n");
     }
   }
@@ -218,7 +217,6 @@ sub printScripts {
   my %hash   = %{$_[2]};
 
   if (exists $hash{$sample}) {
-    $main::noFailedScripts++;
     print("\t$text:\n");
     my @array = @{$hash{$sample}};
     foreach my $script (@array) {print("\t\t$script\n");}
