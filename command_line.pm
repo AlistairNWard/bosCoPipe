@@ -25,12 +25,13 @@ sub pipelineHelp {
   print("-index:\t\t\tspecify a sequence index file used for determining alignments.\n");
   print("  -previousindex:\tprevious index file used for incremental alignments.\n");
   print("-local:\t\t\tstore all files on the local disk, nothing on the node.\n");
-  print("-memory:\t\t\trequest this much memory from the node.  Format MMmb or MM gb.\n");
+  print("-memory:\t\trequest this much memory from the node.  Format MMmb or MM gb.\n");
   print("-meta:\t\t\tprovide information for alignments in an alternative format to a sequence index file.\n");
   print("-node\t\t\tdefine the node for the jobs to be run on.\n");
-  print("-no-baq:\t\t\tdo not use samtools BAQ in the SNP calling pipeline - default is to use.\n");
+  print("-no-baq:\t\tdo not use samtools BAQ in the SNP calling pipeline - default is to use.\n");
   print("-no-bin-priors:\t\tdo not use binomial priors in the freebayes SNP calling pipeline - default is to use.\n");
   print("-no-bq-recal:\t\tdo not use base-quality recalibration - default is to use.\n");
+  print("-no-fastq-val:\t\tdo not use the fastq validator - default is to use.\n");
   print("-no-indels:\t\tdo not call indels - default is to call.\n");
   print("-no-mnps:\t\tdo not call MNPs - default is to call.\n");
   print("-no-ogap:\t\tdo not use ogap in the SNP calling pipeline - default is to use.\n");
@@ -40,6 +41,7 @@ sub pipelineHelp {
   print("-refseq:\t\tSNP call on this reference sequence only - default: all.\n");
   print("-software:\t\tprovide a list of the paths of the different tools/files - default use hard coded files.\n");
   print("-snp:\t\t\tSNP calling program (freebayes, glfsingle, glfmultiples, none) - default: none.\n");
+  print("-status:\t\tShow the status of the created scripts (running, completed, failed etc.\n");
   print("-threads:\t\trequest this number of threads for alignemnt - default 8.\n");
   print("-user:\t\t\tspecify the user (default: login name).\n");
   print("-wall-time:\t\tDefine a wall time for the job.\n");

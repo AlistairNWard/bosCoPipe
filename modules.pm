@@ -146,7 +146,7 @@ sub defineModules {
     # Mosaik version 2.
     } else {
       $main::modules{"MOSAIKBUILDV2"} = {
-        BIN        => "/share/home/wardag/programs/Mosaik/Mosaik.2.0.113/bin",
+        BIN        => "/share/home/wardag/programs/Mosaik/Mosaik.2.0.119/bin",
         COMMAND    => "MosaikBuild",
         RETAIN     => "no",
         INPUT      => "local",
@@ -156,7 +156,7 @@ sub defineModules {
       };
 
       $main::modules{"MOSAIKALIGNERV2"} = {
-        BIN        => "/share/home/wardag/programs/Mosaik/Mosaik.2.0.113/bin",
+        BIN        => "/share/home/wardag/programs/Mosaik/Mosaik.2.0.119/bin",
         COMMAND    => "MosaikAligner",
         RETAIN     => "no",
         INPUT      => "local",

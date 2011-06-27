@@ -375,7 +375,7 @@ sub resolve {
   (my $bam  = $main::task->{FILE}) =~ s/bam$/paired\.bam/;
 
   if ($main::task->{READTYPE} eq "PAIRED") {
-    print $script ("###\n### Generate bstats file using bamtools resolve.\n###\n\n");
+    print $script ("###\n### Use bamtools resolve to mark proper pairs.\n###\n\n");
     general_tools::setInputs($script, $stdout, $main::task->{FILE});
     general_tools::setOutputs($script, $stdout, $bam);
     print $script ("  $main::modules{$main::task->{TASK}}->{BIN}/$main::modules{$main::task->{TASK}}->{COMMAND} resolve \\\n");

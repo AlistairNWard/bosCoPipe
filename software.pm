@@ -20,7 +20,7 @@ sub aligners {
 
     # Define the Mosaik pipeline.  Start with elements common to both
     # Mosaik versions 1 and 2.
-    @main::alignTasks = ("FASTQVALIDATOR");
+    if (!defined $main::noFastqValidation) {@main::alignTasks = ("FASTQVALIDATOR");}
 
     # If Mosaik v1 is being used, include the sort and text components.
     if (! defined $main::mosaikVersion2) {
