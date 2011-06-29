@@ -96,17 +96,21 @@ sub searchBams {
   my @bamFiles  = @{$_[5]};
 
   foreach my $fullFile (@bamFiles) {
-    if ($fullFile =~ /$sample/ && $fullFile =~ /$technology/i) {
+
+    # Only consider the actual file name and not the path when comparing.  It may
+    # be that the path contains the sample name for different samples, for example,
+    # but the bam files are clear.
+    my $bam = (split(/\//, $fullFile))[-1];
+    if ($bam =~ /$sample/ && $bam =~ /$technology/i) {
 
 # Check to see if there is already a merged bam file associated with this sample x
 # technology pair.  If so, terminate the script with an error message.  There is
 # currently no way for the pipeline to determine which files to include of there
 # are multiple files (except if the differences are in the date).
-      if ($bamFound == 1) {failSelectMergedam($stdout, $fullFile);}
-      my $file = (split(/\//, $fullFile))[-1];
-      (my $path = $fullFile ) =~ s/\/$file//;
+      if ($bamFound == 1) {failSelectMergedBam($stdout, $bam);}
+      (my $path = $fullFile ) =~ s/\/$bam//;
       $main::sampleInfo{$stdout}->{PATH}      = $path;
-      $main::sampleInfo{$stdout}->{FILE}      = $file;
+      $main::sampleInfo{$stdout}->{FILE}      = $bam;
       $main::sampleInfo{$stdout}->{INCREMENT} = $text;
       $bamFound=1;
     }
