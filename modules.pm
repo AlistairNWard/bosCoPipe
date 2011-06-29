@@ -24,7 +24,8 @@ sub defineModules {
       RETAIN           => "no"
     };
   }
-  $main::modules{"MERGE_BAM"}->{DIR} = "merged";
+  $main::modules{"MERGE_BAM"}->{DIR}      = "merged";
+  $main::modules{"BAM_STATISTICS"}->{DIR} = "merged";
 
   $main::modules{"RENAME_BAM"} = {
     RETAIN     => "yes",
@@ -55,12 +56,12 @@ sub defineModules {
   };
 
   $main::modules{"DUPLICATE_MARK_PICARD"} = {
-    BIN         => "/share/software/picard/picard-tools-1.12",
+    BIN         => "/share/software/picard/picard-tools-1.47",
     PRE_COMMAND => "java -Xmx2g -jar",
     COMMAND     => "MarkDuplicates.jar",
     RETAIN      => "no",
     INPUT       => "local",
-    OUTPUT      => "node",
+    OUTPUT      => "local",
     DIR         => "merged",
     COPYONFAIL  => "no"
   };
@@ -71,7 +72,7 @@ sub defineModules {
     COMMAND          => "sam-1.12.jar",
     RETAIN           => "no",
     INPUT            => "local",
-    OUTPUT           => "node",
+    OUTPUT           => "local",
     DIR              => "merged",
     COPYONFAIL       => "no"
   };
@@ -146,7 +147,7 @@ sub defineModules {
     # Mosaik version 2.
     } else {
       $main::modules{"MOSAIKBUILDV2"} = {
-        BIN        => "/share/home/wardag/programs/Mosaik/Mosaik.2.0.119/bin",
+        BIN        => "/share/home/wardag/programs/Mosaik/Mosaik.2.0.122/bin",
         COMMAND    => "MosaikBuild",
         RETAIN     => "no",
         INPUT      => "local",
@@ -156,7 +157,7 @@ sub defineModules {
       };
 
       $main::modules{"MOSAIKALIGNERV2"} = {
-        BIN        => "/share/home/wardag/programs/Mosaik/Mosaik.2.0.119/bin",
+        BIN        => "/share/home/wardag/programs/Mosaik/Mosaik.2.0.122/bin",
         COMMAND    => "MosaikAligner",
         RETAIN     => "no",
         INPUT      => "local",

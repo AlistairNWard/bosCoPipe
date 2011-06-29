@@ -40,7 +40,12 @@ sub createScripts {
           if ($main::runInfo{$run}->{STATUS} eq "align") {
             for (my $i = 0; $i < @main::existingFiles; $i++) {
               if ($main::existingFiles[$i] =~ /$run/ && $main::existingFiles[$i] =~ /SINGLE/) {
+
+                # Having found an existing bam file, a script will not be created
+                # (requireSingle = 0), so the alignment STATUS is set to complete and
+                # the existing bam included in the main::sampleInfo structure.
                 $requireSingle = 0;
+                push(@{$main::sampleInfo{$stdout}->{ALIGNED_BAM}}, $main::existingFiles[$i]);
                 splice @main::existingFiles, $i, 1;
                 $i--;
               }
@@ -67,7 +72,12 @@ sub createScripts {
           if ($main::runInfo{$run}->{STATUS} eq "align") {
             for (my $i = 0; $i < @main::existingFiles; $i++) {
               if ($main::existingFiles[$i] =~ /$run/ && $main::existingFiles[$i] =~ /PAIRED/) {
+
+                # Having found an existing bam file, a script will not be created
+                # (requirePaired = 0), so the alignment STATUS is set to complete and
+                # the existing bam included in the main::sampleInfo structure.
                 $requirePaired = 0;
+                push(@{$main::sampleInfo{$stdout}->{ALIGNED_BAM}}, $main::existingFiles[$i]);
                 splice @main::existingFiles, $i, 1;
                 $i--;
               }
@@ -97,7 +107,8 @@ sub createScripts {
     }
 
 # Create the merge script.
-    if ($main::sampleInfo{$stdout}->{STATUS} ne "complete" && $main::sampleInfo{$stdout}->{HASFASTQ} eq "true") {
+    #if ($main::sampleInfo{$stdout}->{STATUS} ne "complete" && $main::sampleInfo{$stdout}->{HASFASTQ} eq "true") {
+    if ($main::sampleInfo{$stdout}->{STATUS} ne "complete" && scalar(@{$main::sampleInfo{$stdout}->{ALIGNED_BAM}}) != 0) {
       createMergeScript($stdout);
       if ($main::sampleInfo{$stdout}->{STATUS} ne "add") {$main::numberCreated++;}
 
@@ -230,6 +241,7 @@ sub transferMergedBam {
 # Create the necessary merge scripts.
 sub createMergeScript {
   my $stdout = $_[0];
+  my $proc;
 
   %main::retainFiles = ();
   %main::deleteFiles = ();
@@ -247,6 +259,8 @@ sub createMergeScript {
   };
 
   if (! defined $main::queue) {$main::queue = "bigmem";}
+  if ($main::queue eq "stage") {$proc = 4;}
+  elsif ($main::queue eq "bigmem") {$proc = 2;}
   $main::SCRIPT = script_tools::createScript($main::mergeFileName, "Merge", 1, $main::queue);
   script_tools::scriptFail($main::SCRIPT, $main::mergeFileName);
   script_tools::transferFiles($main::SCRIPT);

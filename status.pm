@@ -205,9 +205,9 @@ sub printScriptStatus {
         exists $main::failedMergeScripts{$sample} ||
         exists $main::failedSnpScripts{$sample}) {
       if ($main::scriptStatus eq "simple") {print("Failed scripts for sample:\t$sample\n");}
-      print("\n");
     }
   }
+  print("\n");
 }
 
 # Print the scripts.

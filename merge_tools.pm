@@ -86,7 +86,6 @@ sub selectMergedBam {
   }
 }
 
-
 # Search the given array for merged bam files and fail if multiple are found.
 sub searchBams {
   my $stdout     = $_[0];
@@ -112,6 +111,7 @@ sub searchBams {
       $bamFound=1;
     }
   }
+
   return $bamFound;
 }
 

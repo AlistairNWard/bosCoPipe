@@ -22,7 +22,11 @@ sub fileSearch {
   } elsif ($_ =~ /\.glf/) {
     $main::existingGlf{$_} = $File::Find::dir;
   } elsif ($_ =~ /$main::date/ && $_ =~ /$main::aligner/ && $_ =~ /bam$/) {
-    push(@main::existingFiles, "$File::Find::dir/$_");
+
+    # Exclude bams containing "unaligned.bam", "special.bam" and "multiple.bam".
+    if ($_ !~ /unaligned.bam$/ && $_ !~ /special.bam$/ && $_ !~ /multiple.bam$/) {
+      push(@main::existingFiles, "$File::Find::dir/$_");
+    }
   }
 }
 
