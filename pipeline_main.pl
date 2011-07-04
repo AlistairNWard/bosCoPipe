@@ -7,7 +7,7 @@ use FindBin;
 
 # Record the version number.
 
-$main::version="2.048";
+$main::version="2.049";
 $main::versionDate="June 2011";
 
 # Define some global variables.
@@ -49,8 +49,8 @@ $| = 1;
 # information is missing or incorrect.
 
 GetOptions('aligner=s'       => \$main::aligner,
-           'bamdir=s'        => \$main::bamDirectory,
-           'bamlist=s'       => \$main::bamList,
+           'bam-directory=s' => \$main::bamDirectory,
+           'bam-list=s'      => \$main::bamList,
            'bq-recal'        => \$main::BQRecal,
            'date=s'          => \$main::date,
            'dir=s'           => \$main::outputDirectory,
@@ -58,10 +58,11 @@ GetOptions('aligner=s'       => \$main::aligner,
            'divide-genome:s' => \$main::divideGenome,
            'exome'           => \$main::exome,
            'fastq=s'         => \$main::fastqDirectory,
+           'include-improper'=> \$main::includeImproper,
            'index=s'         => \$main::indexFile,
            'jobid=s'         => \$main::jobID,
            'local'           => \$main::local,
-           'lowmem'          => \$main::lowMemory,
+           'low-memory'      => \$main::lowMemory,
            'meta=s'          => \$main::metaData,
            'previous-date=s' => \$main::previousDate,
            'previous-index=s'=> \$main::previousIndex,
@@ -80,7 +81,7 @@ GetOptions('aligner=s'       => \$main::aligner,
            'threads:i'       => \$main::threads,
            'queue:s'         => \$main::queue,
            'reference=s'     => \$main::reference,
-           'refseq=s'        => \$main::referenceSequence,
+           'ref-seq=s'       => \$main::referenceSequence,
            'software=s'      => \$main::softwareList,
            'status:s'        => \$main::scriptStatus,
            'user=s'          => \$main::userID,

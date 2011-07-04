@@ -258,10 +258,12 @@ sub createMergeScript {
     RETAIN_INPUT => "no"
   };
 
+  # Define the number of processors to use:
   if (! defined $main::queue) {$main::queue = "bigmem";}
   if ($main::queue eq "stage") {$proc = 4;}
   elsif ($main::queue eq "bigmem") {$proc = 2;}
-  $main::SCRIPT = script_tools::createScript($main::mergeFileName, "Merge", 1, $main::queue);
+
+  $main::SCRIPT = script_tools::createScript($main::mergeFileName, "Merge", $proc, $main::queue);
   script_tools::scriptFail($main::SCRIPT, $main::mergeFileName);
   script_tools::transferFiles($main::SCRIPT);
   while ($main::task->{TASK} ne "Complete") {

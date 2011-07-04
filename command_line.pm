@@ -10,10 +10,10 @@ sub pipelineHelp {
   print("\nUsage: perl Pipeline.pl [options]\n\n");
   print("Options:\n\n");
   print("-aligner:\t\talignment program (mosaik, bwa, none) - default: mosaik.\n");
-  print("  -lowmem:\t\tuse low memory version (Mosaik only).\n");
+  print("  -low-memory:\t\tuse low memory version (Mosaik only).\n");
   print("  -mosaikv2:\t\tuse Mosaik version 2 (Mosaik only - default).\n");
-  print("-bamlist:\t\tspecify a list of bam files to use for variant calling.\n");
-  print("-bamdir:\t\tspecify a directory where previously aligned bam files reside.\n");
+  print("-bam-list:\t\tspecify a list of bam files to use for variant calling.\n");
+  print("-bam-directory:\t\tspecify a directory where previously aligned bam files reside.\n");
   print("-bq-recal:\t\tAlways use GATK base-quality recalibration - default: do not use for SOLiD reads.\n");
   print("-date:\t\t\tspecify the date to appear in the filenames of outputted files.\n");
   print("  -previousdate:\tprovide a date for the previous index file (incremental alignments).\n");
@@ -22,6 +22,7 @@ sub pipelineHelp {
   print("-exome:\t\t\tinforms the pipeline that the exome pipeline should be used.\n");
   print("-fastq:\t\t\tdefine a directory where fastq files are stored.\n");
   print("-jobid:\t\t\tspecify a job id that will identify jobs created here.\n");
+  print("-include-improper:\tinclude all pairs (proper and improper) in variant calling - default false.\n");
   print("-index:\t\t\tspecify a sequence index file used for determining alignments.\n");
   print("  -previousindex:\tprevious index file used for incremental alignments.\n");
   print("-local:\t\t\tstore all files on the local disk, nothing on the node.\n");
@@ -38,7 +39,7 @@ sub pipelineHelp {
   print("-no-proper-pair:\tdo not use bamtools to mark proper pairs - default is to use.\n");
   print("-queue:\t\t\tdefine the queue that the jobs will be sent to - default bigmem for alignment, stage otherwise.\n");
   print("-reference\t\tdefine the reference to use - default build 37 without moblist.\n");
-  print("-refseq:\t\tSNP call on this reference sequence only - default: all.\n");
+  print("-ref-seq:\t\tSNP call on this reference sequence only - default: all.\n");
   print("-software:\t\tprovide a list of the paths of the different tools/files - default use hard coded files.\n");
   print("-snp:\t\t\tSNP calling program (freebayes, glfsingle, glfmultiples, none) - default: none.\n");
   print("-status:\t\tShow the status of the created scripts (running, completed, failed etc.\n");

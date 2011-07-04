@@ -3,6 +3,8 @@
 package freebayes;
 
 use strict;
+use File::Path qw(make_path);
+use File::Copy;
 
 # Use freebayes to perform SNP calling.
 
@@ -37,6 +39,10 @@ sub freebayes {
   print $freebayes::SCRIPT ("# Perform SNP calling with freeBayes\n\n");
   general_tools::setOutputs($freebayes::SCRIPT, $main::snpFileName, "$main::snpFileName.vcf");
 
+  # If improper pairs are to be filtered out, create a json script to
+  # be used
+  createJsonFilter();
+
   # Write out reference file information.
   print $freebayes::SCRIPT ("# Check for the reference files.\n\n");
   if ($main::modules{$main::task->{TASK}}->{INPUT} eq "node") {
@@ -54,12 +60,17 @@ sub freebayes {
 
   # Write out the command line for freebayes and any associated tools.
   print $freebayes::SCRIPT ("  $main::modules{\"BAMTOOLS\"}->{BIN}/");
-  print $freebayes::SCRIPT ("$main::modules{\"BAMTOOLS\"}->{COMMAND} merge \\\n");
+  if (defined $main::includeImproper) {
+    print $freebayes::SCRIPT ("$main::modules{\"BAMTOOLS\"}->{COMMAND} merge \\\n");
+  } else {
+    print $freebayes::SCRIPT ("$main::modules{\"BAMTOOLS\"}->{COMMAND} filter \\\n");
+    print $freebayes::SCRIPT ("  -script $main::outputDirectory/$main::snpCaller/improperPairFilter.json \\\n");
+  }
   print $freebayes::SCRIPT ("  -region $freebayes::region \\\n");
   foreach my $bamFile (sort @main::completedBamFiles) {print $freebayes::SCRIPT ("  -in $bamFile \\\n");}
-  if (! defined $main::noOgap) {print $freebayes::SCRIPT ("  | /share/software/ogap/ogap -f \$REF_BIN/\$REF \\\n");}
+  if (!defined $main::noOgap) {print $freebayes::SCRIPT ("  | /share/software/ogap/ogap -f \$REF_BIN/\$REF \\\n");}
   print $freebayes::SCRIPT ("  | /share/home/wardag/programs/freebayes/bin/bamleftalign -f \$REF_BIN/\$REF \\\n");
-  if (! defined $main::noBaq) {
+  if (!defined $main::noBaq) {
     print $freebayes::SCRIPT ("  | $main::modules{\"SAMTOOLS\"}->{BIN}/$main::modules{\"SAMTOOLS\"}->{COMMAND} \\\n");
     print $freebayes::SCRIPT ("  fillmd -Aru - \\\n");
     print $freebayes::SCRIPT ("  \$REF_BIN/\$REF \\\n");
@@ -109,6 +120,26 @@ sub freebayes {
   # Update the region.
   $main::task->{REGION}++;
   if ($main::task->{REGION} == scalar @target_regions::targetRegions) {general_tools::iterateTask("", \@main::snpCallTasks);}
+}
+
+# Create a json script to be used for filtering out improper pairs.
+sub createJsonFilter {
+  open(JSON, ">improperPairFilter.json");
+  print JSON ("{\n");
+  print JSON ("\t\"filters\" : [\n");
+  print JSON ("\t\t{ \"id\" : \"SingleEnd\",    \"isPaired\" : \"false\" },\n");
+  print JSON ("\t\t{ \"id\" : \"ProperPaired\", \"isProperPair\" : \"true\" }\n");
+  print JSON ("\t],\n");
+  print JSON ("\n");
+  print JSON ("\t\"rule\" : \" SingleEnd | ProperPaired \"\n");
+  print JSON ("}\n");
+  close(JSON);
+
+# Check if data was added to the script.  If not, delete the script file.
+# If so, move the script into the Scripts directory.
+  my $path = "$main::outputDirectory/$main::snpCaller";
+  if (! -d $path) {make_path($path);}
+  move("improperPairFilter.json", "$main::outputDirectory/$main::snpCaller/improperPairFilter.json");
 }
   
 1;

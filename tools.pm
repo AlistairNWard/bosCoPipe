@@ -94,7 +94,8 @@ sub baseQualityRecalibration {
     print $script ("  java -Xmx$memory -jar ");
     print $script ("$main::modules{$main::task->{TASK}}->{BIN}/$main::modules{$main::task->{TASK}}->{COMMAND} \\\n");
     print $script ("  -R \$REF_BIN/\$REF \\\n");
-    print $script ("  --DBSNP \$DBSNP_BIN/\$DBSNP \\\n");
+    #print $script ("  --DBSNP \$DBSNP_BIN/\$DBSNP \\\n");
+    print $script ("  -B:dbsnp,vcf \$DBSNP_BIN/\$DBSNP \\\n");
     print $script ("  -l INFO \\\n");
     print $script ("  -T CountCovariates \\\n");
     print $script ("  -I \$INPUT_DIR/\$INPUT \\\n");
@@ -128,7 +129,7 @@ sub baseQualityRecalibration {
 # qualities.  The original qualities are retained in the bam file so no information
 # is lost and the original merged bam file can be deleted.
     print $script ("# Recalibrate\n\n");
-    print $script ("  java -Xmx$memory ");
+    print $script ("  java -Xmx$memory -jar ");
     print $script ("$main::modules{$main::task->{TASK}}->{BIN}/$main::modules{$main::task->{TASK}}->{COMMAND} \\\n");
     print $script ("  -R \$REF_BIN/\$REF \\\n");
     print $script ("  -T TableRecalibration \\\n");

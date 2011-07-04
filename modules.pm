@@ -57,7 +57,7 @@ sub defineModules {
 
   $main::modules{"DUPLICATE_MARK_PICARD"} = {
     BIN         => "/share/software/picard/picard-tools-1.47",
-    PRE_COMMAND => "java -Xmx2g -jar",
+    PRE_COMMAND => "java -Xmx8g -jar",
     COMMAND     => "MarkDuplicates.jar",
     RETAIN      => "no",
     INPUT       => "local",
