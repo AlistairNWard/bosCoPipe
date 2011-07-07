@@ -241,7 +241,7 @@ sub transferMergedBam {
 # Create the necessary merge scripts.
 sub createMergeScript {
   my $stdout = $_[0];
-  my $proc;
+  my $proc = 2;
 
   %main::retainFiles = ();
   %main::deleteFiles = ();
@@ -261,7 +261,6 @@ sub createMergeScript {
   # Define the number of processors to use:
   if (! defined $main::queue) {$main::queue = "bigmem";}
   if ($main::queue eq "stage") {$proc = 4;}
-  elsif ($main::queue eq "bigmem") {$proc = 2;}
 
   $main::SCRIPT = script_tools::createScript($main::mergeFileName, "Merge", $proc, $main::queue);
   script_tools::scriptFail($main::SCRIPT, $main::mergeFileName);

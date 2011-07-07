@@ -27,7 +27,11 @@ sub freebayes {
     );
   }
 
-  $main::snpFileName = join(".", $main::snpFileName, $main::date);
+  if ($main::jobID) {
+    $main::snpFileName = join(".", $main::snpFileName, $main::date, $main::jobID);
+  } else {
+    $main::snpFileName = join(".", $main::snpFileName, $main::date);
+  }
   $freebayes::region =~ s/-/../;
   $freebayes::refSequence = (split(/:/, $freebayes::region))[0];
 
@@ -41,7 +45,7 @@ sub freebayes {
 
   # If improper pairs are to be filtered out, create a json script to
   # be used
-  createJsonFilter();
+  if (!(defined $main::includeImproper && !defined $main::maqQ0)) {createJsonFilter();}
 
   # Write out reference file information.
   print $freebayes::SCRIPT ("# Check for the reference files.\n\n");
@@ -64,7 +68,7 @@ sub freebayes {
     print $freebayes::SCRIPT ("$main::modules{\"BAMTOOLS\"}->{COMMAND} merge \\\n");
   } else {
     print $freebayes::SCRIPT ("$main::modules{\"BAMTOOLS\"}->{COMMAND} filter \\\n");
-    print $freebayes::SCRIPT ("  -script $main::outputDirectory/$main::snpCaller/improperPairFilter.json \\\n");
+    print $freebayes::SCRIPT ("  -script $main::outputDirectory/$main::snpCaller/snpFilter.json \\\n");
   }
   print $freebayes::SCRIPT ("  -region $freebayes::region \\\n");
   foreach my $bamFile (sort @main::completedBamFiles) {print $freebayes::SCRIPT ("  -in $bamFile \\\n");}
@@ -124,14 +128,22 @@ sub freebayes {
 
 # Create a json script to be used for filtering out improper pairs.
 sub createJsonFilter {
-  open(JSON, ">improperPairFilter.json");
+  open(JSON, ">snpFilter.json");
   print JSON ("{\n");
   print JSON ("\t\"filters\" : [\n");
-  print JSON ("\t\t{ \"id\" : \"SingleEnd\",    \"isPaired\" : \"false\" },\n");
-  print JSON ("\t\t{ \"id\" : \"ProperPaired\", \"isProperPair\" : \"true\" }\n");
+  if (defined $main::mapQ0) {
+    print JSON ("\t\t{ \"id\" : \"mapQuality\",   \"mapQuality\" : \">0\" }\n");
+  } else {
+    print JSON ("\t\t{ \"id\" : \"SingleEnd\",    \"isPaired\" : \"false\" },\n");
+    print JSON ("\t\t{ \"id\" : \"ProperPaired\", \"isProperPair\" : \"true\" }\n");
+  }
   print JSON ("\t],\n");
   print JSON ("\n");
-  print JSON ("\t\"rule\" : \" SingleEnd | ProperPaired \"\n");
+  if (defined $main::mapQ0) {
+    print JSON ("\t\"rule\" : \" mapQuality \"\n");
+  } else {
+    print JSON ("\t\"rule\" : \" SingleEnd | ProperPaired \"\n");
+  }
   print JSON ("}\n");
   close(JSON);
 
@@ -139,7 +151,7 @@ sub createJsonFilter {
 # If so, move the script into the Scripts directory.
   my $path = "$main::outputDirectory/$main::snpCaller";
   if (! -d $path) {make_path($path);}
-  move("improperPairFilter.json", "$main::outputDirectory/$main::snpCaller/improperPairFilter.json");
+  move("snpFilter.json", "$main::outputDirectory/$main::snpCaller/snpFilter.json");
 }
   
 1;

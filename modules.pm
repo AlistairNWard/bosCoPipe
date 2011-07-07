@@ -67,9 +67,9 @@ sub defineModules {
   };
 
   $main::modules{"DUPLICATE_MARK_BCM"} = {
-    BIN              => "/share/software/picard/picard-tools-1.12",
+    BIN              => "/share/software/picard/picard-tools-1.47",
     PRE_COMMAND      => "java -classpath",
-    COMMAND          => "sam-1.12.jar",
+    COMMAND          => "sam-1.47.jar",
     RETAIN           => "no",
     INPUT            => "local",
     OUTPUT           => "local",

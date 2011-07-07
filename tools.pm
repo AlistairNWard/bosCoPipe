@@ -273,8 +273,9 @@ sub duplicateMarkBCM {
     print $script ("###\n### Mark duplicate reads using BCMMarkDupes\n###\n\n");
     general_tools::setInputs($script, $stdout, $main::task->{FILE}, "");
     general_tools::setOutputs($script, $stdout,  $dupBam);
-    print $script ("  $main::modules{$main::task->{TASK}}->{PRE_COMMAND} $main::modules{$main::Task->{TASK}}->{BIN}: ");
-    print $script ("  $main::modules{$main::task->{TASK}}->{COMMAND} BCMMarkDupes \\\n");
+    print $script ("  BCM_BIN=$main::modules{$main::Task->{TASK}}->{BIN}\n\n");
+    print $script ("  $main::modules{$main::task->{TASK}}->{PRE_COMMAND} \$BCM_BIN:\$BCM_BIM/");
+    print $script ("$main::modules{$main::task->{TASK}}->{COMMAND} BCMMarkDupes \\\n");
     print $script ("  \$INPUT_DIR/\$INPUT \\\n");
     print $script ("  \$INPUT_DIR/\$INPUT.bai \\\n");
     print $script ("  \$OUTPUT_DIR/\$OUTPUT \\\n");
