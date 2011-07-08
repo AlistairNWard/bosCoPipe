@@ -13,10 +13,10 @@ sub defineRegions {
   if ($main::divideGenome eq "c" && !defined $main::targetRegionSize) {$main::targetRegionSize = 0;}
 
   # If no information on how to break up the genome is provided,
-  # use the default of calling on 1Mbp chunks on each chromosome.
+  # use the default of calling on 100kbp chunks on each chromosome.
   if (!defined $main::divideGenome) {
     $main::divideGenome = "c";
-    if (!defined $main::targetRegionSize) {$main::targetRegionSize = 1000;}
+    if (!defined $main::targetRegionSize) {$main::targetRegionSize = 100;}
   }
 
   # Split the genome up into chromosomes for variant calling.

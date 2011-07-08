@@ -17,7 +17,7 @@ sub pipelineHelp {
   print("-bq-recal:\t\tAlways use GATK base-quality recalibration - default: do not use for SOLiD reads.\n");
   print("-date:\t\t\tspecify the date to appear in the filenames of outputted files.\n");
   print("  -previousdate:\tprovide a date for the previous index file (incremental alignments).\n");
-  print("-divide:\t\tdivide variant calling into specified value in kbp - default: 1000kbp.\n");
+  print("-divide:\t\tdivide variant calling into specified value in kbp - default: 100kbp.\n");
   print("-divide-genome:\t\tdivide the genome up by whole genome (w), chromosome (c) or by bed regions (b) - default: chromosome.\n");
   print("-exome:\t\t\tinforms the pipeline that the exome pipeline should be used.\n");
   print("-fastq:\t\t\tdefine a directory where fastq files are stored.\n");

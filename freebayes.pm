@@ -64,11 +64,11 @@ sub freebayes {
 
   # Write out the command line for freebayes and any associated tools.
   print $freebayes::SCRIPT ("  $main::modules{\"BAMTOOLS\"}->{BIN}/");
-  if (defined $main::includeImproper) {
-    print $freebayes::SCRIPT ("$main::modules{\"BAMTOOLS\"}->{COMMAND} merge \\\n");
-  } else {
+  if (!defined $main::includeImproper) {
     print $freebayes::SCRIPT ("$main::modules{\"BAMTOOLS\"}->{COMMAND} filter \\\n");
     print $freebayes::SCRIPT ("  -script $main::outputDirectory/$main::snpCaller/snpFilter.json \\\n");
+  } else {
+    print $freebayes::SCRIPT ("$main::modules{\"BAMTOOLS\"}->{COMMAND} merge \\\n");
   }
   print $freebayes::SCRIPT ("  -region $freebayes::region \\\n");
   foreach my $bamFile (sort @main::completedBamFiles) {print $freebayes::SCRIPT ("  -in $bamFile \\\n");}
@@ -87,14 +87,16 @@ sub freebayes {
     print $freebayes::SCRIPT ("  --min-alternate-count 2 \\\n");
   }
   print $freebayes::SCRIPT ("  --min-alternate-qsum 40 \\\n");
-  if (! defined $main::noIndels) {print $freebayes::SCRIPT ("  --indels \\\n");}
+  if (! defined $main::noIndels) {
+    print $freebayes::SCRIPT ("  --indels \\\n");
+    print $freebayes::SCRIPT ("  --complex \\\n");
+  }
   if (! defined $main::noMnps) {print $freebayes::SCRIPT ("  --mnps \\\n");}
-  print $freebayes::SCRIPT ("  --no-filters \\\n");
-  print $freebayes::SCRIPT ("  --haploid-reference \\\n");
+  print $freebayes::SCRIPT ("  --posterior-integration-limits 1,3 \\\n");
   print $freebayes::SCRIPT ("  --genotype-variant-threshold 4 \\\n");
-  print $freebayes::SCRIPT ("  --expectation-maximization \\\n");
-  print $freebayes::SCRIPT ("  --expectation-maximization-max-iterations 5 \\\n");
-  print $freebayes::SCRIPT ("  --genotyping-max-iterations 250 \\\n");
+  print $freebayes::SCRIPT ("  --site-selection-max-iterations 5 \\\n");
+  print $freebayes::SCRIPT ("  --genotyping-max-iterations 25 \\\n");
+  print $freebayes::SCRIPT ("  --no-filters \\\n");
   print $freebayes::SCRIPT ("  --use-best-n-alleles 0 \\\n");
   if (! defined $main::noBinPriors) {print $freebayes::SCRIPT ("  --binomial-obs-priors \\\n");}
   print $freebayes::SCRIPT ("  --allele-balance-priors \\\n");
@@ -103,6 +105,7 @@ sub freebayes {
   print $freebayes::SCRIPT ("  --fasta-reference \$REF_BIN/\$REF \\\n");
   #if ($freebayes::refSequence eq "X" && defined $main::cnvBed) {print $freebayes::SCRIPT ("--cnv-map $main::cnvBed \\\n");}
   print $freebayes::SCRIPT ("  --vcf \$OUTPUT_DIR/\$OUTPUT \\\n");
+  print $freebayes::SCRIPT ("  --pvar 0.0001 \\\n");
   print $freebayes::SCRIPT ("  > \$OUTPUT_DIR/\$OUTPUT.stdout \\\n");
   print $freebayes::SCRIPT ("  2> \$OUTPUT_DIR/\$OUTPUT.stderr\n\n");
 
