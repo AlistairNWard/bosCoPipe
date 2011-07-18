@@ -65,26 +65,26 @@ sub sortMosaikv2Bam {
   print $script ("  fi\n\n");
 
 # Sort the special bam file.
-  print $script ("# Special reference sequences bam file.\n\n");
-  print $script ("  if [ -s \$INPUT_DIR/\$INPUT.special.bam ]; then\n");
-  print $script ("    $main::modules{BAMTOOLS}->{BIN}/$main::modules{BAMTOOLS}->{COMMAND} sort \\\n");
-  print $script ("    -n 5000000 \\\n");
-  print $script ("    -in \$INPUT_DIR/\$INPUT.special.bam \\\n");
-  print $script ("    -out \$OUTPUT_DIR/\$OUTPUT.special.bam \\\n");
-  print $script ("    > \$OUTPUT_DIR/\$OUTPUT.special.bam.stdout \\\n");
-  print $script ("    2> \$OUTPUT_DIR/\$OUTPUT.special.bam.stderr\n");
-  print $script ("  fi\n\n");
-  script_tools::fail(
-    $script,
-    "bamtools sort (special bam)",
-    "\$INPUT.special.bam",
-    "\$OUTPUT.special.bam.stdout",
-    "\$OUTPUT.special.bam.stderr",
-    "$main::aligner/$main::sampleInfo{$stdout}->{SAMPLE}/failed"
-  );
-  print $script ("  if [ -s \$INPUT_DIR/\$INPUT.special.bam ]; then\n");
-  print $script ("    mv \$OUTPUT_DIR/\$OUTPUT.special.bam \$OUTPUT_DIR/\$INPUT.special.bam\n");
-  print $script ("  fi\n\n");
+  #print $script ("# Special reference sequences bam file.\n\n");
+  #print $script ("  if [ -s \$INPUT_DIR/\$INPUT.special.bam ]; then\n");
+  #print $script ("    $main::modules{BAMTOOLS}->{BIN}/$main::modules{BAMTOOLS}->{COMMAND} sort \\\n");
+  #print $script ("    -n 5000000 \\\n");
+  #print $script ("    -in \$INPUT_DIR/\$INPUT.special.bam \\\n");
+  #print $script ("    -out \$OUTPUT_DIR/\$OUTPUT.special.bam \\\n");
+  #print $script ("    > \$OUTPUT_DIR/\$OUTPUT.special.bam.stdout \\\n");
+  #print $script ("    2> \$OUTPUT_DIR/\$OUTPUT.special.bam.stderr\n");
+  #print $script ("  fi\n\n");
+  #script_tools::fail(
+  #  $script,
+  #  "bamtools sort (special bam)",
+  #  "\$INPUT.special.bam",
+  #  "\$OUTPUT.special.bam.stdout",
+  #  "\$OUTPUT.special.bam.stderr",
+  #  "$main::aligner/$main::sampleInfo{$stdout}->{SAMPLE}/failed"
+  #);
+  #print $script ("  if [ -s \$INPUT_DIR/\$INPUT.special.bam ]; then\n");
+  #print $script ("    mv \$OUTPUT_DIR/\$OUTPUT.special.bam \$OUTPUT_DIR/\$INPUT.special.bam\n");
+  #print $script ("  fi\n\n");
 
   my $sample = $main::sampleInfo{$stdout}->{SAMPLE};
   if ($retain eq "yes" && $main::task->{LOCATION} eq "node") {

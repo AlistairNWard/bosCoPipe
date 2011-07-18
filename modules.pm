@@ -49,7 +49,7 @@ sub defineModules {
     BIN              => "/share/software/GenomeAnalysisToolKit/GenomeAnalysisTK-1.0.5974",
     COMMAND          => "GenomeAnalysisTK.jar",
     RETAIN           => "no",
-    INPUT            => "local",
+    INPUT            => "node",
     OUTPUT           => "node",
     DIR              => "bam",
     COPYONFAIL       => "no"
@@ -184,10 +184,32 @@ sub defineModules {
     command_line::checkAligner();
   }
 
-  # Now build SNP caller specific modules.
+  # Now build SNP caller specific modules.  Start with freeBayes.
   $main::modules{"FREEBAYES"} = {
     BIN        => "/share/home/wardag/programs/freebayes/bin",
     COMMAND    => "freebayes",
+    RETAIN     => "yes",
+    INPUT      => "local",
+    OUTPUT     => "local",
+    DIR        => "freebayes",
+    COPYONFAIL => "no"
+  };
+
+  # BamLeftAlign
+  $main::modules{"BAM_LEFT_ALIGN"} = {
+    BIN        => "/share/home/wardag/programs/freebayes/bin",
+    COMMAND    => "bamleftalign",
+    RETAIN     => "yes",
+    INPUT      => "local",
+    OUTPUT     => "local",
+    DIR        => "freebayes",
+    COPYONFAIL => "no"
+  };
+
+  # Ogap
+  $main::modules{"OGAP"} = {
+    BIN        => "/share/home/wardag/programs/ogap",
+    COMMAND    => "ogap",
     RETAIN     => "yes",
     INPUT      => "local",
     OUTPUT     => "local",

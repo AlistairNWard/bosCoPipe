@@ -146,6 +146,8 @@ sub snpCallers {
     if ($main::modules{$_}->{BIN}  ne "") {
       general_tools::checkFileExists("$main::modules{$_}->{BIN}/$main::modules{$_}->{COMMAND}");
     }
+    general_tools::checkFileExists("$main::modules{\"BAM_LEFT_ALIGN\"}->{BIN}/$main::modules{\"BAM_LEFT_ALIGN\"}->{COMMAND}");
+    general_tools::checkFileExists("$main::modules{\"OGAP\"}->{BIN}/$main::modules{\"OGAP\"}->{COMMAND}");
   }
 }
 

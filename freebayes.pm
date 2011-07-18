@@ -72,15 +72,17 @@ sub freebayes {
   }
   print $freebayes::SCRIPT ("  -region $freebayes::region \\\n");
   foreach my $bamFile (sort @main::completedBamFiles) {print $freebayes::SCRIPT ("  -in $bamFile \\\n");}
-  if (!defined $main::noOgap) {print $freebayes::SCRIPT ("  | /share/software/ogap/ogap -f \$REF_BIN/\$REF \\\n");}
-  print $freebayes::SCRIPT ("  | /share/home/wardag/programs/freebayes/bin/bamleftalign -f \$REF_BIN/\$REF \\\n");
+  if (!defined $main::noOgap) {
+    print $freebayes::SCRIPT ("  | $main::modules{\"OGAP\"}->{BIN}/$main::modules{\"OGAP\"}->{COMMAND} -f \$REF_BIN/\$REF \\\n");
+  }
+  print $freebayes::SCRIPT ("  | $main::modules{\"BAM_LEFT_ALIGN\"}->{BIN}/$main::modules{\"BAM_LEFT_ALIGN\"}->{COMMAND} -f \$REF_BIN/\$REF \\\n");
   if (!defined $main::noBaq) {
     print $freebayes::SCRIPT ("  | $main::modules{\"SAMTOOLS\"}->{BIN}/$main::modules{\"SAMTOOLS\"}->{COMMAND} \\\n");
     print $freebayes::SCRIPT ("  fillmd -Aru - \\\n");
     print $freebayes::SCRIPT ("  \$REF_BIN/\$REF \\\n");
     print $freebayes::SCRIPT ("  2> /dev/null \\\n");
   }
-  print $freebayes::SCRIPT ("  | /share/home/wardag/programs/freebayes/bin/freebayes \\\n");
+  print $freebayes::SCRIPT ("  | $main::modules{\"FREEBAYES\"}->{BIN}/$main::modules{\"FREEBAYES\"}->{COMMAND} \\\n");
   if (defined $main::exome) {
     print $freebayes::SCRIPT ("  --min-alternate-count 5 \\\n");
   } else {
@@ -137,6 +139,7 @@ sub createJsonFilter {
   if (defined $main::mapQ0) {
     print JSON ("\t\t{ \"id\" : \"mapQuality\",   \"mapQuality\" : \">0\" }\n");
   } else {
+    print JSON ("\t\t{ \"id\" : \"mapQuality\",   \"mapQuality\" : \">0\" },\n");
     print JSON ("\t\t{ \"id\" : \"SingleEnd\",    \"isPaired\" : \"false\" },\n");
     print JSON ("\t\t{ \"id\" : \"ProperPaired\", \"isProperPair\" : \"true\" }\n");
   }
@@ -145,7 +148,7 @@ sub createJsonFilter {
   if (defined $main::mapQ0) {
     print JSON ("\t\"rule\" : \" mapQuality \"\n");
   } else {
-    print JSON ("\t\"rule\" : \" SingleEnd | ProperPaired \"\n");
+    print JSON ("\t\"rule\" : \" ( SingleEnd | ProperPaired ) & mapQuality \"\n");
   }
   print JSON ("}\n");
   close(JSON);
