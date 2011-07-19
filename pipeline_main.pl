@@ -7,7 +7,7 @@ use FindBin;
 
 # Record the version number.
 
-$main::version="2.052";
+$main::version="2.053";
 $main::versionDate="June 2011";
 
 # Define some global variables.
@@ -60,7 +60,7 @@ GetOptions('aligner=s'       => \$main::aligner,
            'fastq=s'         => \$main::fastqDirectory,
            'include-improper'=> \$main::includeImproper,
            'index=s'         => \$main::indexFile,
-           'jobid=s'         => \$main::jobID,
+           'job-id=s'        => \$main::jobID,
            'local'           => \$main::local,
            'low-memory'      => \$main::lowMemory,
            'meta=s'          => \$main::metaData,

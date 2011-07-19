@@ -21,7 +21,7 @@ sub pipelineHelp {
   print("-divide-genome:\t\tdivide the genome up by whole genome (w), chromosome (c) or by bed regions (b) - default: chromosome.\n");
   print("-exome:\t\t\tinforms the pipeline that the exome pipeline should be used.\n");
   print("-fastq:\t\t\tdefine a directory where fastq files are stored.\n");
-  print("-jobid:\t\t\tspecify a job id that will identify jobs created here.\n");
+  print("-job-id:\t\t\tspecify a job id that will identify jobs created here.\n");
   print("-include-improper:\tinclude all pairs (proper and improper) in variant calling - default false.\n");
   print("-index:\t\t\tspecify a sequence index file used for determining alignments.\n");
   print("  -previousindex:\tprevious index file used for incremental alignments.\n");

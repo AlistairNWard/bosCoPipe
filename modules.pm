@@ -227,7 +227,8 @@ sub readSoftware() {
   my (%allowedTools, %allowedFiles);
 
   # Define a list of allowed tools and files.
-  %allowedTools = ('BAMTOOLS', 1,
+  %allowedTools = ('BAM_LEFT_ALIGN', 1,
+                   'BAMTOOLS', 1,
                    'DUPBCM', 1,
                    'DUPPICARD', 1,
                    'FASTQVALIDATOR', 1,
@@ -235,6 +236,7 @@ sub readSoftware() {
                    'GATK', 1,
                    'MOSAIK', 1,
                    'MOSAIK2', 1,
+                   'OGAP', 1,
                    'PICARD', 1,
                    'SAMTOOLS', 1);
 
