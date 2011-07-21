@@ -53,7 +53,7 @@ sub baseQualityRecalibration {
   my @tasks  = @{$_[2]};
   my $memory;
 
-  if (defined $main::BQRecal || $main::sampleInfo{$stdout}->{TECHNOLOGY} ne "solid") {
+  if (defined $main::BQRecal) {
     print $script ("###\n### Perform base quality recalibration using GATK.\n###\n\n");
     general_tools::setInputs($script, $stdout, $main::task->{FILE},"");
     general_tools::setOutputs($script, $stdout,"");
