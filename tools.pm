@@ -93,7 +93,6 @@ sub baseQualityRecalibration {
   print $script ("  java -Xmx$memory -jar ");
   print $script ("$main::modules{$main::task->{TASK}}->{BIN}/$main::modules{$main::task->{TASK}}->{COMMAND} \\\n");
   print $script ("  -R \$REF_BIN/\$REF \\\n");
-  #print $script ("  --DBSNP \$DBSNP_BIN/\$DBSNP \\\n");
   print $script ("  -B:dbsnp,vcf \$DBSNP_BIN/\$DBSNP \\\n");
   print $script ("  -l INFO \\\n");
   print $script ("  -T CountCovariates \\\n");
@@ -136,6 +135,10 @@ sub baseQualityRecalibration {
   print $script ("  --out \$OUTPUT_DIR/\$OUTPUT \\\n");
   print $script ("  -recalFile \$OUTPUT_DIR/\$CSV \\\n");
   print $script ("  --doNotWriteOriginalQuals \\\n");
+  if ($main::sampleInfo{$stdout}->{TECHNOLOGY} eq "solid") {
+    print $script ("  --solid_nocall_strategy PURGE_READ \\\n");
+    print $script ("  --solid_recal_mode SET_Q_ZERO \\\n");
+  }
   print $script ("  > \$OUTPUT_DIR/\$OUTPUT.stdout \\\n");
   print $script ("  2> \$OUTPUT_DIR/\$OUTPUT.stderr\n\n");
   script_tools::fail(
