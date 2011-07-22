@@ -7,7 +7,7 @@ use FindBin;
 
 # Record the version number.
 
-$main::version="2.054";
+$main::version="2.055";
 $main::versionDate="June 2011";
 
 # Define some global variables.
@@ -51,7 +51,6 @@ $| = 1;
 GetOptions('aligner=s'       => \$main::aligner,
            'bam-directory=s' => \$main::bamDirectory,
            'bam-list=s'      => \$main::bamList,
-           'bq-recal'        => \$main::BQRecal,
            'date=s'          => \$main::date,
            'dir=s'           => \$main::outputDirectory,
            'divide:i'        => \$main::targetRegionSize,

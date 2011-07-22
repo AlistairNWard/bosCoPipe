@@ -14,7 +14,6 @@ sub pipelineHelp {
   print("  -mosaikv2:\t\tuse Mosaik version 2 (Mosaik only - default).\n");
   print("-bam-list:\t\tspecify a list of bam files to use for variant calling.\n");
   print("-bam-directory:\t\tspecify a directory where previously aligned bam files reside.\n");
-  print("-bq-recal:\t\tAlways use GATK base-quality recalibration - default: do not use for SOLiD reads.\n");
   print("-date:\t\t\tspecify the date to appear in the filenames of outputted files.\n");
   print("  -previousdate:\tprovide a date for the previous index file (incremental alignments).\n");
   print("-divide:\t\tdivide variant calling into specified value in kbp - default: 100kbp.\n");
