@@ -4,6 +4,11 @@ package target_regions;
 
 use strict;
 
+# If a delimiter has not been specified, set the default.
+sub snpDelimiter {
+  if (!defined $main::snpDelimiter) {$main::snpDelimiter = ":";}
+}
+
 sub defineRegions {
   @target_regions::targetRegions = ();
 

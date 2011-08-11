@@ -16,7 +16,7 @@ sub reference {
 
   # Set the default reference to the human reference build 37.
   } else {
-    $main::referenceBin  = "/d2/data/references/build_37";
+    $main::referenceBin  = "/d1/data/references/build_37";
     $main::referenceStub = "human_reference_v37";
   }
   $main::nodeBin             = "/scratch/$main::userID/references";
@@ -31,7 +31,7 @@ sub reference {
   # exit.
   if ($main::aligner ne "none") {
     if (!defined $main::dbsnp) {
-      $main::dbsnpBin = "/d2/data/references/build_37/dbsnp";
+      $main::dbsnpBin = "/d1/data/references/build_37/dbsnp";
       #$main::dbsnp    = "dbsnp_129_b37.rod";
       $main::dbsnp    = "dbsnp_132.b37.excluding_sites_after_129.vcf";
     }

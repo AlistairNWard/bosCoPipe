@@ -42,6 +42,7 @@ sub pipelineHelp {
   print("-ref-seq:\t\tSNP call on this reference sequence only - default: all.\n");
   print("-software:\t\tprovide a list of the paths of the different tools/files - default use hard coded files.\n");
   print("-snp:\t\t\tSNP calling program (freebayes, glfsingle, glfmultiples, none) - default: none.\n");
+  print("-snp-delimiter:\t\tchange the target region delimiter for vcf files, *.22<delim><start>-<end> - default ':'.\n");
   print("-status:\t\tShow the status of the created scripts (running, completed, failed etc.\n");
   print("-threads:\t\trequest this number of threads for alignemnt - default 8.\n");
   print("-user:\t\t\tspecify the user (default: login name).\n");

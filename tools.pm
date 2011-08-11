@@ -111,7 +111,7 @@ sub baseQualityRecalibration {
     print $script ("  -dP illumina \\\n");
   }
   print $script ("  -recalFile \$OUTPUT_DIR/\$CSV \\\n");
-  print $script ("  -nt 8 \\\n");
+  print $script ("  -nt $main::threads \\\n");
   print $script ("  > \$OUTPUT_DIR/\$CSV.stdout \\\n");
   print $script ("  2> \$OUTPUT_DIR/\$CSV.stderr \n\n");
   script_tools::fail(

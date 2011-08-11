@@ -10,20 +10,22 @@ use File::Copy;
 
 sub freebayes {
 
-  # Define the region.
-  $freebayes::region=$target_regions::targetRegions[$main::task->{REGION}];
+  # Define the region and the form of the region to be included in
+  # the filename.
+  $freebayes::region = $target_regions::targetRegions[$main::task->{REGION}];
+  ($freebayes::regionFilename = $freebayes::region) =~ s/:/$main::snpDelimiter/g;
 
   # Generate the file name for the files created in SNP calling.
   if ($main::aligner ne "none") {
     $main::snpFileName=join(".", 
       $main::snpCaller,
       $main::aligner,
-      $freebayes::region,
+      $freebayes::regionFilename,
     );
   } else {
     $main::snpFileName=join(".", 
       $main::snpCaller,
-      $freebayes::region,
+      $freebayes::regionFilename,
     );
   }
 

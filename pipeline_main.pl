@@ -7,8 +7,8 @@ use FindBin;
 
 # Record the version number.
 
-$main::version="2.056";
-$main::versionDate="June 2011";
+$main::version="2.057";
+$main::versionDate="August 2011";
 
 # Define some global variables.
 
@@ -82,6 +82,7 @@ GetOptions('aligner=s'       => \$main::aligner,
            'queue:s'         => \$main::queue,
            'reference=s'     => \$main::reference,
            'ref-seq=s'       => \$main::referenceSequence,
+           'snp-delimiter=s' => \$main::snpDelimiter,
            'software=s'      => \$main::softwareList,
            'status:s'        => \$main::scriptStatus,
            'user=s'          => \$main::userID,
@@ -156,7 +157,8 @@ reference::reference();
 software::aligners();
 software::mergePipeline();
 software::snpCallers();
-target_regions::defineRegions(); # target_regions.pl
+target_regions::snpDelimiter();
+target_regions::defineRegions();
 
 # Check if a date has been supplied.  If not, the current date will be
 # used in the generated filenames.
