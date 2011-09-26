@@ -93,10 +93,8 @@ sub freebayes {
     print $freebayes::SCRIPT ("  --min-alternate-count 2 \\\n");
   }
   print $freebayes::SCRIPT ("  --min-alternate-qsum 40 \\\n");
-  if (defined $main::noIndels) {
-    print $freebayes::SCRIPT ("  --no-indels \\\n");
-    print $freebayes::SCRIPT ("  --no-complex \\\n");
-  }
+  if (defined $main::noIndels) {print $freebayes::SCRIPT ("  --no-indels \\\n");}
+  if (defined $main::noComplex) {print $freebayes::SCRIPT ("  --no-complex \\\n");}
   if (defined $main::noMnps) {print $freebayes::SCRIPT ("  --no-mnps \\\n");}
   print $freebayes::SCRIPT ("  --posterior-integration-limits 1,3 \\\n");
   print $freebayes::SCRIPT ("  --genotype-variant-threshold 4 \\\n");

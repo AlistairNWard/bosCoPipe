@@ -7,7 +7,7 @@ use FindBin;
 
 # Record the version number.
 
-$main::version="2.058";
+$main::version="2.059";
 $main::versionDate="September 2011";
 
 # Define some global variables.
@@ -74,6 +74,7 @@ GetOptions('aligner=s'       => \$main::aligner,
            'no-baq'          => \$main::noBaq,
            'no-bin-priors'   => \$main::noBinPriors,
            'no-bq-recal'     => \$main::noBQRecal,
+           'no-complex'      => \$main::noComplex,
            'no-fastq-val'    => \$main::noFastqValidation,
            'no-indels'       => \$main::noIndels,
            'no-mnps'         => \$main::noMnps,

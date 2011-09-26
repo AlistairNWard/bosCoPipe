@@ -32,6 +32,7 @@ sub pipelineHelp {
   print("-node\t\t\tdefine the node for the jobs to be run on.\n");
   print("-no-baq:\t\tdo not use samtools BAQ in the SNP calling pipeline - default is to use.\n");
   print("-no-bin-priors:\t\tdo not use binomial priors in the freebayes SNP calling pipeline - default is to use.\n");
+  print("-no-complex:\t\tdo not call complex variants - default is to call.\n");
   print("-no-bq-recal:\t\tdo not use base-quality recalibration - default is to use.\n");
   print("-no-fastq-val:\t\tdo not use the fastq validator - default is to use.\n");
   print("-no-indels:\t\tdo not call indels - default is to call.\n");
