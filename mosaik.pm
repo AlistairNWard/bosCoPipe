@@ -269,6 +269,10 @@ sub mosaikAligner {
     if ($main::task->{READTYPE} eq "PAIRED") {print $script ("  -ls $main::runInfo{$run}->{FRAGMENT} \\\n");}
     print $script ("  -act $act \\\n");
     print $script ("  -bw $bw \\\n");
+
+    # Include additional commands for the mapping quality calculations.
+    print $script ("  -annse \$REF_BIN/$main::neuralNetFileSE \\\n");
+    print $script ("  -annpe \$REF_BIN/$main::neuralNetFilePE \\\n");
   }
   print $script ("  -j \$JUMP_BIN/\$JUMP \\\n");
   if (!defined $main::threads) {$main::threads = 8;}
