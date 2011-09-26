@@ -19,7 +19,7 @@ sub reference {
     $main::referenceBin  = "/d1/data/references/build_37";
     $main::referenceStub = "human_reference_v37";
   }
-  $main::nodeBin             = "/scratch/$main::userID/references";
+  $main::nodeBin             = "$main::scratch/$main::userID/references";
   $main::reference           = "$main::referenceStub.fa";
   $main::referenceDictionary = "$main::referenceStub.dict";
   

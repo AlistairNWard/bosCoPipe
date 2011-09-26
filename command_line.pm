@@ -20,6 +20,7 @@ sub pipelineHelp {
   print("-divide-genome:\t\tdivide the genome up by whole genome (w), chromosome (c) or by bed regions (b) - default: chromosome.\n");
   print("-exome:\t\t\tinforms the pipeline that the exome pipeline should be used.\n");
   print("-fastq:\t\t\tdefine a directory where fastq files are stored.\n");
+  print("-fastq-list:\t\t\tdefine a file containing location of all fastq files.  This will assume that the files exist.\n");
   print("-job-id:\t\t\tspecify a job id that will identify jobs created here.\n");
   print("-include-improper:\tinclude all pairs (proper and improper) in variant calling - default false.\n");
   print("-index:\t\t\tspecify a sequence index file used for determining alignments.\n");
@@ -40,10 +41,11 @@ sub pipelineHelp {
   print("-queue:\t\t\tdefine the queue that the jobs will be sent to - default bigmem for alignment, stage otherwise.\n");
   print("-reference\t\tdefine the reference to use - default build 37 without moblist.\n");
   print("-ref-seq:\t\tSNP call on this reference sequence only - default: all.\n");
+  print("-scratch:\t\tSet the location of the scratch disk - default: /scratch.\n");
   print("-software:\t\tprovide a list of the paths of the different tools/files - default use hard coded files.\n");
   print("-snp:\t\t\tSNP calling program (freebayes, glfsingle, glfmultiples, none) - default: none.\n");
   print("-snp-delimiter:\t\tchange the target region delimiter for vcf files, *.22<delim><start>-<end> - default ':'.\n");
-  print("-status:\t\tShow the status of the created scripts (running, completed, failed etc.\n");
+  print("-status:\t\tShow the status of the created scripts (running, completed, failed etc.)\n");
   print("-threads:\t\trequest this number of threads for alignemnt - default 8.\n");
   print("-user:\t\t\tspecify the user (default: login name).\n");
   print("-wall-time:\t\tDefine a wall time for the job.\n");
@@ -187,6 +189,30 @@ sub checkBamList {
       } else{
         push(@main::bamList, abs_path($_));
       }
+    }
+  }
+}
+
+# Check that the specified fastq list contains only fastq files, that
+# their directories are specified and that they exist.
+sub checkFastqList {
+  my $dir;
+  my $fastq;
+
+  # Check if the list exists.
+  if (! -f $main::fastqList) {
+    print("\n***SCRIPT TERMINATED***\n\n");
+    print("The file $main::fastqList does not exist.\n");
+    die("Error in command_line::checkFastqList.\n");
+
+  # Check the contents of the list.
+  } else {
+    open(FASTQLIST,"<$main::fastqList");
+    while(<FASTQLIST>) {
+      chomp;
+      $fastq = (split(/\//, "/$_"))[-1];
+      ($dir  = $_) =~ s/$fastq//;
+      $main::fastq{(split(/\//, $fastq))[-1]} = $dir;
     }
   }
 }

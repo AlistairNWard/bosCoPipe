@@ -56,7 +56,7 @@ sub defineModules {
   };
 
   $main::modules{"DUPLICATE_MARK_PICARD"} = {
-    BIN         => "/share/software/picard/picard-tools-1.47",
+    BIN         => "/share/software/picard/picard-tools-1.52",
     PRE_COMMAND => "java -Xmx8g -jar",
     COMMAND     => "MarkDuplicates.jar",
     RETAIN      => "no",
@@ -67,9 +67,9 @@ sub defineModules {
   };
 
   $main::modules{"DUPLICATE_MARK_BCM"} = {
-    BIN              => "/share/software/picard/picard-tools-1.47",
+    BIN              => "/share/software/picard/picard-tools-1.52",
     PRE_COMMAND      => "java -classpath",
-    COMMAND          => "sam-1.47.jar",
+    COMMAND          => "sam-1.52.jar",
     RETAIN           => "no",
     INPUT            => "local",
     OUTPUT           => "local",
@@ -78,7 +78,7 @@ sub defineModules {
   };
 
   $main::modules{"SAMTOOLS"} = {
-    BIN              => "/share/software/samtools/samtools-0.1.12a",
+    BIN              => "/share/software/samtools/samtools-0.1.16",
     COMMAND          => "samtools",
     RETAIN           => "yes",
     INPUT            => "local",
@@ -147,7 +147,7 @@ sub defineModules {
     # Mosaik version 2.
     } else {
       $main::modules{"MOSAIKBUILDV2"} = {
-        BIN        => "/share/home/wardag/programs/Mosaik/bin",
+        BIN        => "/share/home/wardag/programs/MOSAIK/bin",
         COMMAND    => "MosaikBuild",
         RETAIN     => "no",
         INPUT      => "local",
@@ -157,7 +157,7 @@ sub defineModules {
       };
 
       $main::modules{"MOSAIKALIGNERV2"} = {
-        BIN        => "/share/home/wardag/programs/Mosaik/bin", 
+        BIN        => "/share/home/wardag/programs/MOSAIK/bin", 
         COMMAND    => "MosaikAligner",
         RETAIN     => "no",
         INPUT      => "local",

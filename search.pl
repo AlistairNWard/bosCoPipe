@@ -18,7 +18,7 @@ sub fileSearch {
       push(@main::previousBams, "$File::Find::dir/$_");
     }
   } elsif ($_ =~ /fastq/i) {
-    $main::fastq{$_} = $File::Find::dir;
+    if (!defined $main::fastqList) {$main::fastq{$_} = $File::Find::dir;}
   } elsif ($_ =~ /\.glf/) {
     $main::existingGlf{$_} = $File::Find::dir;
   } elsif ($_ =~ /$main::date/ && $_ =~ /$main::aligner/ && $_ =~ /bam$/) {

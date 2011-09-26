@@ -191,7 +191,7 @@ sub printScriptStatus {
       printScripts("Queued align scripts", $sample, \%main::queuedAlignScripts);
       printScripts("Queued merge scripts", $sample, \%main::queuedMergeScripts);
       printScripts("Queued SNP scripts", $sample, \%main::queuedSnpScripts);
-      printScripts("Running align scripts", $sample, \%main::runningAiignScripts);
+      printScripts("Running align scripts", $sample, \%main::runningAlignScripts);
       printScripts("Running merge scripts", $sample, \%main::runningMergeScripts);
       printScripts("Running SNP scripts", $sample, \%main::runningSnpScripts);
       printScripts("Unsubmitted align scripts", $sample, \%main::alignScripts);

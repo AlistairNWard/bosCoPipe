@@ -7,8 +7,8 @@ use FindBin;
 
 # Record the version number.
 
-$main::version="2.057";
-$main::versionDate="August 2011";
+$main::version="2.058";
+$main::versionDate="September 2011";
 
 # Define some global variables.
 
@@ -57,6 +57,7 @@ GetOptions('aligner=s'       => \$main::aligner,
            'divide-genome:s' => \$main::divideGenome,
            'exome'           => \$main::exome,
            'fastq=s'         => \$main::fastqDirectory,
+           'fastq-list=s'    => \$main::fastqList,
            'include-improper'=> \$main::includeImproper,
            'index=s'         => \$main::indexFile,
            'job-id=s'        => \$main::jobID,
@@ -82,6 +83,7 @@ GetOptions('aligner=s'       => \$main::aligner,
            'queue:s'         => \$main::queue,
            'reference=s'     => \$main::reference,
            'ref-seq=s'       => \$main::referenceSequence,
+           'scratch=s'       => \$main::scratch,
            'snp-delimiter=s' => \$main::snpDelimiter,
            'software=s'      => \$main::softwareList,
            'status:s'        => \$main::scriptStatus,
@@ -216,11 +218,17 @@ if (! defined $main::bamList) {
   print("done.\n");
 
 # If a separate fastq directory is defined, also search within this directory.
-  if (defined $main::fastqDirectory) {
+  if (defined $main::fastqDirectory && !defined $main::fastqList) {
     print("Searching for fastq files...");
     $main::fastqDirectory = abs_path($main::fastqDirectory);
     find(\&findFastq, $main::fastqDirectory); # Search.pl
     print("done.\n");
+  } elsif (defined $main::fastqList) {
+    command_line::checkFastqList();
+  } elsif (defined $main::fastqDirectory && $main::fastqList) {
+    print STDERR ("\n***SCRIPT TERMINATED***\n\n");
+    print STDERR ("Either define a fastq directory or a fastq list, but not both.");
+    print STDERR ("Error in pipeline_main.pm.\n");
   }
 
 # Now search for previous bam files in the specified bam directory.

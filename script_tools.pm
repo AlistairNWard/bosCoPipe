@@ -17,7 +17,7 @@ sub createScript {
 
   $main::nodeDir = "";
   if (defined $main::local) {$main::nodeDir = "$main::outputDirectory/working/$stdout";}
-  if ($main::nodeDir eq "") {$main::nodeDir = "/scratch/$main::userID/$stdout";}
+  if ($main::nodeDir eq "") {$main::nodeDir = "$main::scratch/$main::userID/$stdout";}
 
   open($script,">$stdout.sh");
   print $script ("# $text script created at $main::time\n\n");

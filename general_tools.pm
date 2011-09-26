@@ -28,6 +28,9 @@ sub initialise {
   $main::numberAdd        = 0;
   $main::numberRemoved    = 0;
   $main::numberCreated    = 0;
+
+  # If no scratch disk is provided, set the default.
+  if (!defined $main::scratch) {$main::scratch = "/scratch";}
 }
 
 # Check that the supplied file exists.

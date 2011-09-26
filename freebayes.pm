@@ -80,7 +80,9 @@ sub freebayes {
   print $freebayes::SCRIPT ("  | $main::modules{\"BAM_LEFT_ALIGN\"}->{BIN}/$main::modules{\"BAM_LEFT_ALIGN\"}->{COMMAND} -f \$REF_BIN/\$REF \\\n");
   if (!defined $main::noBaq) {
     print $freebayes::SCRIPT ("  | $main::modules{\"SAMTOOLS\"}->{BIN}/$main::modules{\"SAMTOOLS\"}->{COMMAND} \\\n");
-    print $freebayes::SCRIPT ("  fillmd -Aru - \\\n");
+    #print $freebayes::SCRIPT ("  fillmd -Aru - \\\n");
+    print $freebayes::SCRIPT ("  calmd -AEru - \\\n");
+    #print $freebayes::SCRIPT ("  calmd -Aru - \\\n");
     print $freebayes::SCRIPT ("  \$REF_BIN/\$REF \\\n");
     print $freebayes::SCRIPT ("  2> /dev/null \\\n");
   }
@@ -91,11 +93,11 @@ sub freebayes {
     print $freebayes::SCRIPT ("  --min-alternate-count 2 \\\n");
   }
   print $freebayes::SCRIPT ("  --min-alternate-qsum 40 \\\n");
-  if (! defined $main::noIndels) {
-    print $freebayes::SCRIPT ("  --indels \\\n");
-    print $freebayes::SCRIPT ("  --complex \\\n");
+  if (defined $main::noIndels) {
+    print $freebayes::SCRIPT ("  --no-indels \\\n");
+    print $freebayes::SCRIPT ("  --no-complex \\\n");
   }
-  if (! defined $main::noMnps) {print $freebayes::SCRIPT ("  --mnps \\\n");}
+  if (defined $main::noMnps) {print $freebayes::SCRIPT ("  --no-mnps \\\n");}
   print $freebayes::SCRIPT ("  --posterior-integration-limits 1,3 \\\n");
   print $freebayes::SCRIPT ("  --genotype-variant-threshold 4 \\\n");
   print $freebayes::SCRIPT ("  --site-selection-max-iterations 5 \\\n");
