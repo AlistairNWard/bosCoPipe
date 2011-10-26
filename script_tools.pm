@@ -73,7 +73,7 @@ sub scriptFail {
   if ($main::copyOnFail eq "true") {print $script ("  if [ -f \$NODE_DIR/\$OUT ]; then rsync \$NODE_DIR/\$OUT \$FAILBIN; fi\n");}
   print $script ("  if [ -f \$NODE_DIR/\$STDOUT ]; then rsync \$NODE_DIR/\$STDOUT \$FAILBIN; fi\n");
   print $script ("  if [ -f \$NODE_DIR/\$STDERR ]; then rsync \$NODE_DIR/\$STDERR \$FAILBIN; fi\n");
-  print $script ("  rm -fr \$NODE_DIR\n");
+  if (!defined $main::local) {print $script ("  rm -fr \$NODE_DIR\n");}
   print $script ("  exit\n");
   print $script ("}\n\n");
 }

@@ -46,7 +46,7 @@ sub defineModules {
   };
 
   $main::modules{"BQ_RECALIBRATION"} = {
-    BIN              => "/share/software/GenomeAnalysisToolKit/GenomeAnalysisTK-1.0.5974",
+    BIN              => "/share/software/GenomeAnalysisToolKit/gatk.clone.July.2011/dist/",
     COMMAND          => "GenomeAnalysisTK.jar",
     RETAIN           => "no",
     INPUT            => "node",

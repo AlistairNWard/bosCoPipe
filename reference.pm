@@ -41,9 +41,8 @@ sub reference {
   # exit.
   if ($main::aligner ne "none") {
     if (!defined $main::dbsnp) {
-      $main::dbsnpBin = "/d1/data/references/build_37/dbsnp";
-      #$main::dbsnp    = "dbsnp_129_b37.rod";
-      $main::dbsnp    = "dbsnp_132.b37.excluding_sites_after_129.vcf";
+      $main::dbsnpBin = "/d1/data/pipeline_resources/dbSNP";
+      $main::dbsnp    = "ALL.wgs.dbsnp.build135.snps.sites.vcf";
     }
     general_tools::checkFileExists("$main::dbsnpBin/$main::dbsnp");
   }

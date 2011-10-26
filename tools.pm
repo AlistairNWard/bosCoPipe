@@ -90,10 +90,12 @@ sub baseQualityRecalibration {
   if (defined $main::nodeMemory) {($memory = $main::nodeMemory) =~ s/gb/g/g;}
   elsif (defined $main::lowMemory) {$memory = "8g";}
   else {$memory = "32g";}
-  print $script ("  java -Xmx$memory -jar ");
+  print $script ("  java -Xmx$memory");
+  print $script (" -Djava.io.tmpdir=\$NODE_DIR -jar ");
   print $script ("$main::modules{$main::task->{TASK}}->{BIN}/$main::modules{$main::task->{TASK}}->{COMMAND} \\\n");
   print $script ("  -R \$REF_BIN/\$REF \\\n");
-  print $script ("  -B:dbsnp,vcf \$DBSNP_BIN/\$DBSNP \\\n");
+  #print $script ("  -B:dbsnp,vcf \$DBSNP_BIN/\$DBSNP \\\n");
+  print $script ("  -knownSites \$DBSNP_BIN/\$DBSNP \\\n");
   print $script ("  -l INFO \\\n");
   print $script ("  -T CountCovariates \\\n");
   print $script ("  -I \$INPUT_DIR/\$INPUT \\\n");
