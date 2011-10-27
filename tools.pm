@@ -275,15 +275,15 @@ sub duplicateMarkBCM {
   if ($main::sampleInfo{$stdout}->{TECHNOLOGY} eq "454") {
     print $script ("###\n### Mark duplicate reads using BCMMarkDupes\n###\n\n");
     general_tools::setInputs($script, $stdout, $main::task->{FILE}, "");
-    general_tools::setOutputs($script, $stdout,  $dupBam);
-    print $script ("  BCM_BIN=$main::modules{$main::Task->{TASK}}->{BIN}\n\n");
+    general_tools::setOutputs($script, $stdout, $dupBam);
+    print $script ("  BCM_BIN=$main::modules{$main::task->{TASK}}->{BIN}\n\n");
     print $script ("  $main::modules{$main::task->{TASK}}->{PRE_COMMAND} \$BCM_BIN:\$BCM_BIM/");
     print $script ("$main::modules{$main::task->{TASK}}->{COMMAND} BCMMarkDupes \\\n");
     print $script ("  \$INPUT_DIR/\$INPUT \\\n");
     print $script ("  \$INPUT_DIR/\$INPUT.bai \\\n");
     print $script ("  \$OUTPUT_DIR/\$OUTPUT \\\n");
     print $script ("  > \$OUTPUT_DIR/\$OUTPUT.stdout \\\n");
-    print $script ("2> \$OUTPUT_DIR/\$OUTPUT.stderr\n\n");
+    print $script ("  2> \$OUTPUT_DIR/\$OUTPUT.stderr\n\n");
     script_tools::fail(
       $script,
       "BCM duplicate marking",
