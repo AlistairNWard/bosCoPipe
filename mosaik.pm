@@ -214,6 +214,14 @@ sub mosaikAligner {
     print $script ("  if [ ! -f \$JUMP_BIN/\$JUMP\\_keys.jmp ]; then TransferFiles \$LOCAL_JUMP_BIN \$JUMP_BIN \$JUMP\\_keys.jmp; fi\n");
     print $script ("  if [ ! -f \$JUMP_BIN/\$JUMP\\_meta.jmp ]; then TransferFiles \$LOCAL_JUMP_BIN \$JUMP_BIN \$JUMP\\_meta.jmp; fi\n");
     print $script ("  if [ ! -f \$JUMP_BIN/\$JUMP\\_positions.jmp ]; then TransferFiles \$LOCAL_JUMP_BIN \$JUMP_BIN \$JUMP\\_positions.jmp; fi\n\n");
+
+    # If using Mosaik2, copy across the neural net files for calculating the
+    # mapping qualities.
+    if (defined $main::mosaikVersion2) {
+      print $script ("  if [ ! -d \$REF_BIN ]; then mkdir -p \$REF_BIN; fi\n");
+      print $script ("  if [ ! -f \$REF_BIN/$main::neuralNetFileSE ]; then TransferFiles \$LOCAL_REF_BIN \$REF_BIN $main::neuralNetFileSE; fi\n");
+      print $script ("  if [ ! -f \$REF_BIN/$main::neuralNetFilePE ]; then TransferFiles \$LOCAL_REF_BIN \$REF_BIN $main::neuralNetFilePE; fi\n");
+    }
   }
 
 # Write out the command line.
