@@ -7,8 +7,8 @@ use FindBin;
 
 # Record the version number.
 
-$main::version="2.064";
-$main::versionDate="October 2011";
+$main::version="2.065";
+$main::versionDate="November 2011";
 
 # Define some global variables.
 

@@ -240,12 +240,15 @@ sub duplicateMarkPicard {
     print $script ("###\n### Mark duplicate reads using Picard\n###\n\n");
     general_tools::setInputs($script, $stdout, $main::task->{FILE},"");
     general_tools::setOutputs($script, $stdout,  $dupBam);
+    print $script ("  TMP_DIR=\$OUTPUT_DIR/tmp\\\n");
+    print $script ("  if [ ! -d \$TMP_DIR ]; then mkdir -p \$TMP_DIR; fi\n\n");
     print $script ("  METRICS=$main::mergeFileName.metrics\n\n");
     print $script ("  $main::modules{$main::task->{TASK}}->{PRE_COMMAND} ");
     print $script ("$main::modules{$main::task->{TASK}}->{BIN}/$main::modules{$main::task->{TASK}}->{COMMAND} \\\n");
     print $script ("  I=\$INPUT_DIR/\$INPUT \\\n");
     print $script ("  O=\$OUTPUT_DIR/\$OUTPUT \\\n");
     print $script ("  M=\$OUTPUT_DIR/\$METRICS \\\n");
+    print $script ("  TMP_DIR=\$TMP_DIR \\\n");
     print $script ("  > \$OUTPUT_DIR/\$OUTPUT.stdout \\\n");
     print $script ("  2> \$OUTPUT_DIR/\$OUTPUT.stderr\n\n");
     script_tools::fail(
@@ -256,6 +259,8 @@ sub duplicateMarkPicard {
       "\$OUTPUT.stderr",
       "$main::aligner/$main::sampleInfo{$stdout}->{SAMPLE}/failed"
     );
+    print $script ("# Remove the temp directory\n\n");
+    print $script ("  rm -fr \$TMP_DIR \n\n");
     general_tools::removeInput($script, $stdout, $main::task->{FILE});
     general_tools::updateTask($stdout, $dupBam);
     general_tools::iterateTask($stdout, \@tasks);
