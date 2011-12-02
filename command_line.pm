@@ -25,6 +25,7 @@ sub pipelineHelp {
   print("-include-improper:\tinclude all pairs (proper and improper) in variant calling - default false.\n");
   print("-index:\t\t\tspecify a sequence index file used for determining alignments.\n");
   print("  -previousindex:\tprevious index file used for incremental alignments.\n");
+  print("-keep-orig-quals:\tkeep original base qualities when recalibrating with GATK.\n");
   print("-local:\t\t\tstore all files on the local disk, nothing on the node.\n");
   print("-map-Q-zero:\t\tonly include reads with MQ > 0 in variant calling.\n");
   print("-memory:\t\trequest this much memory from the node.  Format MMmb or MM gb.\n");

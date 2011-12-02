@@ -136,7 +136,7 @@ sub baseQualityRecalibration {
   print $script ("  -I \$INPUT_DIR/\$INPUT \\\n");
   print $script ("  --out \$OUTPUT_DIR/\$OUTPUT \\\n");
   print $script ("  -recalFile \$OUTPUT_DIR/\$CSV \\\n");
-  print $script ("  --doNotWriteOriginalQuals \\\n");
+  if (!defined $main::keepOriginalQualities) {print $script ("  --doNotWriteOriginalQuals \\\n");}
   if ($main::sampleInfo{$stdout}->{TECHNOLOGY} eq "solid") {
     print $script ("  --solid_nocall_strategy PURGE_READ \\\n");
     print $script ("  --solid_recal_mode SET_Q_ZERO \\\n");
