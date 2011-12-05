@@ -165,7 +165,8 @@ sub renameBam {
   print $script ("###\n### Rename the final bam file.\n###\n\n");
   general_tools::setInputs($script, $stdout, $main::task->{FILE}, "");
   general_tools::setOutputs($script, $stdout,  $main::renameFile);
-  print $script ("  TransferFiles \$INPUT_DIR \$OUTPUT_DIR \$INPUT \$OUTPUT\n\n");
+  print $script ("  TransferFiles \$INPUT_DIR \$OUTPUT_DIR \$INPUT \$OUTPUT\n");
+  print $script ("  if [ \$? -eq 0 ]; then rm -f \$INPUT_DIR/\$INPUT; fi\n\n");
   general_tools::updateTask($stdout, $main::renameFile);
   general_tools::iterateTask($stdout, \@tasks);
 }
