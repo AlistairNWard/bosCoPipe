@@ -240,7 +240,7 @@ sub duplicateMarkPicard {
     print $script ("###\n### Mark duplicate reads using Picard\n###\n\n");
     general_tools::setInputs($script, $stdout, $main::task->{FILE},"");
     general_tools::setOutputs($script, $stdout,  $dupBam);
-    print $script ("  TMP_DIR=\$OUTPUT_DIR/tmp\\\n");
+    print $script ("  TMP_DIR=\$OUTPUT_DIR/tmp\n");
     print $script ("  if [ ! -d \$TMP_DIR ]; then mkdir -p \$TMP_DIR; fi\n\n");
     print $script ("  METRICS=$main::mergeFileName.metrics\n\n");
     print $script ("  $main::modules{$main::task->{TASK}}->{PRE_COMMAND} ");
