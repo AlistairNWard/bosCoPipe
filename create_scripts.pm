@@ -188,7 +188,7 @@ sub createAlignmentScript {
   $main::renameFile  = "$main::runFileName.bam";
   $main::modules{RENAME_BAM}->{DIR} = "bam";
 
-  if (!defined $main::queue) {$main::queue = "bigmem";}
+  if (!defined $main::queue) {$main::queue = "stage";}
   if (!defined $main::threads) {$main::threads = 8;}
   $main::SCRIPT = script_tools::createScript($main::runFileName, "align", $main::threads, $main::queue);
   script_tools::scriptFail($main::SCRIPT, $main::runFileName);
@@ -215,7 +215,7 @@ sub createAlignmentScript {
 sub transferMergedBam {
   my $stdout = $_[0];
 
-  if (! defined $main::queue) {$main::queue = "bigmem";}
+  if (! defined $main::queue) {$main::queue = "stage";}
   $main::SCRIPT = script_tools::createScript($main::mergeFileName, "Merge", 1, $main::queue);
   script_tools::scriptFail($main::SCRIPT, $main::mergeFileName);
   script_tools::transferFiles($main::SCRIPT);
@@ -259,7 +259,7 @@ sub createMergeScript {
   };
 
   # Define the number of processors to use:
-  if (! defined $main::queue) {$main::queue = "bigmem";}
+  if (! defined $main::queue) {$main::queue = "stage";}
   if ($main::queue eq "stage") {$proc = 4;}
 
   $main::SCRIPT = script_tools::createScript($main::mergeFileName, "Merge", $proc, $main::queue);

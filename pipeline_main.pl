@@ -7,8 +7,8 @@ use FindBin;
 
 # Record the version number.
 
-$main::version="2.068";
-$main::versionDate="December 2011";
+$main::version="2.069";
+$main::versionDate="April 2012";
 
 # Define some global variables.
 
@@ -49,7 +49,6 @@ $| = 1;
 # information is missing or incorrect.
 
 GetOptions('aligner=s'         => \$main::aligner,
-           'bam-directory=s'   => \$main::bamDirectory,
            'bam-list=s'        => \$main::bamList,
            'date=s'            => \$main::date,
            'dir=s'             => \$main::outputDirectory,
@@ -162,6 +161,7 @@ software::aligners();
 software::mergePipeline();
 software::snpCallers();
 target_regions::snpDelimiter();
+$main::refSequences = bamtools::getReferenceSequences(\@main::bamList);
 target_regions::defineRegions();
 
 # Check if a date has been supplied.  If not, the current date will be

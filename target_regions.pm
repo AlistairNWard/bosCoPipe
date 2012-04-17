@@ -32,9 +32,7 @@ sub defineRegions {
       if (defined $main::referenceSequence) {
         $target_regions::targetRegions[0] = $main::referenceSequence;
       } else { 
-        for (my $chr = 1; $chr < 23; $chr++) {$target_regions::targetRegions[$chr - 1] = $chr;}
-        $target_regions::targetRegions[22] = "X";
-        $target_regions::targetRegions[23] = "Y";
+        foreach my $chr (sort keys %{$main::refSequences}) {push(@target_regions::targetRegions, $chr);}
       }
 
       # Include the genome coordinates for each chromosome.
@@ -51,27 +49,21 @@ sub defineRegions {
 
       if (defined $main::referenceSequence) {
         $tempArray[0] = $main::referenceSequence;
-        $chrMin = 0;
-        $chrMax = 1;
       } else {
-        $chrMin = 0;
-        $chrMax = 24;
-        for (my $chr = 1; $chr < 23; $chr++) {$tempArray[$chr-1] = $chr;}
-        $tempArray[22] = "X";
-        $tempArray[23] = "Y";
+        foreach my $chr (sort keys %{$main::refSequences}) {push(@tempArray, $chr);}
       }
 
-      for (my $chr = $chrMin; $chr < $chrMax; $chr++) {
+      foreach my $chr (@tempArray) {
         my $start  = 0;
         my $end    = $kiloBase*$main::targetRegionSize;
-        my $extent = getChromosomeExtents($tempArray[$chr]);
+        my $extent = getChromosomeExtents($chr);
         while() {
-          push(@target_regions::targetRegions, "$tempArray[$chr]:$start-$end");
+          push(@target_regions::targetRegions, "$chr:$start-$end");
           $start += $kiloBase*$main::targetRegionSize;
           $end   += $kiloBase*$main::targetRegionSize;
           if ($end > $extent) {
             $end = $extent;
-            push(@target_regions::targetRegions, "$tempArray[$chr]:$start-$end");
+            push(@target_regions::targetRegions, "$chr:$start-$end");
             last;
           }
         }

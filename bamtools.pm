@@ -46,7 +46,7 @@ sub sortMosaikv2Bam {
   print $script ("# Multiply mapped bam file.\n\n");
   print $script ("  if [ -s \$INPUT_DIR/\$INPUT.multiple.bam ]; then\n");
   print $script ("    $main::modules{BAMTOOLS}->{BIN}/$main::modules{BAMTOOLS}->{COMMAND} sort \\\n");
-  print $script ("    -n 5000000 \\\n");
+  print $script ("    -n 15000000 \\\n");
   print $script ("    -in \$INPUT_DIR/\$INPUT.multiple.bam \\\n");
   print $script ("    -out \$OUTPUT_DIR/\$OUTPUT.multiple.bam \\\n");
   print $script ("    > \$OUTPUT_DIR/\$OUTPUT.multiple.bam.stdout \\\n");
@@ -127,6 +127,21 @@ sub index {
     "$main::aligner/$main::sampleInfo{$stdout}->{SAMPLE}/failed"
   );
   general_tools::iterateTask($stdout, \@tasks);
+}
+
+# Get the read groups from a bam file.
+sub getReferenceSequences {
+  my $bamList = $_[0];
+  my %sq      = ();
+
+  my $command = "$main::modules{BAMTOOLS}->{BIN}/$main::modules{BAMTOOLS}->{COMMAND} header";
+  my @header = `$command -in @{$bamList}[0]`;
+  foreach my $line (@header) {
+    chomp($line);
+    if ($line =~ /^\@SQ/) {$sq{(split(/:/, (split(/\t/, $line))[1]))[-1]} = 1;}
+  }
+
+  return \%sq;
 }
 
 # Get the read groups from a bam file.
